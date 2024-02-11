@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <ctype.h>
+#if defined __WINDOWS__
 #include <math.h>
+#elif defined __LINUX__
+#include <stdlib.h>
+#endif
 #include <string.h>
 #include <c-project.h>
 
@@ -288,7 +292,7 @@ void itoaW(int n, char s[], int w)
 	int i, sign;
 	char W[MAXLINE] = "";
 
-	if (sign = (n < 0))
+	if ((sign = (n < 0)) == 1)
 		n = -n;
 
 	if ((sign && w >= 2) || (w >= 1 && !sign))
