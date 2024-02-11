@@ -13,9 +13,10 @@ void doNothingMain(int signum)
 
 int main()
 {
-	//int i;
-	char line[MAXLINE] = "ab0-9cdef0-9klm";
-	char line2[MAXLINE];
+	int i;
+	char line[MAXLINE] = "ab0-9cdef0-9klm  ";
+	char line2[MAXLINE] = "";
+	i; line; line2;
 
 	clock_t t1, t2;
 	t1 = clock();
@@ -132,8 +133,17 @@ int main()
 	
 	//printf("%d\n", subStringIdx("abc", "x"));
 
-	expand(line, line2, MAXLINE);
-	printf("%s\n%s\n", line, line2);
+	/*expand(line, line2, MAXLINE);
+	printf("%s\n%s\n", line, line2);*/
+
+	/*itob(power(-2, 31), line2, 11);
+	printf("%s\n", line2);*/
+
+	/*itoaW(-1234567, line2, 1);
+	printf("%s\n", line2);*/
+
+	trim(line);
+	printf("%s#\n", line);
 
 	// ---Runtime Analysis ---
 	t2 = clock();

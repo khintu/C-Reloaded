@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
+#include <string.h>
 #include <c-project.h>
 
 int binsearch(int x, int v[], int n)
@@ -210,4 +212,128 @@ void expand(char s[], char t[], int tn)
 	}
 	t[j] = '\0';
 	return;
+}
+
+/* Bug - the largest negative integer in 32 bit signed int
+	is bigger than the largest positive integer which is 2^31-1.
+	Thus on using the number -2^31 it overflows as a positive 
+	number which is a range from 0 to 2^31-1. The fix is to 
+	treat the mod & div operator as absolute values those that
+	would fit into the positive valid range of integer.
+*/
+void itoa(int n, char s[])
+{
+	int i, sign;
+	if ((sign = n) < 0)
+		n = -n;
+	i = 0;
+	do {
+		s[i++] = abs(n % 10) + '0'; // Read LSB using mod
+	} while (abs(n /= 10) > 0);  // Remove LSB using div or shift right
+	if (sign < 0)
+		s[i++] = '-';
+	s[i] = '\0';
+	reverse(s);
+	return;
+}
+
+void itob(int n, char s[], int b)
+{
+	int i, sign, mod;
+	if ((sign = n) < 0)
+		n = -n;
+	i = 0;
+	do {
+		mod = abs(n % b);
+		if (b >= 10 && b <= 16)
+		{
+			switch (mod) {
+			case 10:
+				s[i++] = 'A';
+				break;
+			case 11:
+				s[i++] = 'B';
+				break;
+			case 12:
+				s[i++] = 'C';
+				break;
+			case 13:
+				s[i++] = 'D';
+				break;
+			case 14:
+				s[i++] = 'E';
+				break;
+			case 15:
+				s[i++] = 'F';
+				break;
+			default:
+				s[i++] = mod + '0';
+				break;
+			}
+		}
+		else
+		{
+			s[i++] = mod + '0';
+		}
+	} while (abs(n /= b) > 0);
+	if (sign < 0)
+		s[i++] = '-';
+	s[i] = '\0';
+	reverse(s);
+	return;
+}
+
+void itoaW(int n, char s[], int w)
+{
+	int i, sign;
+	char W[MAXLINE] = "";
+
+	if (sign = (n < 0))
+		n = -n;
+
+	if ((sign && w >= 2) || (w >= 1 && !sign))
+	{
+		i = 0;
+		do {
+			s[i++] = abs(n % 10) + '0';
+		} while (abs(n /= 10) > 0);
+		if (sign)
+			s[i++] = '-';
+		s[i] = '\0';
+		reverse(s);
+			
+		w -= stringLength(s);
+		if (w >= 0) {
+			for (i = 0; i < w; ++i)
+				W[i] = ' ';
+			W[i] = '\0';
+			Strcat(W + i, s);
+		}
+		else
+		{
+			w = abs(w);
+			i = 0;
+			if (sign) // preserve sign bit
+			{
+				w++;
+				W[0] = '-';
+				W[1] = '\0';
+				i = 1;
+			}
+			copyString(W + i, s + w);
+		}
+		copyString(s, W);
+	}
+	return;
+}
+
+int trim(char s[])
+{
+	int n;
+
+	for (n = (int)strlen(s) - 1; n >= 0; n--)
+		if (!isspace(s[n]))
+			break;
+	s[n + 1] = '\0';
+	return n;
 }

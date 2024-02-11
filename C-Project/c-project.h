@@ -102,5 +102,9 @@ void shellsort(int v[], int n);
 void reverse(char s[]);
 int subStringIdx(char s[], char t[]);
 void expand(char s[], char t[], int tn);
+void itoa(int n, char s[]);
+void itob(int n, char s[], int b);
+void itoaW(int n, char s[], int w);
+int trim(char s[]);
 
 #endif /* CPROJECT_H */
