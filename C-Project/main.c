@@ -142,8 +142,11 @@ int main()
 	/*itoaW(-1234567, line2, 1);
 	printf("%s\n", line2);*/
 
-	trim(line);
-	printf("%s#\n", line);
+	/*trim(line);
+	printf("%s#\n", line);*/
+
+	// --- Chapter 4 ---
+	findLinesMatchgPattrn("ould");
 
 	// ---Runtime Analysis ---
 	t2 = clock();

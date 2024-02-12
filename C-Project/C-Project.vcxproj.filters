@@ -39,6 +39,9 @@
     <ClCompile Include="ControlFlow.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Functions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c-project.h">
