@@ -13,10 +13,11 @@ void doNothingMain(int signum)
 
 int main()
 {
-	int i;
+	int i = 0;
 	char line[MAXLINE] = "ab0-9cdef0-9klm  ";
 	char line2[MAXLINE] = "";
-	i; line; line2;
+	i += stringLength(line);
+	i += stringLength(line2);
 
 	clock_t t1, t2;
 	t1 = clock();
