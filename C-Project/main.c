@@ -147,7 +147,7 @@ int main()
 	printf("%s#\n", line);*/
 
 	// --- Chapter 4 ---
-	findLinesMatchgPattrn("ould");
+	findLinesMatchgPattrn("ould\n");
 
 	// ---Runtime Analysis ---
 	t2 = clock();
