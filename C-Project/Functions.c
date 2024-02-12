@@ -20,7 +20,7 @@ int getline4(char s[], int lim)
 {
 	int i, c;
 
-	i = 0; c = NUL;
+	i = 0; c = '\0';
 	while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
 		s[i++] = c;
 	if (c == '\n')
