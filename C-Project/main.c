@@ -151,10 +151,11 @@ int main()
 	// --- Chapter 4 ---
 	//findLinesMatchgPattrn("ould\n");
 
-	if ((i = strrindex(line, "ould")) >= 0)
+	/*if ((i = strrindex(line, "ould")) >= 0)
 	{
 		printf("%d\n", i);
-	}
+	}*/
+	printf("%.6f\n", atof("-.112734"));
 
 	// ---Runtime Analysis ---
 	t2 = clock();

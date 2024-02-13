@@ -12,7 +12,7 @@
 #define MAXLINE	1024
 #define TABSTOP	4
 #define MAXDEPTH	128
-#define NUL	((char)'\0')
+#define NUL	((char)0)
 
 // Chapter 1
 void FahrenheitToCelsius(void);
@@ -113,5 +113,6 @@ int getline4(char s[], int lim);
 int strindex(char s[], char t[]);
 int findLinesMatchgPattrn(char p[]);
 int strrindex(char s[], char t[]);
+double atof(char s[]);
 
 #endif /* CPROJECT_H */
