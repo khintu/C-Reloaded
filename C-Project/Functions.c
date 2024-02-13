@@ -42,3 +42,16 @@ int strindex(char s[], char t[])
 	}
 	return -1;
 }
+
+int strrindex(char s[], char t[])
+{
+	int i, fndi, rmi;
+	
+	for (i = 0, fndi = 0, rmi = -1; s[i] != '\0'; ++i)
+	{
+		fndi = strindex(s + i, t);
+		if (fndi >= 0)
+			rmi = fndi + i;
+	}
+	return rmi;
+}

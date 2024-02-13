@@ -14,11 +14,13 @@ void doNothingMain(int signum)
 int main()
 {
 	int i = 0;
-	char line[MAXLINE] = "ab0-9cdef0-9klm  ";
+	//char line[MAXLINE] = "ab0-9cdef0-9klm  ";
+	char line[MAXLINE] = "could i do you would\n";
 	char line2[MAXLINE] = "";
+#ifdef __LINUX__
 	i += stringLength(line);
 	i += stringLength(line2);
-
+#endif
 	clock_t t1, t2;
 	t1 = clock();
 	signal(SIGINT, doNothingMain);
@@ -147,7 +149,12 @@ int main()
 	printf("%s#\n", line);*/
 
 	// --- Chapter 4 ---
-	findLinesMatchgPattrn("ould\n");
+	//findLinesMatchgPattrn("ould\n");
+
+	if ((i = strrindex(line, "ould")) >= 0)
+	{
+		printf("%d\n", i);
+	}
 
 	// ---Runtime Analysis ---
 	t2 = clock();

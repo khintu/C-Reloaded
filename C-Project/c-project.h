@@ -112,5 +112,6 @@ int trim(char s[]);
 int getline4(char s[], int lim);
 int strindex(char s[], char t[]);
 int findLinesMatchgPattrn(char p[]);
+int strrindex(char s[], char t[]);
 
 #endif /* CPROJECT_H */
