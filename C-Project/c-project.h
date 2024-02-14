@@ -114,5 +114,6 @@ int strindex(char s[], char t[]);
 int findLinesMatchgPattrn(char p[]);
 int strrindex(char s[], char t[]);
 double atof(char s[]);
+double atofE(char s[]);
 
 #endif /* CPROJECT_H */

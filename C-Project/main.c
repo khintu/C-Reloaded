@@ -15,7 +15,7 @@ int main()
 {
 	int i = 0;
 	//char line[MAXLINE] = "ab0-9cdef0-9klm  ";
-	char line[MAXLINE] = "could i do you would\n";
+	char line[MAXLINE] = "am i ckuld i do you wkuld\n";
 	char line2[MAXLINE] = "";
 #ifdef __LINUX__
 	i += stringLength(line);
@@ -155,7 +155,10 @@ int main()
 	{
 		printf("%d\n", i);
 	}*/
-	printf("%.6f\n", atof("-.112734"));
+
+	//printf("%.6f\n", atof("-.112734"));
+	
+	printf("%g\n", atofE("-.112734E-6"));
 
 	// ---Runtime Analysis ---
 	t2 = clock();

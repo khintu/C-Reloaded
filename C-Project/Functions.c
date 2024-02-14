@@ -46,13 +46,18 @@ int strindex(char s[], char t[])
 
 int strrindex(char s[], char t[])
 {
-	int i, fndi, rmi;
+	int i, fndi, rmi, lt;
 	
-	for (i = 0, fndi = 0, rmi = -1; s[i] != '\0'; ++i)
+	lt = stringLength(t);
+	for (i = 0, fndi = 0, rmi = -1; s[i] != '\0'; )
 	{
-		fndi = strindex(s + i, t);
-		if (fndi >= 0)
+		if ((fndi = strindex(s + i, t)) >= 0)
+		{
 			rmi = fndi + i;
+			i = rmi + lt;
+		}
+		else
+			++i;
 	}
 	return rmi;
 }
@@ -77,4 +82,36 @@ double atof(char s[])
 		power *= 10.0;
 	}
 	return sign * val / power;
+}
+
+double atofE(char s[])
+{
+	double val, power;
+	int sign, i, valE;
+	
+	for (i = 0; isspace(s[i]); ++i)
+		;
+	// Deconstruct mantissa
+	sign = (s[i] == '-') ? -1 : 1;
+	if (s[i] == '-' || s[i] == '+')
+		++i;
+	for (val = 0.0; isdigit(s[i]); ++i)
+		val = val * 10.0 + s[i] - '0';
+	if (s[i] == '.')
+		++i;
+	for (power = 1.0; isdigit(s[i]); ++i)
+	{
+		val = val * 10.0 + s[i] - '0';
+		power *= 10.0;
+	}
+	val *= sign / power;
+	// Deconstruct exponent
+	if (s[i] == 'e' || s[i] == 'E')
+		++i;
+	sign = (s[i] == '-') ? -1 : 1, ++i;
+
+	for (valE = 0; isdigit(s[i]); ++i)
+		valE = valE * 10 + s[i] - '0';
+	val *= powerf(10, valE*sign);
+	return val;
 }

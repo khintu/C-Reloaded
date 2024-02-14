@@ -48,8 +48,12 @@ unsigned long long powerull(int base, int exp)
 double powerf(double base, int exp)
 {
 	double p;
-	for (p = 1; exp > 0; --exp)
-		p = p * base;
+	int sign;
+
+	sign = (exp >= 0) ? 1 : -1;
+	exp = (exp >= 0)? exp : -exp;
+	for (p = 1.0; exp > 0; --exp)		
+		p = (sign >= 0) ? p * base : p / base;
 	return p;
 }
 
