@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <ctype.h>
+#if 0
 #if defined __WINDOWS__
 #include <math.h>
 #elif defined __LINUX__
 #include <stdlib.h>
+#endif
 #endif
 #include <string.h>
 #include <c-project.h>

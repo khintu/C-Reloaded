@@ -3,7 +3,6 @@
 #include <time.h>
 #include <c-project.h>
 
-char glbLine[MAXLINE];
 
 void doNothingMain(int signum)
 {
@@ -158,7 +157,9 @@ int main()
 
 	//printf("%.6f\n", atof("-.112734"));
 	
-	printf("%g\n", atofE("-.112734E-6"));
+	//printf("%g\n", atofE("-.112734E-6"));
+
+	reversePolishCalc();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

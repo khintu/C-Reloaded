@@ -14,6 +14,8 @@
 #define MAXDEPTH	128
 #define NUL	((char)0)
 
+#define abs(exp)	(((exp) >= 0)? (exp) : -(exp))
+
 // Chapter 1
 void FahrenheitToCelsius(void);
 void FahrenheitToCelsiusReal(void);
@@ -115,5 +117,6 @@ int findLinesMatchgPattrn(char p[]);
 int strrindex(char s[], char t[]);
 double atof(char s[]);
 double atofE(char s[]);
+void reversePolishCalc(void);
 
 #endif /* CPROJECT_H */

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <c-project.h>
 
+char glbLine[MAXLINE];
+
 /* 
 	getchar() is a blocking call, it wont return until the
 	entire input from stdin has been read by it. Then it 

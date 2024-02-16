@@ -5,7 +5,6 @@
 int itop;
 int stack[MAXDEPTH];
 
-#if 0
 extern char glbLine[];
 
 void testGlbExtnFunc(void)
@@ -21,7 +20,7 @@ void testGlbExtnFunc2(void)
 	printf("%s", glbLine);
 	return;
 }
-#endif
+
 // Replace tabs with spaces
 // ri has to be less than the last index MAXLINE -1 
 // as MAXLINE-1 is reserved for NUL string character

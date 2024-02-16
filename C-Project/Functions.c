@@ -115,3 +115,9 @@ double atofE(char s[])
 	val *= powerf(10, valE*sign);
 	return val;
 }
+
+void reversePolishCalc(void)
+{
+
+	return;
+}
