@@ -118,5 +118,10 @@ int strrindex(char s[], char t[]);
 double atof(char s[]);
 double atofE(char s[]);
 void reversePolishCalc(void);
+int getoperator(char []);
+void push2(double);
+double pop2(void);
+int getch(void);
+void ungetch(int c);
 
 #endif /* CPROJECT_H */

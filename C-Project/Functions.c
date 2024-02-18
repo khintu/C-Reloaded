@@ -116,8 +116,116 @@ double atofE(char s[])
 	return val;
 }
 
+#define MAXVAL	100	/* max depth of value stack */
+#define MAXOP		100	/* max size of operand or operator */
+#define NUMBER	'0'	/* Signal that a number was found */
+#define BUFSIZE	100
+
+int sp = 0;					/* next free stack position */
+double val[MAXVAL]; /* value stack */
+char buf[BUFSIZE];	/* buffer for ungetch */
+int bufp = 0;				/* next free position in buf */
+
+/* Hint: sp value is from 1..MAXVAL, not from 0..MAXVAL-1. 
+	It cannot show top value, pop push for that */
+
+/* push f onto value stack */
+void push2(double f)
+{
+	if (sp < MAXVAL)
+		val[sp++] = f;
+	else
+		printf("error: stack full, cant push %g\n", f);
+	return;
+}
+/* pop and return top value from stack */
+double pop2(void)
+{
+	if (sp > 0)
+		return val[--sp];
+	else
+	{
+		printf("error: stack empty\n");
+		return 0.0;
+	}
+}
+
+/* get a (possibly push back) character */
+int getch(void)
+{
+	return (bufp > 0) ? buf[--bufp] : getchar();
+}
+
+/* push character back into input */
+void ungetch(int c)
+{
+	if (bufp >= BUFSIZE)
+		printf("ungetch: too many characters\n");
+	else
+		buf[bufp++] = c;
+}
+
+/* get next operator or numeric operand */
+int getoperator(char s[])
+{
+	int i, c;
+	while ((s[0] = c = getch()) == ' ' || c == '\t')
+		;
+	s[1] = '\0';
+	if (!isdigit(c) && c != '.')
+		return c;  /* not a number, operator */
+	i = 0;
+	if (isdigit(c)) /* collect integer part */
+		while (isdigit(s[++i] = c = getch()))
+			;
+	if (c == '.') /* collect fraction part */
+		while (isdigit(s[++i] = c = getch()))
+			;
+	s[i] = '\0';
+	if (c != EOF)
+		ungetch(c);
+	return NUMBER;
+}
+
 void reversePolishCalc(void)
 {
+	int type;
+	double op1, op2;
+	char s[MAXOP];
 
+	while ((type = getoperator(s)) != EOF)
+	{
+		switch (type)
+		{
+		case NUMBER:
+			push2(atof(s));
+			break;
+		case '+':
+			push2(pop2() + pop2());
+			break;
+		case '*':
+			push2(pop2() * pop2());
+			break;
+		case '-':
+			op2 = pop2();
+			op1 = pop2();
+			push2(op1 - op2);
+			break;
+		case '/':
+			op2 = pop2();
+			op1 = pop2();
+			if (op2 != 0.0)
+				push2(op1 / op2);
+			else
+				printf("error: zero divisor\n");
+			break;
+		case '\n':
+			printf("\t%.8g\n", pop2());
+			break;
+		default:
+			printf("error: unknown command %s\n", s);
+			break;
+		}
+	}
 	return;
 }
