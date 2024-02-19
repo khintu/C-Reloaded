@@ -62,7 +62,7 @@ int strrindex(char s[], char t[])
 	return rmi;
 }
 
-double atof(char s[])
+double Atof(char s[])
 {
 	double val, power;
 	int sign, i;
@@ -198,7 +198,7 @@ void reversePolishCalc(void)
 		switch (type)
 		{
 		case NUMBER:
-			push2(atof(s));
+			push2(Atof(s));
 			break;
 		case '+':
 			push2(pop2() + pop2());
