@@ -125,6 +125,7 @@ int sp = 0;					/* next free stack position */
 double val[MAXVAL]; /* value stack */
 char buf[BUFSIZE];	/* buffer for ungetch */
 int bufp = 0;				/* next free position in buf */
+int signFlag = FALSE; /* Sign field in getoperator */
 
 /* Hint: sp value is from 1..MAXVAL, not from 0..MAXVAL-1. 
 	It cannot show top value, pop push for that */
@@ -168,20 +169,40 @@ void ungetch(int c)
 /* get next operator or numeric operand */
 int getoperator(char s[])
 {
-	int i, c;
+	int i, c, ac;
 	while ((s[0] = c = getch()) == ' ' || c == '\t')
-		;
+	{
+		if (signFlag == TRUE)
+			signFlag = FALSE;
+	}
 	s[1] = '\0';
 	if (!isdigit(c) && c != '.')
+	{
+		if (c == '-')
+		{
+			if (isdigit(ac = getch()))
+				signFlag = TRUE;
+			ungetch(ac);
+		}
 		return c;  /* not a number, operator */
+	}
 	i = 0;
+	/* put sign on number */
+	if (signFlag == TRUE)
+	{
+		int tmp = s[0];
+		s[0] = '-';
+		s[1] = tmp;
+		s[2] = '\0';
+		i = 1;
+	}
 	if (isdigit(c)) /* collect integer part */
 		while (isdigit(s[++i] = c = getch()))
 			;
 	if (c == '.') /* collect fraction part */
 		while (isdigit(s[++i] = c = getch()))
 			;
-	s[i] = '\0';
+	s[i] = '\0'; /* clamp the first non-digit with NUL */
 	if (c != EOF)
 		ungetch(c);
 	return NUMBER;
@@ -207,9 +228,12 @@ void reversePolishCalc(void)
 			push2(pop2() * pop2());
 			break;
 		case '-':
-			op2 = pop2();
-			op1 = pop2();
-			push2(op1 - op2);
+			if (signFlag != TRUE)
+			{
+				op2 = pop2();
+				op1 = pop2();
+				push2(op1 - op2);
+			}
 			break;
 		case '/':
 			op2 = pop2();
@@ -218,6 +242,14 @@ void reversePolishCalc(void)
 				push2(op1 / op2);
 			else
 				printf("error: zero divisor\n");
+			break;
+		case '%':
+			op2 = pop2();
+			op1 = pop2();
+			if (op2 != 0.0)
+				push2(((int)op1 % (int)op2));
+			else
+				printf("error: zero divisor in mod operator\n");
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop2());
