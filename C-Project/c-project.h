@@ -123,5 +123,9 @@ void push2(double);
 double pop2(void);
 int getch(void);
 void ungetch(int c);
+void printTopStck(void);
+void dupTopStck(void);
+void swpTop2Stck(void);
+void clearStck(void);
 
 #endif /* CPROJECT_H */

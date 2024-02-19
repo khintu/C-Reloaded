@@ -119,6 +119,10 @@ double atofE(char s[])
 #define MAXVAL	100	/* max depth of value stack */
 #define MAXOP		100	/* max size of operand or operator */
 #define NUMBER	'0'	/* Signal that a number was found */
+#define PRNTTOP	'P' /* Command for printing top of stack */
+#define DUPLTOP	'D' /* Command for duplicating top of stack */
+#define SWPTOP2	'W' /* Command for duplicating top of stack */
+#define CLRSTK	'C' /* Command for duplicating top of stack */
 #define BUFSIZE	100
 
 int sp = 0;					/* next free stack position */
@@ -129,6 +133,43 @@ int signFlag = FALSE; /* Sign field in getoperator */
 
 /* Hint: sp value is from 1..MAXVAL, not from 0..MAXVAL-1. 
 	It cannot show top value, pop push for that */
+
+void clearStck(void)
+{
+	sp = 0;
+	return;
+}
+
+void printTopStck(void)
+{
+	if (sp >= 1 && sp <= MAXVAL)
+		printf("%.8g\n", val[sp - 1]);
+	else
+		printf("Stack Top Error sp=%d\n", sp);
+	return;
+}
+
+void dupTopStck(void)
+{
+	if (sp >= 1 && sp <= MAXVAL)
+		push2(val[sp - 1]);
+	else
+		printf("Stack Dup Error sp=%d\n", sp);
+	return;
+}
+
+void swpTop2Stck(void)
+{
+	if (sp >= 1 && sp <= MAXVAL && sp >= 2)
+	{
+		double tmp = val[sp - 1];
+		val[sp - 1] = val[sp - 2];
+		val[sp - 2] = tmp;
+	}
+	else
+		printf("Stack Swap Error sp=%d\n", sp);
+	return;
+}
 
 /* push f onto value stack */
 void push2(double f)
@@ -178,7 +219,7 @@ int getoperator(char s[])
 	s[1] = '\0';
 	if (!isdigit(c) && c != '.')
 	{
-		if (c == '-')
+		if (c == '-') /* post processing for sign */
 		{
 			if (isdigit(ac = getch()))
 				signFlag = TRUE;
@@ -187,8 +228,7 @@ int getoperator(char s[])
 		return c;  /* not a number, operator */
 	}
 	i = 0;
-	/* put sign on number */
-	if (signFlag == TRUE)
+	if (signFlag == TRUE) /* put sign on number */
 	{
 		int tmp = s[0];
 		s[0] = '-';
@@ -250,6 +290,18 @@ void reversePolishCalc(void)
 				push2(((int)op1 % (int)op2));
 			else
 				printf("error: zero divisor in mod operator\n");
+			break;
+		case PRNTTOP:
+			printTopStck();
+			break;
+		case DUPLTOP:
+			dupTopStck();
+			break;
+		case SWPTOP2:
+			swpTop2Stck();
+			break;
+		case CLRSTK:
+			clearStck();
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop2());
