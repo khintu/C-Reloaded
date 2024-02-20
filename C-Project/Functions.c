@@ -289,9 +289,7 @@ void reversePolishCalc(void)
 		{
 			if (sp >= 1 && sp <= MAXVAL) /* Case1: assign to variable */
 			{
-				op1 = pop2();
-				var[type - 'a'] = op1;
-				push2(op1);
+				var[type - 'a'] = pop2(); /* Remove from val stack, as we moved val[sp] to var[a-z] */
 			}
 			push3(type); /* Case 2: use value of variable */
 			continue;
@@ -395,7 +393,8 @@ void reversePolishCalc(void)
 			push2(pow(op1, op2));
 			break;
 		case '\n':
-			printf("\t%.8g, %c\n", pop2(), (spVar >= 1 && spVar <= MAXVAL)?pop3():'X');
+			printf("\t%.8g, %c\n", (sp >= 1 && sp <= MAXVAL) ? pop2() : 0.0f \
+														, (spVar >= 1 && spVar <= MAXVAL) ? pop3() : 'X');
 			break;
 		default:
 			printf("error: unknown command %s\n", s);
