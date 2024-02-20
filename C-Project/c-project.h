@@ -13,6 +13,7 @@
 #define TABSTOP	4
 #define MAXDEPTH	128
 #define NUL	((char)0)
+#define PI	(22.0f/7.0f)
 
 #define Abs(exp)	(((exp) >= 0)? (exp) : -(exp))
 

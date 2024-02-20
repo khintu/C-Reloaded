@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 #include <c-project.h>
 
 int findLinesMatchgPattrn(char p[])
@@ -119,10 +120,13 @@ double atofE(char s[])
 #define MAXVAL	100	/* max depth of value stack */
 #define MAXOP		100	/* max size of operand or operator */
 #define NUMBER	'0'	/* Signal that a number was found */
-#define PRNTTOP	'P' /* Command for printing top of stack */
+#define PRNTTOP	'T' /* Command for printing top of stack */
 #define DUPLTOP	'D' /* Command for duplicating top of stack */
 #define SWPTOP2	'W' /* Command for duplicating top of stack */
 #define CLRSTK	'C' /* Command for duplicating top of stack */
+#define SINFX		'S' /* math sin function x radians */
+#define EXPFX		'E'	/* math exp function x */
+#define POWFX		'P' /* math power function x,y */
 #define BUFSIZE	100
 
 int sp = 0;					/* next free stack position */
@@ -302,6 +306,19 @@ void reversePolishCalc(void)
 			break;
 		case CLRSTK:
 			clearStck();
+			break;
+		case SINFX:
+			op1 = pop2();
+			push2(sin((PI / 180.0f) * op1));
+			break;
+		case EXPFX:
+			op1 = pop2();
+			push2(exp(op1));
+			break;
+		case POWFX:
+			op2 = pop2();
+			op1 = pop2();
+			push2(pow(op1, op2));
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop2());
