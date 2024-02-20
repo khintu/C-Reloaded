@@ -312,27 +312,58 @@ void reversePolishCalc(void)
 				push2(pop2() + pop2());
 			break;
 		case '*':
-			push2(pop2() * pop2());
+			if (spVar >= 1 && spVar <= MAXVAL)
+			{
+				op2 = var[pop3() - 'a'];
+				op1 = var[pop3() - 'a'];
+				push2(op1 * op2);
+			}
+			else
+				push2(pop2() * pop2());
 			break;
 		case '-':
 			if (signFlag != TRUE)
 			{
-				op2 = pop2();
-				op1 = pop2();
+				if (spVar >= 1 && spVar <= MAXVAL)
+				{
+					op2 = var[pop3() - 'a'];
+					op1 = var[pop3() - 'a'];
+				}
+				else 
+				{
+					op2 = pop2();
+					op1 = pop2();
+				}
 				push2(op1 - op2);
 			}
 			break;
 		case '/':
-			op2 = pop2();
-			op1 = pop2();
+			if (spVar >= 1 && spVar <= MAXVAL)
+			{
+				op2 = var[pop3() - 'a'];
+				op1 = var[pop3() - 'a'];
+			}
+			else
+			{
+				op2 = pop2();
+				op1 = pop2();
+			}
 			if (op2 != 0.0)
 				push2(op1 / op2);
 			else
 				printf("error: zero divisor\n");
 			break;
 		case '%':
-			op2 = pop2();
-			op1 = pop2();
+			if (spVar >= 1 && spVar <= MAXVAL)
+			{
+				op2 = var[pop3() - 'a'];
+				op1 = var[pop3() - 'a'];
+			}
+			else
+			{
+				op2 = pop2();
+				op1 = pop2();
+			}
 			if (op2 != 0.0)
 				push2(((int)op1 % (int)op2));
 			else
