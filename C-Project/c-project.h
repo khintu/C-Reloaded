@@ -128,5 +128,7 @@ void printTopStck(void);
 void dupTopStck(void);
 void swpTop2Stck(void);
 void clearStck(void);
+void push3(char c);
+char pop3(void);
 
 #endif /* CPROJECT_H */

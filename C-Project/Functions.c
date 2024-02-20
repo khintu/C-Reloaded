@@ -127,13 +127,15 @@ double atofE(char s[])
 #define SINFX		'S' /* math sin function x radians */
 #define EXPFX		'E'	/* math exp function x */
 #define POWFX		'P' /* math power function x,y */
-#define BUFSIZE	100
+#define BUFSIZE	100 /* max pushback buffer for reading ahead from getchar */
 
 int sp = 0;					/* next free stack position */
 double val[MAXVAL]; /* value stack */
 char buf[BUFSIZE];	/* buffer for ungetch */
 int bufp = 0;				/* next free position in buf */
 int signFlag = FALSE; /* Sign field in getoperator */
+int spVar = 0;			/* next free stack position on varS */
+int varS[MAXVAL];	/* variable stack */
 
 /* Hint: sp value is from 1..MAXVAL, not from 0..MAXVAL-1. 
 	It cannot show top value, pop push for that */
@@ -193,6 +195,28 @@ double pop2(void)
 	{
 		printf("error: stack empty\n");
 		return 0.0;
+	}
+}
+
+/* push f onto variable stack */
+void push3(char c)
+{
+	if (spVar < MAXVAL)
+		varS[spVar++] = c;
+	else
+		printf("error: var stack full, cant push %c\n", c);
+	return;
+}
+
+/* pop and return top value from variables */
+char pop3(void)
+{
+	if (spVar > 0)
+		return varS[--spVar];
+	else
+	{
+		printf("error: var stack empty\n");
+		return NUL;
 	}
 }
 
@@ -257,16 +281,35 @@ void reversePolishCalc(void)
 	int type;
 	double op1, op2;
 	char s[MAXOP];
+	double var[26];	/* 26 single letter lower case variables */
 
 	while ((type = getoperator(s)) != EOF)
 	{
+		if (islower(type))
+		{
+			if (sp >= 1 && sp <= MAXVAL) /* Case1: assign to variable */
+			{
+				op1 = pop2();
+				var[type - 'a'] = op1;
+				push2(op1);
+			}
+			push3(type); /* Case 2: use value of variable */
+			continue;
+		}
 		switch (type)
 		{
 		case NUMBER:
 			push2(Atof(s));
 			break;
 		case '+':
-			push2(pop2() + pop2());
+			if (spVar >= 1 && spVar <= MAXVAL)
+			{
+				op2 = var[pop3() - 'a'];
+				op1 = var[pop3() - 'a'];
+				push2(op1 + op2);
+			}
+			else
+				push2(pop2() + pop2());
 			break;
 		case '*':
 			push2(pop2() * pop2());
@@ -309,7 +352,7 @@ void reversePolishCalc(void)
 			break;
 		case SINFX:
 			op1 = pop2();
-			push2(sin((PI / 180.0f) * op1));
+			push2(sin((PI / 180.0f) * op1)); /* Convert degree into radians */
 			break;
 		case EXPFX:
 			op1 = pop2();
@@ -321,7 +364,7 @@ void reversePolishCalc(void)
 			push2(pow(op1, op2));
 			break;
 		case '\n':
-			printf("\t%.8g\n", pop2());
+			printf("\t%.8g, %c\n", pop2(), (spVar >= 1 && spVar <= MAXVAL)?pop3():'X');
 			break;
 		default:
 			printf("error: unknown command %s\n", s);
