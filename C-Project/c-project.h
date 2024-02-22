@@ -130,5 +130,6 @@ void swpTop2Stck(void);
 void clearStck(void);
 void push3(char c);
 char pop3(void);
+int getoperator2(char s[]);
 
 #endif /* CPROJECT_H */

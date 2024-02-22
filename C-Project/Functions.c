@@ -276,14 +276,44 @@ int getoperator(char s[])
 	return NUMBER;
 }
 
+/* Get input one full line at a time */
+int getoperator2(char s[])
+{
+	int i, c;
+	static int nli;
+	static char nl[MAXLINE];
+
+	while (nl[nli] != NUL || (getline4(nl, MAXLINE) > 0))
+	{
+		if (nl[nli] == NUL)
+			nli = 0;
+		while ((s[0] = c = nl[nli++]) == ' ' || c == '\t')
+			;
+		s[1] = '\0';
+		if (!isdigit(c) && c != '.')
+			return c;
+
+		i = 0;
+		if (isdigit(c)) /* collect integer part */
+			while (isdigit(s[++i] = c = nl[nli++]))
+				;
+		if (c == '.') /* collect fraction part */
+			while (isdigit(s[++i] = c = nl[nli++]))
+				;
+		s[i] = '\0'; /* clamp the first non-digit with NUL */
+		return NUMBER;
+	}
+	return EOF;
+}
+
 void reversePolishCalc(void)
 {
 	int type;
 	double op1, op2;
 	char s[MAXOP];
-	double var[26];	/* 26 single letter lower case variables */
+	double var[26] = {0.0f};	/* 26 single letter lower case variables */
 
-	while ((type = getoperator(s)) != EOF)
+	while ((type = getoperator2(s)) != EOF)
 	{
 		if (islower(type))
 		{
