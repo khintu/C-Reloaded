@@ -2,13 +2,13 @@ TARGET=newt
 TARGET_SO=newt.so
 LIBS=-L. -l:$(TARGET_SO)
 CC=gcc
-CFLAGS=-g -Wall -I. -fsigned-char -fPIC -D__LINUX__
+CFLAGS=-g -Wall -I. -fsigned-char -fPIC -std=c17 -D__LINUX__
 LFLAGS=-Wall
 LFLAGS_SO=-Wall -shared
-OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
-OBJECTS_SO = $(filter-out main.o,$(OBJECTS))	
-HEADERS = $(wildcard *.h)
-OBJS = main.o
+OBJECTS=$(patsubst %.c, %.o, $(wildcard *.c))
+OBJECTS_SO=$(filter-out main.o,$(OBJECTS))	
+HEADERS=$(wildcard *.h)
+OBJS=main.o
 
 default: $(TARGET) $(TARGET_SO)
 
