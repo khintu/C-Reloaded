@@ -15,7 +15,8 @@ void UnitTestMain(void)
 	int i = 0;
 	//char line[MAXLINE] = "ab0-9cdef0-9klm  ";
 	char line[MAXLINE] = "am i ckuld i do you wkuld\n";
-	char line2[MAXLINE] = "";
+	//char line2[MAXLINE] = "";
+	char line2[MAXLINE] = { 0 };
 #ifdef __LINUX__
 	i += stringLength(line);
 	i += stringLength(line2);
@@ -159,20 +160,28 @@ void UnitTestMain(void)
 	printf("%g\n", atofE("-.112734E-6"));
 
 	reversePolishCalc();
+
+	printDecimal(-powerEfficient(2, 31));
+	putchar('\n');
+
+	Itoa2(-powerEfficient(2, 31), line2);
+	printf("%s\n", line2);
+
 	return;
 }
 
 int main(void)
 {
+	char line2[MAXLINE] = "abcdefgh";
 	clock_t t1, t2;
 	t1 = clock();
 	signal(SIGINT, doNothingMain);
 	// ---Main Function to Execute ---
 	
 	//UnitTestMain();
-
-	reversePolishCalc();
-
+	reverseString2(line2, stringLength(line2), 0);
+	printf("%s\n", line2);
+	
 	// ---Runtime Analysis ---
 	t2 = clock();
 	printf("Runtime = %ld - %ld = %ld\n", t2, t1, t2 - t1);

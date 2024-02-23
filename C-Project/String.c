@@ -65,6 +65,24 @@ void reverseString(char s[])
 	return;
 }
 
+/* Recusive reverse string in-place function */
+void reverseString2(char s[], int len, int i)
+{
+	int tmp;
+
+	if (i < len / 2)
+	{
+		reverseString2(s, len, i+1);
+	}
+	if (i > 0)
+	{
+		tmp = s[i - 1];
+		s[i - 1] = s[len - i];
+		s[len - i] = tmp;
+	}
+	return;
+}
+
 void initialize(void)
 {
 	extern int itop;

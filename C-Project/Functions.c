@@ -431,3 +431,33 @@ void reversePolishCalc(void)
 	}
 	return;
 }
+
+/* printDecimal - print n in decimal */
+void printDecimal(int n)
+{
+	if (n < 0)
+	{
+		putchar('-');
+		n = -n;
+	}
+	if (Abs(n / 10))
+		printDecimal(Abs(n / 10));
+	putchar(Abs(n % 10) + '0');
+	return;
+}
+
+/* Using Recursion(Postfix) to avoid reversing the string of integer number */
+void Itoa2(int n, char s[])
+{
+	static int i;
+
+	if (n < 0)
+	{
+		s[i++] = '-';
+		n = -n;
+	}
+	if (Abs(n / 10))
+		Itoa2(Abs(n / 10), s);
+	s[i++] = Abs(n % 10) + '0';
+	return;
+}

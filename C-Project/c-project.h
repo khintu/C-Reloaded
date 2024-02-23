@@ -131,5 +131,8 @@ void clearStck(void);
 void push3(char c);
 char pop3(void);
 int getoperator2(char s[]);
+void printDecimal(int n);
+void Itoa2(int n, char s[]);
+void reverseString2(char s[], int len, int i);
 
 #endif /* CPROJECT_H */
