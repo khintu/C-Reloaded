@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <ctype.h>
-#if 0
 #if defined __WINDOWS__
 #include <math.h>
 #elif defined __LINUX__
 #include <stdlib.h>
-#endif
 #endif
 #include <string.h>
 #include <c-project.h>
@@ -227,15 +225,15 @@ void expand(char s[], char t[], int tn)
 	treat the mod & div operator as absolute values those that
 	would fit into the positive valid range of integer.
 */
-void itoa(int n, char s[])
+void Itoa(int n, char s[])
 {
 	int i, sign;
 	if ((sign = n) < 0)
 		n = -n;
 	i = 0;
 	do {
-		s[i++] = abs(n % 10) + '0'; // Read LSB using mod
-	} while (abs(n /= 10) > 0);  // Remove LSB using div or shift right
+		s[i++] = Abs(n % 10) + '0'; // Read LSB using mod
+	} while (Abs(n /= 10) > 0);  // Remove LSB using div or shift right
 	if (sign < 0)
 		s[i++] = '-';
 	s[i] = '\0';
@@ -250,7 +248,7 @@ void itob(int n, char s[], int b)
 		n = -n;
 	i = 0;
 	do {
-		mod = abs(n % b);
+		mod = Abs(n % b);
 		if (b >= 10 && b <= 16)
 		{
 			switch (mod) {
@@ -281,7 +279,7 @@ void itob(int n, char s[], int b)
 		{
 			s[i++] = mod + '0';
 		}
-	} while (abs(n /= b) > 0);
+	} while (Abs(n /= b) > 0);
 	if (sign < 0)
 		s[i++] = '-';
 	s[i] = '\0';
@@ -301,8 +299,8 @@ void itoaW(int n, char s[], int w)
 	{
 		i = 0;
 		do {
-			s[i++] = abs(n % 10) + '0';
-		} while (abs(n /= 10) > 0);
+			s[i++] = Abs(n % 10) + '0';
+		} while (Abs(n /= 10) > 0);
 		if (sign)
 			s[i++] = '-';
 		s[i] = '\0';
@@ -317,7 +315,7 @@ void itoaW(int n, char s[], int w)
 		}
 		else
 		{
-			w = abs(w);
+			w = Abs(w);
 			i = 0;
 			if (sign) // preserve sign bit
 			{

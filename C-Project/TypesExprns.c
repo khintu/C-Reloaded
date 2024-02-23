@@ -118,20 +118,20 @@ int lower(int c)
 unsigned long int next = 1;
 
 /* rand: Return pseudo-random integer on 0..32767 */
-int rand(void)
+int Rand(void)
 {
 	next = next * 1103515245 + 12345;
 	return (unsigned int)(next / 65536) % 32768;
 }
 
 /* srand: set seed for rand() */
-void srand(unsigned int seed)
+void Srand(unsigned int seed)
 {
 	next = seed;
 }
 
 /* htoi: convert hex string to decimal */
-int htoi(char s[])
+int Htoi(char s[])
 {
 	int n, i, l;
 	if ((l = stringLength(s)) < 2)

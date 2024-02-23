@@ -13,8 +13,9 @@
 #define TABSTOP	4
 #define MAXDEPTH	128
 #define NUL	((char)0)
+#define PI	(22.0f/7.0f)
 
-#define abs(exp)	(((exp) >= 0)? (exp) : -(exp))
+#define Abs(exp)	(((exp) >= 0)? (exp) : -(exp))
 
 // Chapter 1
 void FahrenheitToCelsius(void);
@@ -77,9 +78,9 @@ void longest(void);
 int getline2(char s[], int lim);
 int atoiNaive(char s[]);
 int lower(int c);
-int rand(void);
-void srand(unsigned int seed);
-int htoi(char s[]);
+int Rand(void);
+void Srand(unsigned int seed);
+int Htoi(char s[]);
 void squeeze(char s[], int c);
 void Strcat(char s[], char t[]);
 void squeeze2(char t[], char s[]);
@@ -105,7 +106,7 @@ void shellsort(int v[], int n);
 void reverse(char s[]);
 int subStringIdx(char s[], char t[]);
 void expand(char s[], char t[], int tn);
-void itoa(int n, char s[]);
+void Itoa(int n, char s[]);
 void itob(int n, char s[], int b);
 void itoaW(int n, char s[], int w);
 int trim(char s[]);
@@ -115,7 +116,7 @@ int getline4(char s[], int lim);
 int strindex(char s[], char t[]);
 int findLinesMatchgPattrn(char p[]);
 int strrindex(char s[], char t[]);
-double atof(char s[]);
+double Atof(char s[]);
 double atofE(char s[]);
 void reversePolishCalc(void);
 int getoperator(char []);
@@ -123,5 +124,12 @@ void push2(double);
 double pop2(void);
 int getch(void);
 void ungetch(int c);
+void printTopStck(void);
+void dupTopStck(void);
+void swpTop2Stck(void);
+void clearStck(void);
+void push3(char c);
+char pop3(void);
+int getoperator2(char s[]);
 
 #endif /* CPROJECT_H */
