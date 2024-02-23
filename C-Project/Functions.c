@@ -283,10 +283,8 @@ int getoperator2(char s[])
 	static int nli;
 	static char nl[MAXLINE];
 
-	while (nl[nli] != NUL || (getline4(nl, MAXLINE) > 0))
+	while (nl[nli] != NUL || (getline4(nl, MAXLINE) > 0 && !(nli = 0)))
 	{
-		if (nl[nli] == NUL)
-			nli = 0;
 		while ((s[0] = c = nl[nli++]) == ' ' || c == '\t')
 			;
 		s[1] = '\0';
