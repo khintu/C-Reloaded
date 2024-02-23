@@ -1,6 +1,6 @@
 TARGET=newt
 TARGET_SO=newt.so
-LIBS=-L. -l:$(TARGET_SO)
+LIBS=-L. -l:$(TARGET_SO) -lm
 CC=gcc
 CFLAGS=-g -Wall -I. -fsigned-char -fPIC -std=c17 -D__LINUX__
 LFLAGS=-Wall
