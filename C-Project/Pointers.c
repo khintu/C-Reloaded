@@ -6,8 +6,9 @@
 
 int getInt(int *pn)
 {
-	int c, sign;
+	int c, ac, sign;
 
+signSpcFnd:
 	while ((isspace(c = getch())))
 		;
 	if (!isdigit(c) && c != '.' && c != '+' && c != '-')
@@ -17,13 +18,20 @@ int getInt(int *pn)
 	}
 	sign = c == '-' ? -1 : 1;
 	if (c == '+' || c == '-')
-		c = getch();
+	{
+		if (isspace(ac = getch()))
+		{
+			ungetch(c);
+			goto signSpcFnd;
+		}
+		c = ac;
+	}
 	for (*pn = 0; isdigit(c); c = getch())
 		*pn = *pn * 10 + c - '0';
 	*pn *= sign;
 	if (c != EOF)
 		ungetch(c);
-	return 0;
+	return c;
 }
 
 void testGetIntFrmCmdLine(void)
