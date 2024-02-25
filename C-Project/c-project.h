@@ -139,5 +139,7 @@ void testSwapMacro(void);
 // Chapter 5
 int getInt(int*);
 void testGetIntFrmCmdLine(void);
+int getFloat(double* pn);
+void testGetFloatFrmCmdLine(void);
 
 #endif /* CPROJECT_H */

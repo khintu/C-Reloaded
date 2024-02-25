@@ -174,6 +174,7 @@ void UnitTestMain(void)
 	testSwapMacro();
 
 	// --- Chapter 5 ---
+	testGetIntFrmCmdLine();
 
 	return;
 }
@@ -186,7 +187,7 @@ int main(void)
 	// ---Main Function to Execute ---
 	
 	//UnitTestMain();
-	testGetIntFrmCmdLine();
+	testGetFloatFrmCmdLine();
 	
 	// ---Runtime Analysis ---
 	t2 = clock();
