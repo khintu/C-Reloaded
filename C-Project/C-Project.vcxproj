@@ -136,6 +136,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="Mathematics.c" />
     <ClCompile Include="Parser.c" />
+    <ClCompile Include="Pointers.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="TypesExprns.c" />
   </ItemGroup>

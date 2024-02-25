@@ -134,5 +134,10 @@ int getoperator2(char s[]);
 void printDecimal(int n);
 void Itoa2(int n, char s[]);
 void reverseString2(char s[], int len, int i);
+void testSwapMacro(void);
+
+// Chapter 5
+int getInt(int*);
+void testGetIntFrmCmdLine(void);
 
 #endif /* CPROJECT_H */

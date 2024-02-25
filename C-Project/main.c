@@ -17,6 +17,7 @@ void UnitTestMain(void)
 	char line[MAXLINE] = "am i ckuld i do you wkuld\n";
 	//char line2[MAXLINE] = "";
 	char line2[MAXLINE] = { 0 };
+	char line3[MAXLINE] = "abcdefg";
 #ifdef __LINUX__
 	i += stringLength(line);
 	i += stringLength(line2);
@@ -164,23 +165,28 @@ void UnitTestMain(void)
 	printDecimal(-powerEfficient(2, 31));
 	putchar('\n');
 
-	Itoa2(-powerEfficient(2, 31), line2);
-	printf("%s\n", line2);
+	Itoa2(-powerEfficient(2, 31), line3);
+	printf("%s\n", line3);
+
+	reverseString2(line3, stringLength(line3), 0);
+	printf("%s\n", line3);
+
+	testSwapMacro();
+
+	// --- Chapter 5 ---
 
 	return;
 }
 
 int main(void)
 {
-	char line2[MAXLINE] = "abcdefgh";
 	clock_t t1, t2;
 	t1 = clock();
 	signal(SIGINT, doNothingMain);
 	// ---Main Function to Execute ---
 	
 	//UnitTestMain();
-	reverseString2(line2, stringLength(line2), 0);
-	printf("%s\n", line2);
+	testGetIntFrmCmdLine();
 	
 	// ---Runtime Analysis ---
 	t2 = clock();

@@ -461,3 +461,19 @@ void Itoa2(int n, char s[])
 	s[i++] = Abs(n % 10) + '0';
 	return;
 }
+
+#define swap(t, x, y)	{\
+												t tmp;\
+												tmp = x, x = y, y = tmp;\
+											}
+
+#define paste(front, back)	(front ## back)
+
+
+void testSwapMacro(void)
+{
+	int a = 22, b = 44;
+	swap(int, a, b);
+	printf("a=%i, b = %i, p = %i\n", a, b, paste(123,431));
+	return;
+}
