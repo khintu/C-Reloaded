@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <ctype.h>
-#include <math.h>
 #include <c-project.h>
 
 #define SIZE	5
@@ -72,9 +71,9 @@ signSpcFnd:
 		*pn = *pn * 10 + c - '0';
 	if (c == '.')
 	{
-		for (pwr = 0, c = getch(); isdigit(c); c = getch(), ++pwr)
+		for (pwr = 1, c = getch(); isdigit(c); c = getch(), pwr*=10)
 			*pn = *pn * 10 + c - '0';
-		*pn /= pow(10, pwr);
+		*pn /= pwr;
 	}
 	*pn *= sign;
 	if (c != EOF)
