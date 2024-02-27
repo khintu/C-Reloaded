@@ -54,6 +54,23 @@ int binsearchfast(int x, int v[], int n)
 	return -1;
 }
 
+void testBinSearch(void)
+{
+	int i;
+	int sorted[50] = { 100,110,120,130,200,210,220,230,240,300,
+						310,312,313,314,315,316,326,333,343,353,
+						357,365,367,377,380,386,390,400,410,415,
+						420,422,426,430,435,440,444,445,450,455,
+						460,461,462,463,464,465,470,472,474,479
+	};
+	for (i = 0; i < 10000000; ++i)
+	{
+		binsearchfast(sorted[i % 50], sorted, 50);
+	}
+	printf("Found %s\n", binsearchfast(100, sorted, 50) >= 0 ? "Yes" : "No");
+	return;
+}
+
 void countDigitWhiteSpOther2(void)
 {
 	int c, i, nwhites, nothers, ndigits[10];
@@ -145,6 +162,15 @@ void escapeRev(char s[], char t[])
 	return;
 }
 
+void testEscapeRev(void)
+{
+	char s[MAXLINE], t[MAXLINE];
+	getLine(s, MAXLINE);
+	escapeRev(t, s);
+	printf("%s\n", t);
+	return;
+}
+
 int atoi2(char s[])
 {
 	int i, n, sign;
@@ -170,6 +196,16 @@ void shellsort(int v[], int n)
 		for (i = gap; i < n; ++i)
 			for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap)
 				tmp = v[j], v[j] = v[j + gap], v[j + gap] = tmp;
+	return;
+}
+
+void testShellSort(void)
+{
+	int i;
+	int v[10] = { 400,10,3,70,0,44,390,210,100,33 };
+	shellsort(v, 10);
+	for (i = 0; i < 10; ++i)
+		printf("%d%s", v[i], i < 9 ? "," : "\n");
 	return;
 }
 

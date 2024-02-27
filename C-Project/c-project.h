@@ -98,11 +98,14 @@ void pluralStringCondn(void);
 // Chapter 3
 int binsearch(int x, int v[], int n);
 int binsearchfast(int x, int v[], int n);
+void testBinSearch(void);
 void countDigitWhiteSpOther2(void);
 void escape(char s[], char t[]);
 void escapeRev(char s[], char t[]);
+void testEscapeRev(void);
 int atoi2(char s[]);
 void shellsort(int v[], int n);
+void testShellSort(void);
 void reverse(char s[]);
 int subStringIdx(char s[], char t[]);
 void expand(char s[], char t[], int tn);
@@ -153,5 +156,6 @@ void StrNCpy(char* s, char* t, int n);
 int StrNCmp(char* s, char* t, int n);
 void StrNCat(char* s, char* t, int n);
 void testAllStrNFunc(void);
+int strindexPtr(char *s, char *t);
 
 #endif /* CPROJECT_H */

@@ -97,80 +97,39 @@ void UnitTestMain(void)
 	pluralStringCondn();
 	
 	//--- Chapter 3 ---
-	do {
-		int i;
-		int sorted[50] = { 100,110,120,130,200,210,220,230,240,300,
-							310,312,313,314,315,316,326,333,343,353,
-							357,365,367,377,380,386,390,400,410,415,
-							420,422,426,430,435,440,444,445,450,455,
-							460,461,462,463,464,465,470,472,474,479
-						};
-		for (i = 0; i < 10000000; ++i)
-		{			
-			binsearchfast(sorted[i%50], sorted, 50);
-		}
-		printf("Found %s\n",binsearchfast(100, sorted, 50) >=0 ? "Yes" : "No");
-	} while (0);
 	
+	testBinSearch();
 	countDigitWhiteSpOther2();
-	
-	do {
-		char s[MAXLINE], t[MAXLINE];
-		getLine(s, MAXLINE);
-		escapeRev(t, s);
-		printf("%s\n", t);
-	} while (0);
-
+	testEscapeRev();
 	printf("%d\n", atoi2(" -127e34"));
-
-	do {
-		int i;
-		int v[10] = { 400,10,3,70,0,44,390,210,100,33 };
-		shellsort(v, 10);
-		for (i = 0; i < 10; ++i)
-			printf("%d%s", v[i], i < 9 ? "," : "\n");
-	} while (0);
-
+	testShellSort();
 	reverse(line);
 	printf("%s\n", line);
-	
 	printf("%d\n", subStringIdx("abc", "x"));
-
 	expand(line, line2, MAXLINE);
 	printf("%s\n%s\n", line, line2);
-
 	itob(power(-2, 31), line2, 11);
 	printf("%s\n", line2);
-
 	itoaW(-1234567, line2, 1);
 	printf("%s\n", line2);
-
 	trim(line);
 	printf("%s#\n", line);
 
 	// --- Chapter 4 ---
 	findLinesMatchgPattrn("ould\n");
-
 	if ((i = strrindex(line, "ould")) >= 0)
 	{
 		printf("%d\n", i);
 	}
-
 	printf("%.6f\n", Atof("-.112734"));
-	
 	printf("%g\n", atofE("-.112734E-6"));
-
 	reversePolishCalc();
-
 	printDecimal(-powerEfficient(2, 31));
 	putchar('\n');
-
 	Itoa2(-powerEfficient(2, 31), line3);
 	printf("%s\n", line3);
-
 	reverseString2(line3, stringLength(line3), 0);
 	printf("%s\n", line3);
-
 	testSwapMacro();
 
 	// --- Chapter 5 ---
@@ -180,6 +139,9 @@ void UnitTestMain(void)
 	printf("%i\n", StrCmpArry("abc", "abc"));
 	printf("%i\n", StrCmpPtr("abc", "abc"));
 	testStrEnd();
+	testAllStrNFunc();
+	printf("%d\n", strindexPtr("would", "kould"));
+
 	return;
 }
 
@@ -192,7 +154,7 @@ int main(void)
 	
 	//UnitTestMain();
 	
-	testAllStrNFunc();
+	
 	
 	// ---Runtime Analysis ---
 	t2 = clock();
