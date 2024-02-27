@@ -175,7 +175,11 @@ void UnitTestMain(void)
 
 	// --- Chapter 5 ---
 	testGetIntFrmCmdLine();
-
+	testGetFloatFrmCmdLine();
+	printf("%i\n", StrLen("a$b#"));
+	printf("%i\n", StrCmpArry("abc", "abc"));
+	printf("%i\n", StrCmpPtr("abc", "abc"));
+	testStrEnd();
 	return;
 }
 
@@ -187,7 +191,8 @@ int main(void)
 	// ---Main Function to Execute ---
 	
 	//UnitTestMain();
-	testGetFloatFrmCmdLine();
+	
+	testAllStrNFunc();
 	
 	// ---Runtime Analysis ---
 	t2 = clock();

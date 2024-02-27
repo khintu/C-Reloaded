@@ -141,5 +141,17 @@ int getInt(int*);
 void testGetIntFrmCmdLine(void);
 int getFloat(double* pn);
 void testGetFloatFrmCmdLine(void);
+int StrLen(char* s);
+void StrCpyArry(char* s, char* t);
+void StrCpyPtr(char* s, char* t);
+int StrCmpArry(char* s, char* t);
+int StrCmpPtr(char* s, char* t);
+void testStrCat(void);
+int StrEnd(char* s, char* t);
+void testStrEnd(void);
+void StrNCpy(char* s, char* t, int n);
+int StrNCmp(char* s, char* t, int n);
+void StrNCat(char* s, char* t, int n);
+void testAllStrNFunc(void);
 
 #endif /* CPROJECT_H */
