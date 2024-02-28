@@ -315,7 +315,7 @@ void reversePolishCalc(void)
 	{
 		if (islower(type))
 		{
-			if (sp >= 1 && sp <= MAXVAL) /* Case1: assign to variable */
+			if (sp >= 1 && sp <= MAXVAL) /* Case 1: assign to variable */
 			{
 				var[type - 'a'] = pop2(); /* Remove from val stack, as we moved val[sp] to var[a-z] */
 			}
@@ -475,5 +475,41 @@ void testSwapMacro(void)
 	int a = 22, b = 44;
 	swap(int, a, b);
 	printf("a=%i, b = %i, p = %i\n", a, b, paste(123,431));
+	return;
+}
+
+#define SWAPV(i, j)	{\
+											int temp;\
+											temp = v[i];\
+											v[i] = v[j];\
+											v[j] = temp;\
+										}
+/*
+	Each partition is only looking for the Pivot and 
+	sub-partitioning by left of pivot and right of pivot as
+	lesser than and greater than respectively wrt pivot. There
+	is no real interchange happening as is typical in sorting
+	algorithms. But because of recursion we are seeing the same
+	result by pivoting instead of sorting.
+*/
+void QuickSort(int v[], int left, int right)
+{
+	int i, pivot;
+
+	if (left >= right)
+		return;
+	SWAPV(left, (left + right) / 2); /* Take an arbitrary index to pivot on. */
+	pivot = left; /* Scan left to right moving items < on left of pivot */
+	for (i = left + 1; i <= right; ++i) /* and > on right of pivot. */
+	{
+		if (v[i] < v[left]) /* move the pivot to the correct position in v. */
+		{
+			pivot+=1; /* create space for v[i] left of pivot. */
+			SWAPV(pivot, i); /* store the lesser v[i] in pivot. */
+		}
+	}
+	SWAPV(left, pivot); /* move the last less v[i] from pivot to extreme left */
+	QuickSort(v, left, pivot-1); /* still lesser while not sorted. */
+	QuickSort(v, pivot + 1, right);
 	return;
 }

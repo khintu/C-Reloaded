@@ -104,7 +104,7 @@ void escape(char s[], char t[]);
 void escapeRev(char s[], char t[]);
 void testEscapeRev(void);
 int atoi2(char s[]);
-void shellsort(int v[], int n);
+void ShellSort(int v[], int n);
 void testShellSort(void);
 void reverse(char s[]);
 int subStringIdx(char s[], char t[]);
@@ -138,6 +138,7 @@ void printDecimal(int n);
 void Itoa2(int n, char s[]);
 void reverseString2(char s[], int len, int i);
 void testSwapMacro(void);
+void QuickSort(int v[], int left, int right);
 
 // Chapter 5
 int getInt(int*);
@@ -157,5 +158,6 @@ int StrNCmp(char* s, char* t, int n);
 void StrNCat(char* s, char* t, int n);
 void testAllStrNFunc(void);
 int strindexPtr(char *s, char *t);
+void BubbleSort(int v[], int n);
 
 #endif /* CPROJECT_H */

@@ -188,7 +188,7 @@ int atoi2(char s[])
 }
 
 /* TBD - Courtesy Ytube */
-void shellsort(int v[], int n)
+void ShellSort(int v[], int n)
 {
 	int gap, i, j, tmp;
 	
@@ -199,13 +199,29 @@ void shellsort(int v[], int n)
 	return;
 }
 
+void BubbleSort(int v[], int n)
+{
+	int i, tmp, isSwp;
+
+	do
+	{
+		isSwp = FALSE;
+		for (i = 0; i < n - 1; ++i)
+			if (v[i] > v[i + 1])
+				tmp = v[i], v[i] = v[i + 1], v[i + 1] = tmp, isSwp = TRUE;
+	} while (isSwp == TRUE);
+	return;
+}
+
 void testShellSort(void)
 {
 	int i;
-	int v[10] = { 400,10,3,70,0,44,390,210,100,33 };
-	shellsort(v, 10);
-	for (i = 0; i < 10; ++i)
-		printf("%d%s", v[i], i < 9 ? "," : "\n");
+	int v[11] = { 400,10,3,70,0,44,390,210,100,33,21 };
+	ShellSort(v, 11);
+	BubbleSort(v, 11);
+	QuickSort(v, 0, 10);
+	for (i = 0; i < 11; ++i)
+		printf("%d%c", v[i], i < 10 ? ',' : '\n');
 	return;
 }
 

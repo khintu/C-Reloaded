@@ -154,7 +154,7 @@ int main(void)
 	
 	//UnitTestMain();
 	
-	
+	testShellSort();
 	
 	// ---Runtime Analysis ---
 	t2 = clock();

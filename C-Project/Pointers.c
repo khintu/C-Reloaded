@@ -208,6 +208,12 @@ void StrNCat(char* s, char* t, int n)
 	return;
 }
 
+/*	-WARNING-
+		Buffer overrun check is the responsibility of the
+		caller of the strN(All) functions. Allocate enough
+		memory for cat/cpy operations to complete without
+		corruption. 
+*/
 void testAllStrNFunc(void)
 {
 	char s[9];// = "wxyz";
