@@ -159,5 +159,11 @@ void StrNCat(char* s, char* t, int n);
 void testAllStrNFunc(void);
 int strindexPtr(char *s, char *t);
 void BubbleSort(int v[], int n);
+char* AllocChar(int n);
+void AllocFree(char* p);
+void SortInputLines(void);
+int ReadLines(char* linePtr[], int nlines);
+void WriteLines(char* linePtr[], int nlines);
+void QuickSortStr(char* lineptr[], int left, int right);
 
 #endif /* CPROJECT_H */

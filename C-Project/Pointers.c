@@ -242,3 +242,103 @@ int strindexPtr(char *s, char *t)
 	}
 	return -1;
 }
+
+/* Memory Manager - Contiguous chunks of memory as a LIFO */
+#define ALLOCSIZE 10000
+static char allocBuf[ALLOCSIZE];
+static char* allocPtr = allocBuf;
+
+char* AllocChar(int n)
+{
+	if (allocBuf + ALLOCSIZE - allocPtr >= n)
+	{
+		allocPtr += n;
+		return allocPtr - n;
+	}
+	else
+		return 0;
+}
+
+void AllocFree(char* p)
+{
+	if (p >= allocBuf && p < allocBuf + ALLOCSIZE)
+		allocPtr = p;
+}
+
+/* Stripped down version of UNIX Sort program */
+#define MAXLINES	5000
+char* linePtr[MAXLINES]; /* Array of pointers to actual strings */
+
+void SortInputLines(void)
+{
+	int nlines;
+	
+	if ((nlines = ReadLines(linePtr, MAXLINES)) >= 0)
+	{
+		QuickSortStr(linePtr, 0, nlines - 1);
+		WriteLines(linePtr, nlines);
+	}
+	else
+	{
+		printf("Error: Input too big to sort\n");
+	}
+	return;
+}
+
+int ReadLines(char* linePtr[], int maxlines)
+{
+	int len, nlines;
+	char* p, line[MAXLINE];
+
+	nlines = 0;
+	while ((len = getline4(line, MAXLINE)) > 0)
+	{
+		if (nlines >= maxlines || (p = AllocChar(len)) == NULL)
+			return -1;
+		else
+		{
+			line[len - 1] = NUL; /* delete newline */
+			StrCpyPtr(p, line);
+			linePtr[nlines++] = p;
+		}
+	}
+	return nlines;
+}
+
+void WriteLines(char* linePtr[], int nlines)
+{
+	int i;
+
+	for (i = 0; i < nlines; ++i)
+		printf("%s\n", linePtr[i]);
+}
+
+#define SWAPV(i, j) {\
+											char* tmp;\
+											tmp = v[i];\
+											v[i] = v[j];\
+											v[j] = tmp;\
+										}
+
+void QuickSortStr(char* v[], int left, int right)
+{
+	int i, pivot;
+
+	if (left >= right)
+		return;
+
+	SWAPV(left, (left + right)/2);
+	pivot = left;
+	for (i = left + 1; i <= right; ++i)
+	{
+		if (StrCmpPtr(v[i], v[left]) < 0)
+		{
+			++pivot;
+			SWAPV(pivot, i);
+		}
+	}
+	SWAPV(left, pivot);
+	QuickSortStr(v, left, pivot - 1);
+	QuickSortStr(v, pivot + 1, right);
+	return;
+}
