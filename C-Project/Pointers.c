@@ -343,17 +343,18 @@ void QuickSortStr(char* v[], int left, int right)
 	return;
 }
 
-void test2DMemoryLayout(void)
+void test2DArryMemoryLayout(void)
 {
 	int a[10][20];
-	int* b[10];
-	//int(*b)[10];
+	int* b[10]; /* KnR Way*/
+	int(*b1)[20];/* My way */
 
-	/*b = (int (*)[])AllocChar(sizeof(int[10]));
-	for (int i = 0; i < 10; ++i)
-		b[i] = (int*)AllocChar(sizeof(int) * 20);*/
+	b1 = (int (*)[20])AllocChar(10 * sizeof(int [20]));
 
 	printf("%d\n", a[3][4]);
-	printf("%d\n", b[3][4]);
+	printf("%d\n", b[3][4]);/* Access Violation! Bad memory layout */
+	printf("%d\n", b1[3][4]);
+
+	AllocFree((char*)b1);
 	return;
 }

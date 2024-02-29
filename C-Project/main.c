@@ -143,7 +143,7 @@ void UnitTestMain(void)
 	printf("%d\n", strindexPtr("would", "kould"));
 	SortInputLines();
 	testMonthOfDayAndYear();
-	test2DMemoryLayout();
+	test2DArryMemoryLayout();
 	return;
 }
 
@@ -156,7 +156,7 @@ int main(void)
 	
 	//UnitTestMain();
 
-	testMonthOfDayAndYear();
+	test2DArryMemoryLayout();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

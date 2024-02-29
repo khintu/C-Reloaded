@@ -169,6 +169,6 @@ int DayOfYear(int year, int month, int day);
 void MonthOfDay(int year, int yearday, int* pmonth, int* pda);
 void testMonthOfDayAndYear(void);
 char* MonthName(int n);
-void test2DMemoryLayout(void);
+void test2DArryMemoryLayout(void);
 
 #endif /* CPROJECT_H */
