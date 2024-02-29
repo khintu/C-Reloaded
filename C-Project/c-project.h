@@ -165,5 +165,10 @@ void SortInputLines(void);
 int ReadLines(char* linePtr[], int nlines);
 void WriteLines(char* linePtr[], int nlines);
 void QuickSortStr(char* lineptr[], int left, int right);
+int DayOfYear(int year, int month, int day);
+void MonthOfDay(int year, int yearday, int* pmonth, int* pda);
+void testMonthOfDayAndYear(void);
+char* MonthName(int n);
+void test2DMemoryLayout(void);
 
 #endif /* CPROJECT_H */

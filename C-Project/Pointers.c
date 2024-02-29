@@ -245,13 +245,13 @@ int strindexPtr(char *s, char *t)
 
 /* Memory Manager - Contiguous chunks of memory as a LIFO */
 #define ALLOCSIZE 10000
-static char allocBuf[ALLOCSIZE];
-static char* allocPtr = allocBuf;
+static char allocBuf[ALLOCSIZE];  /* Pool of contiguous memory */
+static char* allocPtr = allocBuf;  /* points to next free address */
 
 char* AllocChar(int n)
 {
-	if (allocBuf + ALLOCSIZE - allocPtr >= n)
-	{
+	if (allocBuf + ALLOCSIZE - allocPtr >= n) /* Ptr is higer address than Buf */
+	{																					/* Ptr - Buf gives the allocated mem size. */
 		allocPtr += n;
 		return allocPtr - n;
 	}
@@ -261,8 +261,8 @@ char* AllocChar(int n)
 
 void AllocFree(char* p)
 {
-	if (p >= allocBuf && p < allocBuf + ALLOCSIZE)
-		allocPtr = p;
+	if (p >= allocBuf && p < allocBuf + ALLOCSIZE) /* p is always less than Ptr */
+		allocPtr = p;																 /* as gauranteed by AllocChar() */
 }
 
 /* Stripped down version of UNIX Sort program */
@@ -340,5 +340,20 @@ void QuickSortStr(char* v[], int left, int right)
 	SWAPV(left, pivot);
 	QuickSortStr(v, left, pivot - 1);
 	QuickSortStr(v, pivot + 1, right);
+	return;
+}
+
+void test2DMemoryLayout(void)
+{
+	int a[10][20];
+	int* b[10];
+	//int(*b)[10];
+
+	/*b = (int (*)[])AllocChar(sizeof(int[10]));
+	for (int i = 0; i < 10; ++i)
+		b[i] = (int*)AllocChar(sizeof(int) * 20);*/
+
+	printf("%d\n", a[3][4]);
+	printf("%d\n", b[3][4]);
 	return;
 }

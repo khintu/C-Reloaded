@@ -141,7 +141,9 @@ void UnitTestMain(void)
 	testStrEnd();
 	testAllStrNFunc();
 	printf("%d\n", strindexPtr("would", "kould"));
-
+	SortInputLines();
+	testMonthOfDayAndYear();
+	test2DMemoryLayout();
 	return;
 }
 
@@ -153,9 +155,9 @@ int main(void)
 	// ---Main Function to Execute ---
 	
 	//UnitTestMain();
-	
-	SortInputLines();
-	
+
+	testMonthOfDayAndYear();
+
 	// ---Runtime Analysis ---
 	t2 = clock();
 	printf("Runtime = %ld - %ld = %ld\n", t2, t1, t2 - t1);
