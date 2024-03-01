@@ -187,7 +187,12 @@ int atoi2(char s[])
 	return n*sign;
 }
 
-/* TBD - Courtesy Ytube */
+/* 
+* This is simple InsertionSort with a outer gap loop. The
+* gap starts as a half of n value, then keeps reducing with
+* each iteration by a factor of 2. O(n^1.25), better than
+* InsertionSort which is O(n^2).
+*/
 void ShellSort(int v[], int n)
 {
 	int gap, i, j, tmp;
@@ -195,7 +200,7 @@ void ShellSort(int v[], int n)
 	for (gap = n / 2; gap > 0; gap /= 2)
 		for (i = gap; i < n; ++i)
 			for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap)
-				tmp = v[j], v[j] = v[j + gap], v[j + gap] = tmp;
+				tmp = v[j], v[j] = v[j + gap], v[j + gap] = tmp; /* Swap for each position of scan, same as shifting for one element at a time */
 	return;
 }
 
@@ -213,6 +218,13 @@ void BubbleSort(int v[], int n)
 	return;
 }
 
+/*
+Work from Right to Left, pick up key and keep scanning
+for elements those are greater than key and shift them into
+the current position of key, so on and so forth as you scan.
+Then insert key into the blank position of previous greater
+element, once the test condition fails.
+*/
 void InsertionSort(int v[], int n)
 {
 	int key, i, j;
@@ -220,11 +232,11 @@ void InsertionSort(int v[], int n)
 	for (i = 1; i < n; ++i)
 	{
 		key = v[i];
-		/* Modify 2nd condition from dataSet[itr2] > key
-			 to dataSet[itr2] < key for descending output */
+		/* Modify 2nd condition from v[j] > key
+			 to v[j] < key for descending output */
 		for (j = i - 1; j >= 0 && v[j] > key; --j)
 			v[j + 1] = v[j];
-		v[j + 1] = key;
+		v[j + 1] = key; /* blank elements index */
 	}
 	return;
 }
@@ -233,8 +245,8 @@ void testShellSort(void)
 {
 	int i;
 	int v[11] = { 400,10,3,70,0,44,390,210,100,33,21 };
-	//ShellSort(v, 11);
-	InsertionSort(v, 11);
+	ShellSort(v, 11);
+	//InsertionSort(v, 11);
 	//BubbleSort(v, 11);
 	//QuickSort(v, 0, 10);
 	for (i = 0; i < 11; ++i)
