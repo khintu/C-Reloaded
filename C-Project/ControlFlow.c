@@ -213,13 +213,30 @@ void BubbleSort(int v[], int n)
 	return;
 }
 
+void InsertionSort(int v[], int n)
+{
+	int key, i, j;
+
+	for (i = 1; i < n; ++i)
+	{
+		key = v[i];
+		/* Modify 2nd condition from dataSet[itr2] > key
+			 to dataSet[itr2] < key for descending output */
+		for (j = i - 1; j >= 0 && v[j] > key; --j)
+			v[j + 1] = v[j];
+		v[j + 1] = key;
+	}
+	return;
+}
+
 void testShellSort(void)
 {
 	int i;
 	int v[11] = { 400,10,3,70,0,44,390,210,100,33,21 };
-	ShellSort(v, 11);
-	BubbleSort(v, 11);
-	QuickSort(v, 0, 10);
+	//ShellSort(v, 11);
+	InsertionSort(v, 11);
+	//BubbleSort(v, 11);
+	//QuickSort(v, 0, 10);
 	for (i = 0; i < 11; ++i)
 		printf("%d%c", v[i], i < 10 ? ',' : '\n');
 	return;

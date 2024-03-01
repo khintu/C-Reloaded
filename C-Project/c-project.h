@@ -172,5 +172,6 @@ char* MonthName(int n);
 void test2DArryMemoryLayout(void);
 int findLinesMatchgPattrn2(int argc, char* argv[]);
 int findLinesMatchgPattrn3(int argc, char* argv[]);
+void InsertionSort(int v[], int n);
 
 #endif /* CPROJECT_H */

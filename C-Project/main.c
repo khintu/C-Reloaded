@@ -146,6 +146,7 @@ void UnitTestMain(int argc, char* argv[])
 	testMonthOfDayAndYear();
 	test2DArryMemoryLayout();
 	findLinesMatchgPattrn2(argc, argv);
+	findLinesMatchgPattrn3(argc, argv);
 	return;
 }
 
@@ -158,6 +159,9 @@ int main(int argc, char *argv[])
 	// ---Main Function to Execute ---
 	for (int ic = 1; ic < argc ; ++ic)
 	{
+		/* Associativity of unary operators is from Right-Left. 
+		  Read and compute from Right to Left in pointer math. Eg. *++argv */
+
 		//printf("%s%s", *++argv,  argc > 1 ? " " : "");
 		//printf(argc > 1 ? "%s " : "%s", *++argv);
 		printf("%s%s", argv[ic], ic < argc -1 ? " " : "");
@@ -165,7 +169,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* Put Your Code below */
-	return findLinesMatchgPattrn3(argc, argv);
+	testShellSort();
 
 	// ---Runtime Analysis ---
 	t2 = clock();
