@@ -141,22 +141,27 @@ void UnitTestMain(void)
 	testStrEnd();
 	testAllStrNFunc();
 	printf("%d\n", strindexPtr("would", "kould"));
+	testShellSort();
 	SortInputLines();
 	testMonthOfDayAndYear();
 	test2DArryMemoryLayout();
 	return;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	clock_t t1, t2;
 	t1 = clock();
 	signal(SIGINT, doNothingMain);
-	// ---Main Function to Execute ---
-	
-	//UnitTestMain();
 
-	test2DArryMemoryLayout();
+	// ---Main Function to Execute ---
+	for (int ic = 1; ic < argc; ++ic)
+	{
+		printf("%s%s", argv[ic], ic < argc - 1 ? " " : "");
+	}
+	printf("\n");
+
+	//UnitTestMain();
 
 	// ---Runtime Analysis ---
 	t2 = clock();
