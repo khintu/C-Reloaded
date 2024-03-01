@@ -155,13 +155,15 @@ int main(int argc, char *argv[])
 	signal(SIGINT, doNothingMain);
 
 	// ---Main Function to Execute ---
-	for (int ic = 1; ic < argc; ++ic)
+	while (--argc > 0)
 	{
-		printf("%s%s", argv[ic], ic < argc - 1 ? " " : "");
+		//printf("%s%s", *++argv,  argc > 1 ? " " : "");
+		printf(argc > 1 ? "%s " : "%s", *++argv);
 	}
 	printf("\n");
 
-	//UnitTestMain();
+	//UnitTestMain(); /* Put Your Code below */
+	findLinesMatchgPattrn2(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();

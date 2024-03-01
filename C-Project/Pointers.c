@@ -358,3 +358,8 @@ void test2DArryMemoryLayout(void)
 	AllocFree((char*)b1);
 	return;
 }
+
+void findLinesMatchgPattrn2(int argc, char* argv[])
+{
+
+}

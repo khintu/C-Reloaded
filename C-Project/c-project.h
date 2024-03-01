@@ -170,5 +170,6 @@ void MonthOfDay(int year, int yearday, int* pmonth, int* pda);
 void testMonthOfDayAndYear(void);
 char* MonthName(int n);
 void test2DArryMemoryLayout(void);
+void findLinesMatchgPattrn2(int argc, char* argv[]);
 
 #endif /* CPROJECT_H */
