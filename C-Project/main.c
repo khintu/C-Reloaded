@@ -10,7 +10,7 @@ void doNothingMain(int signum)
 	return;
 }
 
-void UnitTestMain(void)
+void UnitTestMain(int argc, char* argv[])
 {
 	int i = 0;
 	//char line[MAXLINE] = "ab0-9cdef0-9klm  ";
@@ -145,6 +145,7 @@ void UnitTestMain(void)
 	SortInputLines();
 	testMonthOfDayAndYear();
 	test2DArryMemoryLayout();
+	findLinesMatchgPattrn2(argc, argv);
 	return;
 }
 
@@ -155,15 +156,16 @@ int main(int argc, char *argv[])
 	signal(SIGINT, doNothingMain);
 
 	// ---Main Function to Execute ---
-	while (--argc > 0)
+	for (int ic = 1; ic < argc ; ++ic)
 	{
 		//printf("%s%s", *++argv,  argc > 1 ? " " : "");
-		printf(argc > 1 ? "%s " : "%s", *++argv);
+		//printf(argc > 1 ? "%s " : "%s", *++argv);
+		printf("%s%s", argv[ic], ic < argc -1 ? " " : "");
 	}
 	printf("\n");
 
-	//UnitTestMain(); /* Put Your Code below */
-	findLinesMatchgPattrn2(argc, argv);
+	//UnitTestMain(argc, argv); /* Put Your Code below */
+	return findLinesMatchgPattrn3(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();
