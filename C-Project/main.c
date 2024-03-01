@@ -10,6 +10,16 @@ void doNothingMain(int signum)
 	return;
 }
 
+void SplashSigndBanner()
+{
+	printf(" _    _     _       _\n");
+	printf("| | _| |__ (_)_ __ | |_ _   _ \n");
+	printf("| |/ / '_ \\| | '_ \\| __| | | |\n");
+	printf("|   <| | | | | | | | |_| |_| |\n");
+	printf("|_|\\_\\_| |_|_|_| |_|\\__|\\__,_|\n");
+	return;
+}
+
 void UnitTestMain(int argc, char* argv[])
 {
 	int i = 0;
@@ -155,6 +165,7 @@ int main(int argc, char *argv[])
 	clock_t t1, t2;
 	t1 = clock();
 	signal(SIGINT, doNothingMain);
+	SplashSigndBanner();
 
 	// ---Main Function to Execute ---
 	for (int ic = 1; ic < argc ; ++ic)
@@ -168,7 +179,7 @@ int main(int argc, char *argv[])
 	}
 	printf("\n");
 
-	//UnitTestMain(argc, argv); /* Put Your Code below */
+	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	testShellSort();
 
 	// ---Runtime Analysis ---
