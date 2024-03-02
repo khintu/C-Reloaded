@@ -159,6 +159,8 @@ void UnitTestMain(int argc, char* argv[])
 	findLinesMatchgPattrn3(argc, argv);
 	detab2CmdLine(argc, argv);
 	entab2CmdLine(argc, argv);
+	detab2CmdLine2(argc, argv);
+	entab2CmdLine2(argc, argv);
 	return;
 }
 
@@ -182,7 +184,8 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	entab2CmdLine(argc, argv);
+	entab2CmdLine2(argc, argv);
+	
 
 	// ---Runtime Analysis ---
 	t2 = clock();

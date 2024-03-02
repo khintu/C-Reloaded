@@ -473,6 +473,91 @@ void detab2CmdLine(int argc, char* argv[])
 	return;
 }
 
+void detab2CmdLine2(int argc, char* argv[])
+{
+	int c, ac, tabStop = TABSTOP, mCol = 4, nCol = 2;
+
+	while (--argc > 0 && ((c = (*++argv)[0]) == '-' || c == '+'))
+	{
+		ac = *++argv[0]; /* Test 1st char after '-' only, then step to next arg */
+		if (ac == 't')
+		{
+			tabStop = TRUE;
+		}
+		else
+		{
+			switch (c)
+			{
+			case '-':
+				mCol = atoi2(argv[0]);
+				break;
+			case '+':
+				nCol = atoi2(argv[0]);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	if (argc == 0)
+	{
+		detab3(TABSTOP, mCol, nCol); /* default case */
+	}
+	else if (argc == 1 && tabStop == TRUE)
+	{
+		tabStop = atoi2(*argv);
+		detab3(tabStop, mCol, nCol);
+	}
+	else
+		printf("Usage: detab -m +n [-t <tabStop>]\n");
+
+	return;
+}
+
+// Replace tabs with spaces
+void detab3(int tabStop, int mCol, int nCol)
+{
+	int i, ri, j, m;
+	char line[MAXLINE];
+	char replaced[MAXLINE];
+
+	while (getLine(line, MAXLINE) > 0)
+	{
+		m = mCol;
+		for (i = 0, ri = 0; line[i] != '\0'; ++i)
+		{
+			if (m > 0) /* Processing to begin only after mCol */
+ 			{
+				--m; /* Just copy str as is until mCol */
+				goto CopyString;
+			}
+
+			if (line[i] == '\t' && (((i+1)%nCol) == 0)) /* tab at every nCol column */
+			{
+				for (j = 0; j < tabStop; ++j)
+				{
+					if (ri < MAXLINE - 1)
+						replaced[ri + j] = ' ';
+				}
+				ri += tabStop;
+				continue;
+			}
+			
+CopyString:
+			if (ri < MAXLINE - 1)
+				replaced[ri] = line[i];
+			ri += 1;
+		}
+		if (ri < MAXLINE)
+			replaced[ri] = '\0';
+		else
+			// truncate out string to MAXLINE on buffer overflow
+			replaced[MAXLINE - 1] = '\0';
+		printf("%s", replaced);
+	}
+	return;
+}
+
 // Replace tabs with spaces
 void detab2(int tabStop)
 {
@@ -587,6 +672,128 @@ void entab2(int tabStop)
 				spcCount = 0;
 				replaced[ri] = line[i];
 				++ri;
+			}
+			else if (state == IN && line[i] == ' ')
+			{
+				++spcCount;
+			}
+			else
+			{
+				// Do nothing, since code is tight on
+				// state variable being either IN or OUT
+				printf("entab: Error on state\n");
+			}
+		}
+		if (ri < MAXLINE)
+			replaced[ri] = '\0';
+		else
+			// truncate out string to MAXLINE on buffer overflow
+			replaced[MAXLINE - 1] = '\0';
+		printf("%s", replaced);
+	}
+	return;
+}
+#undef IN
+#undef OUT
+
+void entab2CmdLine2(int argc, char* argv[])
+{
+	int c, ac, tabStop = TABSTOP, mCol = 4, nCol = 2;
+
+	while (--argc > 0 && ((c = (*++argv)[0]) == '-' || c == '+'))
+	{
+		ac = *++argv[0]; /* Test 1st char after '-' only, then step to next arg */
+		if (ac == 't')
+		{
+			tabStop = TRUE;
+		}
+		else
+		{
+			switch (c)
+			{
+			case '-':
+				mCol = atoi2(argv[0]);
+				break;
+			case '+':
+				nCol = atoi2(argv[0]);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	if (argc == 0)
+	{
+		entab3(TABSTOP, mCol, nCol); /* default case */
+	}
+	else if (argc == 1 && tabStop == TRUE)
+	{
+		tabStop = atoi2(*argv);
+		entab3(tabStop, mCol, nCol);
+	}
+	else
+		printf("Usage: detab -m +n [-t <tabStop>]\n");
+
+	return;
+}
+
+// Lets do integer division on space string and 
+// tabstop (length of tab), find out how many tabs
+// are required to fill in for the space string
+// as a integer number. The remainder is the number
+// of spaces to be filled in.
+#define IN	1
+#define OUT	0
+void entab3(int tabStop, int mCol, int nCol)
+{
+	int i, ri, j, state, spcCount, tabCount, m;
+	char line[MAXLINE];
+	char replaced[MAXLINE];
+
+	while (getLine(line, MAXLINE) > 0)
+	{
+		state = OUT;
+		spcCount = 0;
+		m = mCol;
+		for (i = 0, ri = 0; line[i] != '\0'; ++i)
+		{
+			if (--m > 0) /* Processing to begin only after mCol */
+			{
+				/* Just copy str as is until mCol */
+				replaced[ri++] = line[i];
+				continue;
+			}
+
+			if (state == OUT && line[i] == ' ')
+			{
+				state = IN;
+				++spcCount;
+			}
+			else if (state == OUT && line[i] != ' ')
+			{
+				replaced[ri++] = line[i];
+			}
+			else if (state == IN && line[i] != ' ')
+			{
+				state = OUT;
+				tabCount = spcCount / tabStop;
+				if (tabCount % nCol != 0) /* Only for every nCol tabs */
+				{
+					tabCount -= (tabCount % nCol); /* Reduce tabs by remainder to fit nCol */
+				}
+				for (j = 0; j < tabCount; ++j)
+				{
+					replaced[ri++] = '\t';
+					//replaced[ri++] = '#';
+					spcCount -= tabStop;
+				}
+				for (j = 0; j < spcCount; ++j)
+				{
+					replaced[ri++] = ' ';
+					//replaced[ri++] = '$';
+				}
+				spcCount = 0;
+				replaced[ri++] = line[i];
 			}
 			else if (state == IN && line[i] == ' ')
 			{

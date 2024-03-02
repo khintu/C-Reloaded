@@ -192,5 +192,9 @@ void detab2CmdLine(int argc, char* argv[]);
 void detab2(int tabStop);
 void entab2CmdLine(int argc, char* argv[]);
 void entab2(int tabStop);
+void detab2CmdLine2(int argc, char* argv[]);
+void detab3(int tabStop, int mCol, int nCol);
+void entab2CmdLine2(int argc, char* argv[]);
+void entab3(int tabStop, int mCol, int nCol);
 
 #endif /* CPROJECT_H */
