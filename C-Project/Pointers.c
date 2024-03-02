@@ -413,3 +413,30 @@ int findLinesMatchgPattrn3(int argc, char* argv[])
 		}
 	return found;
 }
+
+int getoperator3(char s[], int *argc, char* *argv[])
+{
+	int i, c;
+	static int last = FALSE;
+
+	if (--*argc > 0)
+	{
+		if (*argc == 1)
+		{
+			last = TRUE;
+		}
+		strcpy(s, (*++ * argv));
+		c = s[0];
+
+		if (!isdigit(c) && c != '.') /* Its a variable, command or operator */
+			return c;
+
+		return NUMBER;
+	}
+	if (last)
+	{
+		last = FALSE;
+		return '\n';
+	}
+	return EOF;
+}

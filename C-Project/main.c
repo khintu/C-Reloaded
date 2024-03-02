@@ -133,7 +133,7 @@ void UnitTestMain(int argc, char* argv[])
 	}
 	printf("%.6f\n", Atof("-.112734"));
 	printf("%g\n", atofE("-.112734E-6"));
-	reversePolishCalc();
+	reversePolishCalc(argc, argv);
 	printDecimal(-powerEfficient(2, 31));
 	putchar('\n');
 	Itoa2(-powerEfficient(2, 31), line3);
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	testShellSort();
+	reversePolishCalc(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();

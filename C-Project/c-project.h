@@ -17,6 +17,20 @@
 
 #define Abs(exp)	(((exp) >= 0)? (exp) : -(exp))
 
+/* Reverse Polish Calculator definitions */
+#define MAXVAL	100	/* max depth of value stack */
+#define MAXOP		100	/* max size of operand or operator */
+#define NUMBER	'0'	/* Signal that a number was found */
+#define PRNTTOP	'T' /* Command for printing top of stack */
+#define DUPLTOP	'D' /* Command for duplicating top of stack */
+#define SWPTOP2	'W' /* Command for duplicating top of stack */
+#define CLRSTK	'C' /* Command for duplicating top of stack */
+#define SINFX		'S' /* math sin function x radians */
+#define EXPFX		'E'	/* math exp function x */
+#define POWFX		'P' /* math power function x,y */
+#define BUFSIZE	100 /* max pushback buffer for reading ahead from getchar */
+
+
 // Chapter 1
 void FahrenheitToCelsius(void);
 void FahrenheitToCelsiusReal(void);
@@ -121,7 +135,7 @@ int findLinesMatchgPattrn(char p[]);
 int strrindex(char s[], char t[]);
 double Atof(char s[]);
 double atofE(char s[]);
-void reversePolishCalc(void);
+void reversePolishCalc(int argc, char *argv[]);
 int getoperator(char []);
 void push2(double);
 double pop2(void);
@@ -173,5 +187,6 @@ void test2DArryMemoryLayout(void);
 int findLinesMatchgPattrn2(int argc, char* argv[]);
 int findLinesMatchgPattrn3(int argc, char* argv[]);
 void InsertionSort(int v[], int n);
+int getoperator3(char s[], int *argc, char* *argv[]);
 
 #endif /* CPROJECT_H */

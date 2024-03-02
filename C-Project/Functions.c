@@ -117,18 +117,6 @@ double atofE(char s[])
 	return val;
 }
 
-#define MAXVAL	100	/* max depth of value stack */
-#define MAXOP		100	/* max size of operand or operator */
-#define NUMBER	'0'	/* Signal that a number was found */
-#define PRNTTOP	'T' /* Command for printing top of stack */
-#define DUPLTOP	'D' /* Command for duplicating top of stack */
-#define SWPTOP2	'W' /* Command for duplicating top of stack */
-#define CLRSTK	'C' /* Command for duplicating top of stack */
-#define SINFX		'S' /* math sin function x radians */
-#define EXPFX		'E'	/* math exp function x */
-#define POWFX		'P' /* math power function x,y */
-#define BUFSIZE	100 /* max pushback buffer for reading ahead from getchar */
-
 int sp = 0;					/* next free stack position */
 double val[MAXVAL]; /* value stack */
 char buf[BUFSIZE];	/* buffer for ungetch */
@@ -304,14 +292,14 @@ int getoperator2(char s[])
 	return EOF;
 }
 
-void reversePolishCalc(void)
+void reversePolishCalc(int argc, char* argv[])
 {
 	int type;
 	double op1, op2;
 	char s[MAXOP];
 	double var[26] = {0.0f};	/* 26 single letter lower case variables */
 
-	while ((type = getoperator2(s)) != EOF)
+	while ((type = getoperator3(s, &argc, &argv)) != EOF)
 	{
 		if (islower(type))
 		{
