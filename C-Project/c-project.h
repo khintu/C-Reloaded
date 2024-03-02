@@ -188,5 +188,9 @@ int findLinesMatchgPattrn2(int argc, char* argv[]);
 int findLinesMatchgPattrn3(int argc, char* argv[]);
 void InsertionSort(int v[], int n);
 int getoperator3(char s[], int *argc, char* *argv[]);
+void detab2CmdLine(int argc, char* argv[]);
+void detab2(int tabStop);
+void entab2CmdLine(int argc, char* argv[]);
+void entab2(int tabStop);
 
 #endif /* CPROJECT_H */

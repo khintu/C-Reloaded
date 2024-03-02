@@ -157,6 +157,8 @@ void UnitTestMain(int argc, char* argv[])
 	test2DArryMemoryLayout();
 	findLinesMatchgPattrn2(argc, argv);
 	findLinesMatchgPattrn3(argc, argv);
+	detab2CmdLine(argc, argv);
+	entab2CmdLine(argc, argv);
 	return;
 }
 
@@ -180,7 +182,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	reversePolishCalc(argc, argv);
+	entab2CmdLine(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();

@@ -416,7 +416,7 @@ int findLinesMatchgPattrn3(int argc, char* argv[])
 
 int getoperator3(char s[], int *argc, char* *argv[])
 {
-	int i, c;
+	int c;
 	static int last = FALSE;
 
 	if (--*argc > 0)
@@ -440,3 +440,173 @@ int getoperator3(char s[], int *argc, char* *argv[])
 	}
 	return EOF;
 }
+
+void detab2CmdLine(int argc, char* argv[])
+{
+	int c, tabStop = TABSTOP;
+
+	while (--argc > 0 && (*++argv)[0] == '-')
+	{
+		c = *++argv[0]; /* Test 1st char after '-' only, then step to next arg */
+		switch (c)
+		{
+		case 't':
+			tabStop = TRUE;
+			break;
+		default:
+			break;
+		}
+	}
+	if (argc == 0)
+	{
+		detab2(TABSTOP); /* default case */
+	}
+	else if (argc == 1 && tabStop == TRUE)
+	{
+		tabStop = atoi2(*argv);
+		detab2(tabStop);
+	}
+	else
+		printf("Usage: detab [-t <tabStop>]\n");
+
+
+	return;
+}
+
+// Replace tabs with spaces
+void detab2(int tabStop)
+{
+	int i, ri, j;
+	char line[MAXLINE];
+	char replaced[MAXLINE];
+
+	while (getLine(line, MAXLINE) > 0)
+	{
+		for (i = 0, ri = 0; line[i] != '\0'; ++i)
+			if (line[i] == '\t')
+			{
+				for (j = 0; j < tabStop; ++j)
+				{
+					if (ri < MAXLINE - 1)
+						replaced[ri + j] = ' ';
+				}
+				ri += tabStop;
+			}
+			else
+			{
+				if (ri < MAXLINE - 1)
+					replaced[ri] = line[i];
+				ri += 1;
+			}
+		if (ri < MAXLINE)
+			replaced[ri] = '\0';
+		else
+			// truncate out string to MAXLINE on buffer overflow
+			replaced[MAXLINE - 1] = '\0';
+		printf("%s", replaced);
+	}
+	return;
+}
+
+void entab2CmdLine(int argc, char* argv[])
+{
+	int c, tabStop = FALSE;
+
+	while (--argc > 0 && (*++argv)[0] == '-')
+	{
+		c = *++argv[0]; /* Test 1st char after '-' only, then step to next arg */
+		switch (c)
+		{
+		case 't':
+			tabStop = TRUE;
+			break;
+		default:
+			break;
+		}
+	}
+	if (argc == 0)
+	{
+		entab2(TABSTOP); /* default case */
+	}
+	else if (argc == 1 && tabStop == TRUE)
+	{
+		tabStop = atoi2(*argv);
+		entab2(tabStop);
+	}
+	else
+		printf("Usage: entab [-t <tabStop>]\n");
+
+	return;
+}
+// Lets do integer division on space string and 
+// tabstop (length of tab), find out how many tabs
+// are required to fill in for the space string
+// as a integer number. The remainder is the number
+// of spaces to be filled in.
+#define IN	1
+#define OUT	0
+void entab2(int tabStop)
+{
+	int i, ri, j, state, spcCount, tabCount;
+	char line[MAXLINE];
+	char replaced[MAXLINE];
+
+	while (getLine(line, MAXLINE) > 0)
+	{
+		state = OUT;
+		spcCount = 0;
+		for (i = 0, ri = 0; line[i] != '\0'; ++i)
+		{
+			if (state == OUT && line[i] == ' ')
+			{
+				state = IN;
+				++spcCount;
+			}
+			else if (state == OUT && line[i] != ' ')
+			{
+				replaced[ri] = line[i];
+				++ri;
+			}
+			else if (state == IN && line[i] != ' ')
+			{
+				state = OUT;
+				tabCount = spcCount / tabStop;
+				for (j = 0; j < tabCount; ++j)
+				{
+					//replaced[ri] = '\t';
+					replaced[ri] = '#';
+					++ri;
+					spcCount -= tabStop;
+				}
+				for (j = 0; j < spcCount; ++j)
+				{
+					//replaced[ri] = ' ';
+					replaced[ri] = '$';
+					++ri;
+				}
+				spcCount = 0;
+				replaced[ri] = line[i];
+				++ri;
+			}
+			else if (state == IN && line[i] == ' ')
+			{
+				++spcCount;
+			}
+			else
+			{
+				// Do nothing, since code is tight on
+				// state variable being either IN or OUT
+				printf("entab: Error on state\n");
+			}
+		}
+		if (ri < MAXLINE)
+			replaced[ri] = '\0';
+		else
+			// truncate out string to MAXLINE on buffer overflow
+			replaced[MAXLINE - 1] = '\0';
+		printf("%s", replaced);
+	}
+	return;
+}
+#undef IN
+#undef OUT
