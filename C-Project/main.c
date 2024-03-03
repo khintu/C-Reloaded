@@ -161,6 +161,7 @@ void UnitTestMain(int argc, char* argv[])
 	entab2CmdLine(argc, argv);
 	detab2CmdLine2(argc, argv);
 	entab2CmdLine2(argc, argv);
+	TailCmdLine(argc, argv);
 	return;
 }
 
@@ -184,7 +185,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	entab2CmdLine2(argc, argv);
+	TailCmdLine(argc, argv);
 	
 
 	// ---Runtime Analysis ---

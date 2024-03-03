@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #include <c-project.h>
 
 #define SIZE	5
@@ -817,3 +818,91 @@ void entab3(int tabStop, int mCol, int nCol)
 }
 #undef IN
 #undef OUT
+
+void TailCmdLine(int argc, char* argv[])
+{
+	int nL, found = FALSE;
+	char* pEnd = NULL;
+
+	while (--argc > 0 && (*++argv)[0] == '-')
+	{
+		/* Move past 1st char '-', to access number */
+		if (!found)
+		{
+			nL = strtol(++argv[0], &pEnd, 10);
+			if (!strlen(pEnd))
+				found = TRUE;
+			else
+				break;
+		}
+		else
+			break;
+	}
+	if (argc == 0 && found == TRUE)
+	{
+		TailPrintLastNLines(nL); /* Value as read from arg list */
+	}
+	else if (argc == 0)
+	{
+		TailPrintLastNLines(10); /* Default value */
+	}
+	else
+		printf("Usage: tail [-n nLines]\n");
+	
+	return;
+}
+
+void TailPrintLastNLines(int nLines)
+{
+	int i, dbIn;
+	char line[MAXLINE] = { NUL };
+	char** dbuf;
+
+	if (NULL == (dbuf = malloc(sizeof(char*) * nLines)))
+	{
+		printf("1.Memory allocation error\n");
+		return;
+	}
+	for (i = 0, dbIn = 0; getline4(line, MAXLINE) > 0; ++i)
+	{
+		AppendStrToBuffer(dbuf, line, &dbIn, nLines);
+	}
+	for (i = 0; i < dbIn; ++i)
+	{
+		printf("%s", dbuf[i]);
+		free(dbuf[i]);
+	}
+	free(dbuf);
+	return;
+}
+
+void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
+{
+	int i;
+
+	if (*dbIn <= nLines - 1)
+	{
+		if (NULL == (dbuf[*dbIn] = malloc(sizeof(char) * (strlen(line) + 1))))
+		{
+			printf("2.Memory allocation error\n");
+			return;
+		}
+		strcpy(dbuf[*dbIn], line);
+		++*dbIn;
+	}
+	else
+	{
+		free(dbuf[0]);
+		for (i = 1; i <= nLines - 1; ++i)
+		{
+			dbuf[i - 1] = dbuf[i];
+		}
+		if (NULL == (dbuf[nLines - 1] = malloc(sizeof(char) * (strlen(line) + 1))))
+		{
+			printf("3.Memory allocation error\n");
+			return;
+		}
+		strcpy(dbuf[nLines - 1], line);
+	}
+	return;
+}

@@ -196,5 +196,8 @@ void detab2CmdLine2(int argc, char* argv[]);
 void detab3(int tabStop, int mCol, int nCol);
 void entab2CmdLine2(int argc, char* argv[]);
 void entab3(int tabStop, int mCol, int nCol);
+void TailCmdLine(int argc, char *argv[]);
+void TailPrintLastNLines(int nLines);
+void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines);
 
 #endif /* CPROJECT_H */
