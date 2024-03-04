@@ -147,6 +147,14 @@ int StrCmpRev(char* s, char* t)
 	return *t - *s;
 }
 
+int StrCaseCmp(char* s, char* t)
+{
+	for (; tolower(*s) == tolower(*t) ; ++s, ++t)
+		if (*s == NUL)
+			return 0;
+	return *s - *t;
+}
+
 void StrCatPtr(char* s, char* t)
 {
 	s += StrLen(s);
@@ -917,13 +925,16 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
 
 void SortInputLines2(int argc, char* argv[])
 {
-	int c, nlines, numeric = FALSE, reverse = FALSE;
+	int c, nlines, numeric = FALSE, reverse = FALSE, nocase = FALSE;
 
 	while (--argc > 0 && (*++argv)[0] == '-')
 	{
 		c = *++argv[0];
 		switch (c)
 		{
+		case 'f':
+			nocase = TRUE;
+			break;
 		case 'n':
 			numeric = TRUE;
 			break;
@@ -941,8 +952,8 @@ void SortInputLines2(int argc, char* argv[])
 		/* In the call to Qsort cast to void* is required to make it generic */
 		QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
 			(int (*)(void*, void*))/* Cast func args to 'void*' */(numeric?\
-															reverse?numcmp2:numcmp\
-															:reverse?StrCmpRev:strcmp));
+															(reverse?numcmp2:numcmp) \
+															:(reverse?StrCmpRev:(nocase?StrCaseCmp:strcmp))));
 		WriteLines(linePtr, nlines);
 	}
 	else

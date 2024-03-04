@@ -205,5 +205,6 @@ int numcmp(char*, char*);
 int numcmp2(char* s1, char* s2);
 void swap(void* v[], int i, int j);
 int StrCmpRev(char* s, char* t);
+int StrCaseCmp(char* s, char* t);
 
 #endif /* CPROJECT_H */
