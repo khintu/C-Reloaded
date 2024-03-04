@@ -147,12 +147,21 @@ int StrCmpRev(char* s, char* t)
 	return *t - *s;
 }
 
+/* QSort Bug fix - The same string in case agnostic strcmp should
+appear the same to not just to themselves but to other strings
+as well. If you leave that part out other strings will on
+compare see it as two different strings not the same.
+See the problem as numbers instead of strings. Same digits
+clump together because of comparison with themselves and
+with other numbers in the array. All same strings should
+clump together based on their lower case values.
+*/
 int StrCaseCmp(char* s, char* t)
 {
-	for (; tolower(*s) == tolower(*t) ; ++s, ++t)
+	for (; tolower(*s) == tolower(*t); ++s, ++t)
 		if (*s == NUL)
 			return 0;
-	return *s - *t;
+	return tolower(*s) - tolower(*t);
 }
 
 void StrCatPtr(char* s, char* t)
