@@ -202,5 +202,8 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines);
 void SortInputLines2(int argc, char* argv[]);
 void QuickSort2(void* v[], int left, int right, int (*cmp)(void*, void*));
 int numcmp(char*, char*);
+int numcmp2(char* s1, char* s2);
 void swap(void* v[], int i, int j);
+int StrCmpRev(char* s, char* t);
+
 #endif /* CPROJECT_H */

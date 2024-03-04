@@ -139,6 +139,14 @@ int StrCmpPtr(char* s, char* t)
 	return *s - *t;
 }
 
+int StrCmpRev(char* s, char* t)
+{
+	for (; *s == *t; ++s, ++t)
+		if (*s == NUL)
+			return 0;
+	return *t - *s;
+}
+
 void StrCatPtr(char* s, char* t)
 {
 	s += StrLen(s);
@@ -909,18 +917,32 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
 
 void SortInputLines2(int argc, char* argv[])
 {
-	int nlines, numeric = FALSE;
+	int c, nlines, numeric = FALSE, reverse = FALSE;
 
-	if (argc > 1 && strcmp(argv[1], "-n") == 0)
+	while (--argc > 0 && (*++argv)[0] == '-')
 	{
-		numeric = TRUE;
+		c = *++argv[0];
+		switch (c)
+		{
+		case 'n':
+			numeric = TRUE;
+			break;
+		case 'r':
+			reverse = TRUE;
+			break;
+		default:
+			printf("Usage: sort [-r] [-n]\n");
+			return;
+		}
 	}
 
 	if ((nlines = ReadLines(linePtr, MAXLINES)) >= 0)
 	{
 		/* In the call to Qsort cast to void* is required to make it generic */
 		QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
-			(int (*)(void*, void*))(numeric?numcmp:strcmp)); /* Cast func args to 'void*' */
+			(int (*)(void*, void*))/* Cast func args to 'void*' */(numeric?\
+															reverse?numcmp2:numcmp\
+															:reverse?StrCmpRev:strcmp));
 		WriteLines(linePtr, nlines);
 	}
 	else
@@ -964,6 +986,21 @@ int numcmp(char *s1, char *s2)
 		return -1;
 	else if(v1 > v2)
 		return 1;
+	else
+		return 0;
+}
+
+/* User implemented cmp function to be passed to Qsort. (Reverse Sort) */
+int numcmp2(char* s1, char* s2)
+{
+	double v1, v2;
+
+	v1 = atof(s1);
+	v2 = atof(s2);
+	if (v1 < v2)
+		return 1;
+	else if (v1 > v2)
+		return -1;
 	else
 		return 0;
 }
