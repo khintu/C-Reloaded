@@ -906,3 +906,74 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
 	}
 	return;
 }
+
+void SortInputLines2(int argc, char* argv[])
+{
+	int nlines, numeric = FALSE;
+
+	if (argc > 1 && strcmp(argv[1], "-n") == 0)
+	{
+		numeric = TRUE;
+	}
+
+	if ((nlines = ReadLines(linePtr, MAXLINES)) >= 0)
+	{
+		/* In the call to Qsort cast to void* is required to make it generic */
+		QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
+			(int (*)(void*, void*))(numeric?numcmp:strcmp)); /* Cast func args to 'void*' */
+		WriteLines(linePtr, nlines);
+	}
+	else
+	{
+		printf("Error: Input too big to sort\n");
+	}
+	return;
+}
+
+void QuickSort2(void* v[], int left, int right, int (*cmp)(void*, void*))
+{
+	int i, pivot;
+
+	if (left >= right)
+		return;
+
+	swap(v, left, (left + right) / 2);
+	pivot = left;
+	for (i = left + 1; i <= right; ++i)
+	{
+		/* Calling the caller specified comparison func. makes this Qsort generic */
+		if ((*cmp)(v[i], v[left]) < 0)
+		{
+			swap(v, ++pivot, i);
+		}
+	}
+	swap(v, left, pivot);
+	QuickSort2(v, left, pivot - 1, cmp);
+	QuickSort2(v, pivot + 1, right, cmp);
+	return;
+}
+
+/* User implemented cmp function to be passed to Qsort. */
+int numcmp(char *s1, char *s2)
+{
+	double v1, v2;
+
+	v1 = atof(s1);
+	v2 = atof(s2);
+	if (v1 < v2)
+		return -1;
+	else if(v1 > v2)
+		return 1;
+	else
+		return 0;
+}
+
+/* Generic version of swap, works with any user-specified type */
+void swap(void* v[], int i, int j)
+{
+	void* tmp;
+	tmp = v[i];
+	v[i] = v[j];
+	v[j] = tmp;
+	return;
+}

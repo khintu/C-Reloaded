@@ -199,5 +199,8 @@ void entab3(int tabStop, int mCol, int nCol);
 void TailCmdLine(int argc, char *argv[]);
 void TailPrintLastNLines(int nLines);
 void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines);
-
+void SortInputLines2(int argc, char* argv[]);
+void QuickSort2(void* v[], int left, int right, int (*cmp)(void*, void*));
+int numcmp(char*, char*);
+void swap(void* v[], int i, int j);
 #endif /* CPROJECT_H */
