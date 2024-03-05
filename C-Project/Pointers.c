@@ -164,6 +164,36 @@ int StrCaseCmp(char* s, char* t)
 	return tolower(*s) - tolower(*t);
 }
 
+int StrDirCaseCmp(char* s, char* t)
+{
+	for (; (isalnum(*s) || isspace(*s)) && (isalnum(*t) || isspace(*t)); ++s, ++t)
+	{
+		if (islower(*s) == islower(*t))
+		{
+			if (*s == NUL)
+				return 0;
+		}
+		else
+			break;
+	}
+	return islower(*s) - islower(*t);
+}
+
+int StrDirCmp(char* s, char* t)
+{
+	for (; (isalnum(*s) || isspace(*s)) && (isalnum(*t) || isspace(*t)); ++s, ++t)
+	{
+		if (*s == *t)
+		{
+			if (*s == NUL)
+				return 0;
+		}
+		else
+			break;
+	}
+	return *s - *t;
+}
+
 void StrCatPtr(char* s, char* t)
 {
 	s += StrLen(s);
@@ -934,35 +964,46 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
 
 void SortInputLines2(int argc, char* argv[])
 {
-	int c, nlines, numeric = FALSE, reverse = FALSE, nocase = FALSE;
+	int c, nlines, numeric = FALSE, reverse = FALSE, nocase = FALSE, dir = FALSE;
+	int (*Callback)(void*, void*) = NULL;
 
 	while (--argc > 0 && (*++argv)[0] == '-')
 	{
-		c = *++argv[0];
-		switch (c)
+		while (c = *++argv[0]) /* Option(s) in single arg eg. -dfn vs. -d -f -n */
 		{
-		case 'f':
-			nocase = TRUE;
-			break;
-		case 'n':
-			numeric = TRUE;
-			break;
-		case 'r':
-			reverse = TRUE;
-			break;
-		default:
-			printf("Usage: sort [-r] [-n]\n");
-			return;
+			switch (c)
+			{
+			case 'f':
+				nocase = TRUE;
+				break;
+			case 'n':
+				numeric = TRUE;
+				break;
+			case 'r':
+				reverse = TRUE;
+				break;
+			case 'd':
+				dir = TRUE;
+				break;
+			default:
+				printf("Usage: sort [-r] [-n] [-f] [-d]\n");
+				return;
+			}
 		}
 	}
 
 	if ((nlines = ReadLines(linePtr, MAXLINES)) >= 0)
 	{
+		/* Function callback builder */
+		Callback = (numeric ? \
+			(reverse ? numcmp2 : numcmp) \
+			:(reverse ? StrCmpRev : (nocase ? \
+															dir ? StrDirCaseCmp : StrCaseCmp \
+															: dir ? StrDirCmp : strcmp)));
+
 		/* In the call to Qsort cast to void* is required to make it generic */
 		QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
-			(int (*)(void*, void*))/* Cast func args to 'void*' */(numeric?\
-															(reverse?numcmp2:numcmp) \
-															:(reverse?StrCmpRev:(nocase?StrCaseCmp:strcmp))));
+			(int (*)(void*, void*))/* Cast func args to 'void*' */Callback);
 		WriteLines(linePtr, nlines);
 	}
 	else
