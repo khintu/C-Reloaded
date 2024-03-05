@@ -208,5 +208,13 @@ int StrCmpRev(char* s, char* t);
 int StrCaseCmp(char* s, char* t);
 int StrDirCmp(char* s, char* t);
 int StrDirCaseCmp(char* s, char* t);
+void QuickSort3(void* v[], int left, int right, int (*cmp)(void*, void*, int), int field);
+int StrFieldCmp(char* s, char* t, int field);
+int numcmpField(char* s1, char* s2, int field);
+int numcmp2Field(char* s1, char* s2, int field);
+int StrFieldCmpRev(char* s, char* t, int field);
+int StrFieldCaseCmp(char* s, char* t, int field);
+int StrFieldDirCmp(char* s, char* t, int field);
+int StrFieldDirCaseCmp(char* s, char* t, int field);
 
 #endif /* CPROJECT_H */

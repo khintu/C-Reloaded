@@ -147,6 +147,14 @@ int StrCmpRev(char* s, char* t)
 	return *t - *s;
 }
 
+int StrFieldCmpRev(char* s, char* t, int field)
+{
+	if (s[field] == t[field])
+		return 0;
+
+	return t[field] - s[field];
+}
+
 /* QSort Bug fix - The same string in case agnostic strcmp should
 appear the same to not just to themselves but to other strings
 as well. If you leave that part out other strings will on
@@ -164,6 +172,13 @@ int StrCaseCmp(char* s, char* t)
 	return tolower(*s) - tolower(*t);
 }
 
+int StrFieldCaseCmp(char* s, char* t, int field)
+{
+	if (s[field] == t[field])
+		return 0;
+	return tolower(s[field]) - tolower(t[field]);
+}
+
 int StrDirCaseCmp(char* s, char* t)
 {
 	for (; (isalnum(*s) || isspace(*s)) && (isalnum(*t) || isspace(*t)); ++s, ++t)
@@ -179,6 +194,16 @@ int StrDirCaseCmp(char* s, char* t)
 	return islower(*s) - islower(*t);
 }
 
+int StrFieldDirCaseCmp(char* s, char* t, int field)
+{
+	if ((isalnum(s[field]) || isspace(s[field])) && (isalnum(t[field]) || isspace(t[field])))
+	{
+		if (islower(s[field]) == islower(t[field]))
+			return 0;
+	}
+	return islower(s[field]) - islower(t[field]);
+}
+
 int StrDirCmp(char* s, char* t)
 {
 	for (; (isalnum(*s) || isspace(*s)) && (isalnum(*t) || isspace(*t)); ++s, ++t)
@@ -192,6 +217,24 @@ int StrDirCmp(char* s, char* t)
 			break;
 	}
 	return *s - *t;
+}
+
+int StrFieldDirCmp(char* s, char* t, int field)
+{
+	if ( (isalnum(s[field]) || isspace(s[field])) && (isalnum(t[field]) || isspace(t[field])))
+	{
+		if (s[field] == t[field])
+			return 0;
+	}
+	return s[field] - t[field];
+}
+
+int StrFieldCmp(char* s, char* t, int field)
+{
+	if (s[field] == t[field])
+		return 0;
+
+	return s[field] - t[field];
 }
 
 void StrCatPtr(char* s, char* t)
@@ -964,8 +1007,10 @@ void AppendStrToBuffer(char* dbuf[], char line[], int* dbIn, int nLines)
 
 void SortInputLines2(int argc, char* argv[])
 {
-	int c, nlines, numeric = FALSE, reverse = FALSE, nocase = FALSE, dir = FALSE;
+	int c, nlines, skip = FALSE, numeric = FALSE, reverse = FALSE,\
+			nocase = FALSE, dir = FALSE, field = 0;
 	int (*Callback)(void*, void*) = NULL;
+	int (*Callback2)(void*, void*, int) = NULL;
 
 	while (--argc > 0 && (*++argv)[0] == '-')
 	{
@@ -985,25 +1030,49 @@ void SortInputLines2(int argc, char* argv[])
 			case 'd':
 				dir = TRUE;
 				break;
+			case 'F':
+				field = atoi(++argv[0]);
+				skip = TRUE;
+				break;
 			default:
-				printf("Usage: sort [-r] [-n] [-f] [-d]\n");
+				printf("Usage: sort [-r] [-n] [-f] [-d] [-F<Num Starting at 1>]\n");
 				return;
+			}
+			if (skip == TRUE) /* Skip reading the current arg, move to next */
+			{
+				skip = FALSE;
+				break;
 			}
 		}
 	}
 
 	if ((nlines = ReadLines(linePtr, MAXLINES)) >= 0)
 	{
-		/* Function callback builder */
-		Callback = (numeric ? \
-			(reverse ? numcmp2 : numcmp) \
-			:(reverse ? StrCmpRev : (nocase ? \
-															dir ? StrDirCaseCmp : StrCaseCmp \
-															: dir ? StrDirCmp : strcmp)));
+		if (!field)
+		{
+			/* Function callback builder */
+			Callback = (numeric ? \
+				(reverse ? numcmp2 : numcmp) \
+				:(reverse ? StrCmpRev : (nocase ? \
+					dir ? StrDirCaseCmp : StrCaseCmp \
+					: dir ? StrDirCmp : strcmp)));
 
-		/* In the call to Qsort cast to void* is required to make it generic */
-		QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
-			(int (*)(void*, void*))/* Cast func args to 'void*' */Callback);
+			/* In the call to Qsort cast to void* is required to make it generic */
+			QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
+				(int (*)(void*, void*))/* Cast func args to 'void*' */Callback);
+		}
+		else
+		{
+			Callback2 = (numeric ? \
+				(reverse ? numcmp2Field : numcmpField) \
+				:(reverse ? StrFieldCmpRev : (nocase ? \
+					dir ? StrFieldDirCaseCmp : StrFieldCaseCmp \
+					: dir ? StrFieldDirCmp : StrFieldCmp)));
+				
+			QuickSort3((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
+				(int (*)(void*, void*, int))/* Cast func args to 'void*' */Callback2, field - 1);
+		}
+
 		WriteLines(linePtr, nlines);
 	}
 	else
@@ -1036,6 +1105,29 @@ void QuickSort2(void* v[], int left, int right, int (*cmp)(void*, void*))
 	return;
 }
 
+void QuickSort3(void* v[], int left, int right, int (*cmp)(void*, void*, int), int field)
+{
+	int i, pivot;
+
+	if (left >= right)
+		return;
+
+	swap(v, left, (left + right) / 2);
+	pivot = left;
+	for (i = left + 1; i <= right; ++i)
+	{
+		/* Calling the caller specified comparison func. makes this Qsort generic */
+		if ((*cmp)(v[i], v[left], field) < 0)
+		{
+			swap(v, ++pivot, i);
+		}
+	}
+	swap(v, left, pivot);
+	QuickSort3(v, left, pivot - 1, cmp, field);
+	QuickSort3(v, pivot + 1, right, cmp, field);
+	return;
+}
+
 /* User implemented cmp function to be passed to Qsort. */
 int numcmp(char *s1, char *s2)
 {
@@ -1046,6 +1138,23 @@ int numcmp(char *s1, char *s2)
 	if (v1 < v2)
 		return -1;
 	else if(v1 > v2)
+		return 1;
+	else
+		return 0;
+}
+
+int numcmpField(char* s1, char* s2, int field)
+{
+	double v1, v2;
+	char tmpStr[2] = { NUL };
+
+	strncpy(tmpStr, s1 + field, 1);
+	v1 = atof(tmpStr);
+	strncpy(tmpStr, s2 + field, 1);
+	v2 = atof(tmpStr);
+	if (v1 < v2)
+		return -1;
+	else if (v1 > v2)
 		return 1;
 	else
 		return 0;
@@ -1066,6 +1175,23 @@ int numcmp2(char* s1, char* s2)
 		return 0;
 }
 
+/* Reverse sort comparion */
+int numcmp2Field(char* s1, char* s2, int field)
+{
+	double v1, v2;
+	char tmpStr[2] = { NUL };
+
+	strncpy(tmpStr, s1 + field, 1);
+	v1 = atof(tmpStr);
+	strncpy(tmpStr, s2 + field, 1);
+	v2 = atof(tmpStr);
+	if (v1 < v2)
+		return 1;
+	else if (v1 > v2)
+		return -1;
+	else
+		return 0;
+}
 /* Generic version of swap, works with any user-specified type */
 void swap(void* v[], int i, int j)
 {
