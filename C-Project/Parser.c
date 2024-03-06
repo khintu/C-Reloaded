@@ -380,9 +380,9 @@ void ParserDcl(void)
 {
 	int ns;
 
-	for (ns = 0; ParserGetToken() == '*'; ns++) /* count *'s */
+	for (ns = 0; ParserGetToken() == '*'; ns++) /* count optional *'s */
 		;
-	ParserDirDcl();
+	ParserDirDcl();  /* DirectDcl */
 	while (ns-- > 0)
 		strcat(out, " pointer to");
 	return;
@@ -424,7 +424,7 @@ int ParserGetToken(void)
 	int c;
 	char* p = token;
 
-	while ((c = getch()) == ' ' || c == '\t') /* Discard spaces */
+	while ((c = getch()) == ' ' || c == '\t') /* Discard white spaces */
 		;
 	if (c == '(')  /* Returns '()' or '(' */
 	{
@@ -446,7 +446,7 @@ int ParserGetToken(void)
 		*p = '\0';
 		return tokentype = BRACKETS;
 	}
-	else if (isalpha(c)) /* Returns '(a-z(0-9|a-z)*)' */
+	else if (isalpha(c)) /* Returns 'a-z(0-9|a-z)*' */
 	{
 		for (*p++ = c; isalnum(c = getch()) ; )
 			*p++ = c;
