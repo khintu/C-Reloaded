@@ -204,6 +204,10 @@ void ShellSort(int v[], int n)
 	return;
 }
 
+/* The process or step of comparison and then swapping gets 
+	the elements ordered. With each outer iteration the inner
+	iteration slowly brings all the elements into their correct
+	positions. O(n^2) */
 void BubbleSort(int v[], int n)
 {
 	int i, tmp, isSwp;
@@ -211,10 +215,10 @@ void BubbleSort(int v[], int n)
 	do
 	{
 		isSwp = FALSE;
-		for (i = 0; i < n - 1; ++i)
+		for (i = 0; i < n - 1; ++i) /* inner loop */
 			if (v[i] > v[i + 1])
 				tmp = v[i], v[i] = v[i + 1], v[i + 1] = tmp, isSwp = TRUE;
-	} while (isSwp == TRUE);
+	} while (isSwp == TRUE); /* Outer loop */
 	return;
 }
 
