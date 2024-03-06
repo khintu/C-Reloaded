@@ -163,6 +163,7 @@ void UnitTestMain(int argc, char* argv[])
 	entab2CmdLine2(argc, argv);
 	TailCmdLine(argc, argv);
 	SortInputLines2(argc, argv);
+	RecursiveDescentParser();
 	return;
 }
 
@@ -186,7 +187,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	SortInputLines2(argc, argv);
+	RecursiveDescentParser();
 	
 
 	// ---Runtime Analysis ---
