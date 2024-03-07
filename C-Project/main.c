@@ -164,6 +164,7 @@ void UnitTestMain(int argc, char* argv[])
 	TailCmdLine(argc, argv);
 	SortInputLines2(argc, argv);
 	RecursiveDescentParser();
+	RDPUnDcl();
 	return;
 }
 

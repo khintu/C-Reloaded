@@ -495,9 +495,9 @@ void RDPUnDcl(void)
 				strcpy(out, temp);
 			}
 			else
-				printf("invalid input at %s\n", token);
+				printf("UnDcl - invalid input at %s\n", token);
 		}
-		printf("%s\n", out);
+		printf("UnDcl - %s\n", out);
 	}
 	return;
 }
