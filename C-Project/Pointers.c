@@ -1051,11 +1051,11 @@ void SortInputLines2(int argc, char* argv[])
 		if (!field)
 		{
 			/* Function callback builder */
-			Callback = (numeric ? \
+			Callback = (int (*)(void *, void *))(numeric ? \
 				(reverse ? numcmp2 : numcmp) \
 				:(reverse ? StrCmpRev : (nocase ? \
 					dir ? StrDirCaseCmp : StrCaseCmp \
-					: dir ? StrDirCmp : strcmp)));
+					: dir ? StrDirCmp : StrCmpPtr)));
 
 			/* In the call to Qsort cast to void* is required to make it generic */
 			QuickSort2((void**)linePtr, 0, nlines - 1, /* Cast arg1 to 'void**' */ \
@@ -1063,7 +1063,7 @@ void SortInputLines2(int argc, char* argv[])
 		}
 		else
 		{
-			Callback2 = (numeric ? \
+			Callback2 =(int (*)(void*, void*, int)) (numeric ? \
 				(reverse ? numcmp2Field : numcmpField) \
 				:(reverse ? StrFieldCmpRev : (nocase ? \
 					dir ? StrFieldDirCaseCmp : StrFieldCaseCmp \
