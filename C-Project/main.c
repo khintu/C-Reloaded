@@ -163,6 +163,8 @@ void UnitTestMain(int argc, char* argv[])
 	entab2CmdLine2(argc, argv);
 	TailCmdLine(argc, argv);
 	SortInputLines2(argc, argv);
+	RecursiveDescentParser();
+	RDPUnDcl();
 	return;
 }
 
@@ -186,8 +188,8 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	SortInputLines2(argc, argv);
-	
+	//RecursiveDescentParser();
+	RDPUnDcl();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

@@ -216,5 +216,10 @@ int StrFieldCmpRev(char* s, char* t, int field);
 int StrFieldCaseCmp(char* s, char* t, int field);
 int StrFieldDirCmp(char* s, char* t, int field);
 int StrFieldDirCaseCmp(char* s, char* t, int field);
+void RecursiveDescentParser(void);
+void ParserDcl(void);
+void ParserDirDcl(void);
+int ParserGetToken(void);
+void RDPUnDcl(void);
 
 #endif /* CPROJECT_H */

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <c-project.h>
 
 // Single stack of char(s) with top index
@@ -248,146 +250,6 @@ void fold2Recursive(char line[], const int startIdx, const int nthIdx)
 	return;
 }
 
-// Balancing tokens '',"",(),[],{},/* */, in a C program
-// Simple syntax checking. State machine with stack, solu.
-/*enum STATE_MACH {
-	START_STATE = 0,
-	SINGLE_QUOTE_IN,
-	SINGLE_QUOTE_OUT,
-	DOUBLE_QUOTE_IN,
-	DOUBLE_QUOTE_OUT,
-	BRACE_IN,
-	BRACE_OUT,
-	SQRBRKT_IN,
-	SQRBRKT_OUT,
-	PARNTHS_IN,
-	PARNTHS_OUT,
-	FINAL_STATE
-};
-
-void balanceTokens(void)
-{
-	int ln = 0, cn, c, i;
-	enum STATE_MACH sm = START_STATE;
-	char line[MAXLINE];
-	
-	initialize();
-
-	while (getLine(line, MAXLINE) > 0)
-	{
-		++ln;
-		for (i = 0, cn = 0; line[i] != '\0'; ++i)
-		{
-			++cn;
-			// Token 1
-			if (line[i] == '\'')
-			{
-				if (itop >= 0)
-				{
-					if (stack[itop] != '\'')
-					{
-						sm = SINGLE_QUOTE_IN;
-						push(line[i]);
-					}
-					else
-					{
-						sm = SINGLE_QUOTE_OUT;
-						c = pop();
-					}
-				}
-			}
-			// Token 2
-			else if (line[i] == '\"')
-			{
-				sm = DOUBLE_QUOTE_IN;
-				push(line[i]);
-			}
-			// Token 3
-			else if (line[i] == '{')
-			{
-				sm = BRACE_IN;
-				push(line[i]);
-			}
-			// Token 4
-			else if (line[i] == '}')
-			{
-				sm = BRACE_OUT;
-				if (itop >= 0 && stack[itop] == '{')
-				{
-					c = pop();
-				}
-				else
-				{
-					printf("Error: unbalanced %c at ln %d, col %d\n", \
-							line[i], ln, cn);
-					return;
-				}
-			}
-			// Token 5
-			else if (line[i] == '[')
-			{
-				if (sm == START_STATE)
-				{
-					sm = SQRBRKT_IN;
-					push(line[i]);
-				}
-				else
-				{
-					printf("Error: unbalanced %c at ln %d, col %d\n", \
-						line[i], ln, cn);
-					return;
-				}
-			}
-			// Token 6
-			else if (line[i] == ']')
-			{
-				if (sm == SQRBRKT_IN)
-				{
-					sm = SQRBRKT_OUT;
-				}
-				if (itop >= 0 && stack[itop] == '[')
-				{
-					c = pop();
-				}
-				else
-				{
-					printf("Error: unbalanced %c at ln %d, col %d\n", \
-						line[i], ln, cn);
-					return;
-				}
-			}
-			// Token 7
-			else if (line[i] == '(')
-			{
-				sm = PARNTHS_IN;
-				push(line[i]);
-			}
-			// Token 8
-			else if (line[i] == ')')
-			{
-				sm = PARNTHS_OUT;
-				c = pop();
-			}
-			// Everything else
-			else
-			{
-				// Do something intelligent or nothing
-				sm = START_STATE;
-			}
-
-			// Post processing section
-		}
-	}
-	if (itop > -1)
-	{
-		printf("Balancing error: stack unwind\n");
-		for (i = 0; (c = pop()) >= 0 ; ++i)
-			printf("%c\n", c);
-	}
-	return;
-}
-*/
-
 void balanceTokens(void)
 {
 	int ln = 0, cn, c, i;
@@ -497,6 +359,145 @@ void balanceTokens(void)
 		printf("Balancing error: stack unwind\n");
 		for (i = 0; (c = pop()) >= 0; ++i)
 			printf("%c\n", c);
+	}
+	return;
+}
+
+/* Recursive Descent Parser */
+
+#define MAXTOKEN	100
+
+enum { NAME, PARENS, BRACKETS };
+
+int tokentype; /* type of last token */
+char token[MAXTOKEN]; /* last token string */
+char name[MAXTOKEN]; /* identifier name */
+char datatype[MAXTOKEN]; /* data type = char, int, etc. */
+char out[1000]; /* output string */
+
+/* Parse a declarator */
+void ParserDcl(void)
+{
+	int ns;
+
+	for (ns = 0; ParserGetToken() == '*'; ns++) /* count optional *'s */
+		;
+	ParserDirDcl();  /* DirectDcl */
+	while (ns-- > 0)
+		strcat(out, " pointer to");
+	return;
+}
+
+/* Parse a direct declarator */
+void ParserDirDcl(void)
+{
+	int type;
+
+	if (tokentype == '(') /* (dcl) */
+	{
+		ParserDcl();
+		if (tokentype != ')')
+			printf("error: missing )\n");
+	}
+	else if (tokentype == NAME)  /* variable name */
+		strcpy(name, token);
+	else
+		printf("error: expected name or (dcl)\n");
+
+	/* direct-dcl() And direct-dcl[] */
+	while ((type = ParserGetToken()) == PARENS || type == BRACKETS)
+	{
+		if (type == PARENS)
+			strcat(out, " function returning");
+		else
+		{
+			strcat(out, " array");
+			strcat(out, token);
+			strcat(out, " of");
+		}
+	}
+	return;
+}
+
+int ParserGetToken(void)
+{
+	int c;
+	char* p = token;
+
+	while ((c = getch()) == ' ' || c == '\t') /* Discard white spaces */
+		;
+	if (c == '(')  /* Returns '()' or '(' */
+	{
+		if ((c = getch()) == ')')
+		{
+			strcpy(token, "()");
+			return tokentype = PARENS;
+		}
+		else
+		{
+			ungetch(c);
+			return tokentype = '(';
+		}
+	}
+	else if (c == '[') /* Returns '[(a-z)*]' */
+	{
+		for (*p++ = c; (*p++ = getch()) != ']'; )
+			;
+		*p = '\0';
+		return tokentype = BRACKETS;
+	}
+	else if (isalpha(c)) /* Returns 'a-z(0-9|a-z)*' */
+	{
+		for (*p++ = c; isalnum(c = getch()) ; )
+			*p++ = c;
+		*p = '\0';
+		ungetch(c);
+		return tokentype = NAME;
+	}
+	else
+		return tokentype = c;
+}
+
+void RecursiveDescentParser(void)
+{
+	while (ParserGetToken() != EOF)
+	{
+		strcpy(datatype, token); /* 1st token on line is datatype */
+		out[0] = '\0';
+		ParserDcl();  /* Parse rest of the line */
+		if (tokentype != '\n')
+			printf("RDP - syntax error\n");
+		printf("RDP - %s: %s %s\n", name, out, datatype);
+	}
+	return;
+}
+
+void RDPUnDcl(void)
+{
+	int type;
+	char temp[MAXTOKEN];
+
+	while (ParserGetToken() != EOF)
+	{
+		strcpy(out, token);
+		while ((type = ParserGetToken()) != '\n')
+		{
+			if (type == PARENS || type == BRACKETS)
+				strcat(out, token);
+			else if (type == '*')
+			{
+				sprintf(temp, "(*%s)", out);
+				strcpy(out, temp);
+			}
+			else if (type == NAME)
+			{
+				sprintf(temp, "%s %s", token, out);
+				strcpy(out, temp);
+			}
+			else
+				printf("UnDcl - invalid input at %s\n", token);
+		}
+		printf("UnDcl - %s\n", out);
 	}
 	return;
 }
