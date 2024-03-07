@@ -187,8 +187,8 @@ int main(int argc, char *argv[])
 	printf("\n");
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
-	RecursiveDescentParser();
-	
+	//RecursiveDescentParser();
+	RDPUnDcl();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

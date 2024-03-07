@@ -220,5 +220,6 @@ void RecursiveDescentParser(void);
 void ParserDcl(void);
 void ParserDirDcl(void);
 int ParserGetToken(void);
+void RDPUnDcl(void);
 
 #endif /* CPROJECT_H */
