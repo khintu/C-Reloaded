@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <c-project.h>
 
 #define XMAX	100
@@ -61,7 +63,7 @@ void testPtr2Struct(void)
 	printf("%d\n", ++p->len);
 	printf("%c\n", *p->str);
 	printf("%c\n", *p->str++);	// increment str after accessing *str
-	printf("%c\n", (*p->str)+1);
+	printf("%c\n", (*p->str)+1); // Access violation on (*p->str)++, cannot alter string literal
 	printf("%c\n", *p++->str); // increments p NOT str
 	printf("%c\n", *++p->str); // increments str NOT p
 	printf("%c\n", *(++p)->str); // Access violation, p already at origin[1]
@@ -87,6 +89,7 @@ void testStructuresDecl(void)
 
 /* Keyword Counting Program */
 
+#define MAXWORD	100
 #define NKEYS	(sizeof(keytab)/sizeof(struct key))
 
 struct key {
@@ -101,14 +104,71 @@ struct key {
 	{STRKEY(const), 0},
 	{STRKEY(continue), 0},
 	{STRKEY(default), 0},
+	{STRKEY(int), 0},
 	{STRKEY(unsigned), 0},
 	{STRKEY(void), 0},
 	{STRKEY(volatile), 0},
 	{STRKEY(while), 0}
 };
 
+/* getword: get next word or character from input */
+int kcpGetWord(char* word, int lim)
+{
+	int c;
+	char* w = word;
+
+	while (isspace(c = getch()))
+		;
+	if (c != EOF) /* write to buffer */
+		*w++ = c;
+	if (!isalpha(c)) /* keyword starts with alpha not digit, return digit or EOF */
+	{
+		*w = NUL;
+		return c;
+	}
+	for ( ; --lim > 0; w++) /* Only after word is confirmed from above */
+		if (!isalnum(*w = getch()))
+		{
+			ungetch(*w);
+			break;
+		}
+	*w = NUL;
+	return word[0];
+}
+
+/* binseaarch: find word in sorted tab[NKEYS] */
+int kcpBinSearch(char* word, struct key tab[], int n)
+{
+	int low, high, mid;
+
+	low = 0;
+	high = n - 1;
+	while (low < high)
+	{
+		mid = (low + high) / 2;
+		if (strcmp(word, tab[mid].word) > 0)
+			low = mid + 1;
+		else
+			high = mid;
+	}
+	if (strcmp(word, tab[low].word) == 0)
+		return low;
+	return -1;
+}
+
+/* Count C keywords */
 void keywordCouintingProgram(void)
 {
+	int n;
+	char word[MAXWORD];
 
+	while (kcpGetWord(word, MAXWORD) != EOF)
+		if (isalpha(word[0]))
+			if ((n = kcpBinSearch(word, keytab, NKEYS)) >= 0)
+				keytab[n].count++;
+
+	for (n = 0; n < NKEYS; ++n)
+		if (keytab[n].count > 0)
+			printf("%4d %s\n", keytab[n].count, keytab[n].word);
 	return;
 }

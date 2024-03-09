@@ -228,5 +228,7 @@ int ptInRect(struct point pt, struct rect r);
 struct rect canonRect(struct rect r);
 void testPtr2Struct(void);
 void keywordCouintingProgram(void);
+int kcpGetWord(char* word, int lim);
+int kcpBinSearch(char* word, struct key tab[], int n);
 
 #endif /* CPROJECT_H */
