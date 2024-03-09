@@ -12,6 +12,9 @@ char glbLine[MAXLINE];
 	code. newline is also returned with the rest of the
 	characters. On ^C it unblocks but returns only EOF not
 	the	input text stream.
+	Ctl-C interrupt causes -1 EOF return from getchar() if
+	not handled the next call to getchar() will terminate
+	the program with exit code 3221225786 (0xc000013a).
 */
 
 void copyInputToOutput(void)

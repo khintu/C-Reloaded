@@ -112,6 +112,72 @@ struct key {
 };
 
 /* getword: get next word or character from input */
+int kcpGetWordBetter(char* word, int lim)
+{
+	int c, ac, strconst = FALSE, comment = FALSE;
+	char* w = word;
+
+	while (isspace(c = getch()))
+		;
+	if (c != EOF) /* write to buffer */
+		*w++ = c;
+	if (!(isalpha(c) || c == '_' || c == '"'|| c == '/')) /* keyword starts with alpha not digit, return digit or EOF */
+	{
+		*w = NUL;
+		return c;
+	}
+
+	if (c == '"') /* string constant starting */
+		strconst = TRUE;
+	else if (c == '/' && (ac = getch()) == '*') /* comment starting */
+	{
+		comment = TRUE;
+		*w++ = ac;
+	}
+	else if (c == '/' && ac != '*')
+		ungetch(ac);
+
+	for (c = 0; --lim > 0 && c != EOF; w++) /* Only after word is confirmed from above */
+	{
+		if (!(isalnum(c = *w = getch()) || *w == '_' || strconst == TRUE || comment == TRUE))
+		{
+			ungetch(*w);
+			break;
+		}
+		if (comment == TRUE)
+		{
+			if (*w == '*' && (ac = getch()) == '/')
+			{
+				comment = FALSE;
+				*++w = ac;
+				w++;
+				break;
+			}
+			else if (*w == '*' && ac != '/')
+				ungetch(ac);
+			else if (ac == EOF)
+			{
+				c = EOF;
+				break;
+			}
+		}
+		if (strconst == TRUE && *w == '"')
+		{
+			strconst = FALSE;
+			w++;
+			break;
+		}
+	}
+	*w = NUL;
+	if (c == EOF)
+	{
+		word[0] = NUL;
+		return c;
+	}
+	return word[0];
+}
+
+/* getword: get next word or character from input */
 int kcpGetWord(char* word, int lim)
 {
 	int c;
@@ -162,10 +228,12 @@ void keywordCouintingProgram(void)
 	int n;
 	char word[MAXWORD];
 
-	while (kcpGetWord(word, MAXWORD) != EOF)
+	while (kcpGetWordBetter(word, MAXWORD) != EOF)
 		if (isalpha(word[0]))
+		{
 			if ((n = kcpBinSearch(word, keytab, NKEYS)) >= 0)
 				keytab[n].count++;
+		}
 
 	for (n = 0; n < NKEYS; ++n)
 		if (keytab[n].count > 0)

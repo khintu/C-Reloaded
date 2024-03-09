@@ -230,5 +230,6 @@ void testPtr2Struct(void);
 void keywordCouintingProgram(void);
 int kcpGetWord(char* word, int lim);
 int kcpBinSearch(char* word, struct key tab[], int n);
+int kcpGetWordBetter(char* word, int lim);
 
 #endif /* CPROJECT_H */
