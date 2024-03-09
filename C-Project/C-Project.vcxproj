@@ -138,6 +138,7 @@
     <ClCompile Include="Parser.c" />
     <ClCompile Include="Pointers.c" />
     <ClCompile Include="String.c" />
+    <ClCompile Include="Structures.c" />
     <ClCompile Include="TypesExprns.c" />
   </ItemGroup>
   <ItemGroup>

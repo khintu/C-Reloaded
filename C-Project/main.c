@@ -40,7 +40,6 @@ void UnitTestMain(int argc, char* argv[])
 	printf("Celsius To Fahrenheit\n");
 	CelsiusToFahrenheit();
 	FahrenheitToCelsiusCompactReverse();
-
 	copyInputToOutput();
 	countCharactersInInput();
 	countLinesInInput();
@@ -52,18 +51,15 @@ void UnitTestMain(int argc, char* argv[])
 	countDigitWhiteSpOther();
 	wordsLengthsHistogram();
 	characterLengthsHistogram();
-
 	for (i = 0; i <= 10; ++i)
 		printf("Base %d Exp %2d Result %5d\n", 3, i, power(3, i));
 	for (i = 0; i <= 10; ++i)
 		printf("Base %d Exp %2d Result %5d\n", 2, i, powerEfficient(2, i));
-
 	printf("line lenght %d, line <%s>,\n", getLine(line, MAXLINE), line);
 	printLongestInputLine();
 	printInputLinesGreater();
 	removeSpecialFromInput();
 	reverseInputLine();
-
 	detab();
 	entab();
 	fold2(5);
@@ -76,32 +72,25 @@ void UnitTestMain(int argc, char* argv[])
 	longest();
 	printf("%d\n", atoiNaive("123"));
 	putchar(lower('S'));
-
 	Srand(112);
 	for (i = 0; i < 10; ++i)
 		printf("%d\n", Rand());
-
 	i = Htoi("0xffff");
 	printf("%d", i);
-
 	squeeze(line, 'd');
 	printf("%s\n", line);
 	Strcat(line, "defop");
 	printf("%s\n", line);
-
 	squeeze2(line, " a");
 	printf("%s\n", line);
-
 	i = any(line, " a");
 	printf("%d\n", i);
-	
 	printf("%x\n", getbits(0xf7, 5, 3));
 	printf("%x\n", setbits(0xFF, 5, 3, 0xF6));
 	printf("%x\n", invert(0xFF, 5, 3));
 	printf("%x\n", rightrot(0xFFFFFFF0, 3));
 	printf("%x\n", bitcount(0x00));
 	printf("%x\n", bitcountfaster(0x06));
-
 	putchar(lowerSuccinct('s'));
 	printCharArray();
 	pluralStringCondn();
@@ -165,6 +154,10 @@ void UnitTestMain(int argc, char* argv[])
 	SortInputLines2(argc, argv);
 	RecursiveDescentParser();
 	RDPUnDcl();
+
+	// --- Chapter 6 ---
+	testStructuresDecl();
+	keywordCouintingProgram();
 	return;
 }
 
@@ -189,7 +182,8 @@ int main(int argc, char *argv[])
 
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
-	RDPUnDcl();
+	//RDPUnDcl();
+	keywordCouintingProgram();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

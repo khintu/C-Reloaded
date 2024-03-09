@@ -428,9 +428,9 @@ void printDecimal(int n)
 		putchar('-');
 		n = -n;
 	}
-	if (Abs(n / 10))
-		printDecimal(Abs(n / 10));
-	putchar(Abs(n % 10) + '0');
+	if (ABS(n / 10))
+		printDecimal(ABS(n / 10));
+	putchar(ABS(n % 10) + '0');
 	return;
 }
 
@@ -444,9 +444,9 @@ void Itoa2(int n, char s[])
 		s[i++] = '-';
 		n = -n;
 	}
-	if (Abs(n / 10))
-		Itoa2(Abs(n / 10), s);
-	s[i++] = Abs(n % 10) + '0';
+	if (ABS(n / 10))
+		Itoa2(ABS(n / 10), s);
+	s[i++] = ABS(n % 10) + '0';
 	return;
 }
 

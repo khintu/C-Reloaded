@@ -498,6 +498,7 @@ void RDPUnDcl(void)
 				printf("UnDcl - invalid input at %s\n", token);
 		}
 		printf("UnDcl - %s\n", out);
+		//token[0] = '\0'; /* Clear token buffer for subsequent input */
 	}
 	return;
 }

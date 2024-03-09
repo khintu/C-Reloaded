@@ -51,7 +51,7 @@ double powerf(double base, int exp)
 	int sign;
 
 	sign = (exp >= 0) ? 1 : -1;
-	exp = Abs(exp);
+	exp = ABS(exp);
 	for (p = 1.0; exp > 0; --exp)		
 		p = (sign >= 0) ? p * base : p / base;
 	return p;

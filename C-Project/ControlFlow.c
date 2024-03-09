@@ -317,8 +317,8 @@ void Itoa(int n, char s[])
 		n = -n;
 	i = 0;
 	do {
-		s[i++] = Abs(n % 10) + '0'; // Read LSB using mod
-	} while (Abs(n /= 10) > 0);  // Remove LSB using div or shift right
+		s[i++] = ABS(n % 10) + '0'; // Read LSB using mod
+	} while (ABS(n /= 10) > 0);  // Remove LSB using div or shift right
 	if (sign < 0)
 		s[i++] = '-';
 	s[i] = '\0';
@@ -333,7 +333,7 @@ void itob(int n, char s[], int b)
 		n = -n;
 	i = 0;
 	do {
-		mod = Abs(n % b);
+		mod = ABS(n % b);
 		if (b >= 10 && b <= 16)
 		{
 			switch (mod) {
@@ -364,7 +364,7 @@ void itob(int n, char s[], int b)
 		{
 			s[i++] = mod + '0';
 		}
-	} while (Abs(n /= b) > 0);
+	} while (ABS(n /= b) > 0);
 	if (sign < 0)
 		s[i++] = '-';
 	s[i] = '\0';
@@ -384,8 +384,8 @@ void itoaW(int n, char s[], int w)
 	{
 		i = 0;
 		do {
-			s[i++] = Abs(n % 10) + '0';
-		} while (Abs(n /= 10) > 0);
+			s[i++] = ABS(n % 10) + '0';
+		} while (ABS(n /= 10) > 0);
 		if (sign)
 			s[i++] = '-';
 		s[i] = '\0';
@@ -400,7 +400,7 @@ void itoaW(int n, char s[], int w)
 		}
 		else
 		{
-			w = Abs(w);
+			w = ABS(w);
 			i = 0;
 			if (sign) // preserve sign bit
 			{

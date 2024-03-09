@@ -1,6 +1,8 @@
 #ifndef CPROJECT_H
 #define CPROJECT_H
 
+#define STRKEY(key)	#key
+
 #define SHRT_BIT	(CHAR_BIT*sizeof(short))
 #define INT_BIT		(CHAR_BIT*sizeof(int))
 #define LONG_BIT	(CHAR_BIT*sizeof(long))
@@ -15,7 +17,9 @@
 #define NUL	((char)0)
 #define PI	(22.0f/7.0f)
 
-#define Abs(exp)	(((exp) >= 0)? (exp) : -(exp))
+#define ABS(exp)	(((exp) >= 0)? (exp) : -(exp))
+#define MIN(a, b)	((a) < (b) ? (a) : (b))
+#define MAX(a, b)	((a) > (b) ? (a) : (b))
 
 /* Reverse Polish Calculator definitions */
 #define MAXVAL	100	/* max depth of value stack */
@@ -39,7 +43,6 @@ void CelsiusToFahrenheitReal(void);
 void FahrenheitToCelsiusRealCompact(void);
 void FahrenheitToCelsiusCompact(void);
 void FahrenheitToCelsiusCompactReverse(void);
-
 void copyInputToOutput(void);
 void countCharactersInInput(void);
 void countLinesInInput(void);
@@ -48,26 +51,21 @@ void replaceBlankStringWithBlank(void);
 void copyInputReplaceSpecial(void);
 void countWordsLinesCharsInInput(void);
 void printInputOneWordPerLine(void);
-
 void countDigitWhiteSpOther(void);
 void wordsLengthsHistogram(void);
 void characterLengthsHistogram(void);
-
 int power(int base, int exp);
 int powerEfficient(int base, int exp);
-
 int getLine(char s[], int lim);
 void copyString(char to[], char from[]);
 int stringLength(char s[]);
 int isBlankString(char s[]);
 void removeTrailingBlanks(char s[]);
 void reverseString(char s[]);
-
 void printLongestInputLine(void);
 void printInputLinesGreater(void);
 void removeSpecialFromInput(void);
 void reverseInputLine(void);
-
 void detab(void);
 void entab(void);
 void foldNaive(const int nthChar);
@@ -221,5 +219,14 @@ void ParserDcl(void);
 void ParserDirDcl(void);
 int ParserGetToken(void);
 void RDPUnDcl(void);
+
+// Chapter 6
+void testStructuresDecl(void);
+struct point makePoint(int x, int y);
+struct point addPoint(struct point p1, struct point p2);
+int ptInRect(struct point pt, struct rect r);
+struct rect canonRect(struct rect r);
+void testPtr2Struct(void);
+void keywordCouintingProgram(void);
 
 #endif /* CPROJECT_H */
