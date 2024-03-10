@@ -233,5 +233,8 @@ int kcpBinSearch(char* word, struct key tab[], int n);
 int kcpGetWordBetter(char* word, int lim);
 void keywordCountingProgram2(void);
 struct key* kcpBinSearch2(char* word, struct key* tab, int n);
+struct tnode* BinTreeAddNode(struct tnode* p, char* w);
+void BinTreePrint(struct tnode* p);
+void WordFreqCount(void);
 
 #endif /* CPROJECT_H */

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 #include <c-project.h>
 
 #define XMAX	100
@@ -275,6 +276,8 @@ struct key* kcpBinSearch2(char* word, struct key* tab, int n)
 
 	while (low < high)
 	{
+		/* All pointer arithmetic is in steps of sizeof(type) not single byte leading
+		   to direct indexing into the array with each pointer */
 		mid = low + (high - low) / 2; /* !! two pointers can only be sub'd not add'd !! */
 		if (strcmp(word, mid->word) > 0)
 			low = mid + 1;
@@ -284,4 +287,69 @@ struct key* kcpBinSearch2(char* word, struct key* tab, int n)
 	if (strcmp(word, low->word) == 0)
 		return low;
 	return NULL;
+}
+
+/* Binary Tree - search and store all words from input in a ordered tree */
+
+struct tnode {	/* the tree node */
+	char* word;		/* points to text */
+	int count;		/* number of occurences */
+	struct tnode* left;	/* self-referential left child pointer */
+	struct tnode* right;/* self-referential right child pointer */
+};
+
+/* addtree: add a node with w, at or below p */
+struct tnode* BinTreeAddNode(struct tnode* p, char* w)
+{
+	int cond;
+
+	if (p == NULL) /* Base case */
+	{
+		p = (struct tnode*)malloc(sizeof(struct tnode));
+		if (p)
+		{
+			p->word = (char*)malloc(sizeof(char) * (strlen(w) + 1));
+			if (p->word)
+			{
+				strcpy(p->word, w);
+			}
+			p->count = 1;
+			p->left = p->right = NULL;
+		}
+	}
+	else if ((cond = strcmp(w, p->word)) == 0) /* only 3 condn >, ==, < */
+		p->count++;
+	else if (cond < 0)
+		p->left = BinTreeAddNode(p->left, w);
+	else
+		p->right = BinTreeAddNode(p->right, w);
+	return p;
+}
+
+/* treeprint: in-order print of tree */
+void BinTreePrint(struct tnode* p)
+{
+	if (p != NULL)
+	{
+		BinTreePrint(p->left);
+		printf("%4d %s\n", p->count, p->word);
+		BinTreePrint(p->right);
+	}
+	return;
+}
+
+/* word frequency count */
+void WordFreqCount(void)
+{
+	struct tnode* root;
+	char word[MAXWORD];
+
+	root = NULL;
+	while (kcpGetWord(word, MAXWORD) != EOF)
+		if (isalpha(word[0]))
+		{
+			root = BinTreeAddNode(root, word);
+		}
+	BinTreePrint(root);
+	return;
 }

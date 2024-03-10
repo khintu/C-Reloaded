@@ -159,6 +159,7 @@ void UnitTestMain(int argc, char* argv[])
 	testStructuresDecl();
 	keywordCountingProgram();
 	keywordCountingProgram2();
+	WordFreqCount();
 	return;
 }
 
@@ -184,7 +185,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	keywordCountingProgram2();
+	WordFreqCount();
 
 	// ---Runtime Analysis ---
 	t2 = clock();
