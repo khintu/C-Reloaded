@@ -227,9 +227,11 @@ struct point addPoint(struct point p1, struct point p2);
 int ptInRect(struct point pt, struct rect r);
 struct rect canonRect(struct rect r);
 void testPtr2Struct(void);
-void keywordCouintingProgram(void);
+void keywordCountingProgram(void);
 int kcpGetWord(char* word, int lim);
 int kcpBinSearch(char* word, struct key tab[], int n);
 int kcpGetWordBetter(char* word, int lim);
+void keywordCountingProgram2(void);
+struct key* kcpBinSearch2(char* word, struct key* tab, int n);
 
 #endif /* CPROJECT_H */

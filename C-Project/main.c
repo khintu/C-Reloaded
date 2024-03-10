@@ -157,7 +157,8 @@ void UnitTestMain(int argc, char* argv[])
 
 	// --- Chapter 6 ---
 	testStructuresDecl();
-	keywordCouintingProgram();
+	keywordCountingProgram();
+	keywordCountingProgram2();
 	return;
 }
 
@@ -183,7 +184,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	keywordCouintingProgram();
+	keywordCountingProgram2();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

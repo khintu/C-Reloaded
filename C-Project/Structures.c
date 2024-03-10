@@ -134,8 +134,12 @@ int kcpGetWordBetter(char* word, int lim)
 		comment = TRUE;
 		*w++ = ac;
 	}
-	else if (c == '/' && ac != '*')
+	else if (c == '/' && ac != '*') /* Not a keyword, return like before */
+	{
 		ungetch(ac);
+		*w = NUL;
+		return c;
+	}
 
 	for (c = 0; --lim > 0 && c != EOF; w++) /* Only after word is confirmed from above */
 	{
@@ -223,10 +227,10 @@ int kcpBinSearch(char* word, struct key tab[], int n)
 }
 
 /* Count C keywords */
-void keywordCouintingProgram(void)
+void keywordCountingProgram(void)
 {
 	int n;
-	char word[MAXWORD];
+	char word[MAXWORD] = { 0 };
 
 	while (kcpGetWordBetter(word, MAXWORD) != EOF)
 		if (isalpha(word[0]))
@@ -239,4 +243,45 @@ void keywordCouintingProgram(void)
 		if (keytab[n].count > 0)
 			printf("%4d %s\n", keytab[n].count, keytab[n].word);
 	return;
+}
+
+/* Pointer to structure arithmetic and structure padding/packing */
+
+/* Count C keywords; pointer version */
+void keywordCountingProgram2(void)
+{
+	char word[MAXWORD] = { 0 };
+	struct key* p;
+
+	while(kcpGetWord(word, MAXWORD) != EOF)
+		if (isalpha(word[0]))
+		{
+			if ((p = kcpBinSearch2(word, keytab, NKEYS)) != NULL)
+				p->count++;
+		}
+
+	for (p = keytab; p < keytab + NKEYS; ++p)
+		if (p->count > 0)
+			printf("%4d %s\n", p->count, p->word);
+	return;
+}
+
+/* find word in tab[0]...tab[n-1] */
+struct key* kcpBinSearch2(char* word, struct key* tab, int n)
+{
+	struct key* low = &tab[0];
+	struct key* high = &tab[n]; /* 1st past the end is ok not illegal */
+	struct key* mid;
+
+	while (low < high)
+	{
+		mid = low + (high - low) / 2; /* !! two pointers can only be sub'd not add'd !! */
+		if (strcmp(word, mid->word) > 0)
+			low = mid + 1;
+		else
+			high = mid;
+	}
+	if (strcmp(word, low->word) == 0)
+		return low;
+	return NULL;
 }
