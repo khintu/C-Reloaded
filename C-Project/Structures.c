@@ -459,3 +459,170 @@ void PrintGroupsOfVarsNSizd(int ncount)
 	}
 	return;
 }
+
+/* Cross Referencer for printing all words in a document's list
+	 of line numbers on which it occurs, remove noise words */
+char* noiseWords[] =
+{
+	"and",
+	"if",
+	"is",
+	"of",
+	"or",
+	"the",
+	"to"
+};
+
+#define NNOISE	(sizeof(noiseWords) / sizeof(noiseWords[0]))
+
+/* binseaarch: find word in sorted noiseWords[NNOISE] */
+int CRBinSearch(char* word, char* noise[], int n)
+{
+	int low, high, mid;
+
+	low = 0;
+	high = n - 1;
+	while (low < high)
+	{
+		mid = (low + high) / 2;
+		if (strcmp(word, noise[mid]) > 0)
+			low = mid + 1;
+		else
+			high = mid;
+	}
+	if (strcmp(word, noise[low]) == 0)
+		return low;
+	return -1;
+}
+
+struct CRList {
+	int lineNo;
+	struct CRList* next;
+};
+
+struct CRTree {
+	char* word;
+	struct CRList* list;
+	struct CRTree* left, * right;
+};
+
+struct CRList* CRListAddLn(struct CRList* p, int lineNo)
+{
+	struct CRList* q = NULL;
+
+	if (p == NULL)
+	{
+		p = (struct CRList*)malloc(sizeof(struct CRList));
+		if (p)
+		{
+			p->lineNo = lineNo;
+			p->next = NULL;
+		}
+	}
+	else
+	{
+		for (q = p; q->next != NULL; q = q->next)
+			;
+		q->next = (struct CRList*)malloc(sizeof(struct CRList));
+		if (q->next)
+		{
+			q = q->next;
+			q->lineNo = lineNo;
+			q->next = NULL;
+		}
+	}
+	return p;
+}
+
+/* addtree: add a node with w, at or below p */
+struct CRTree* CRTreeAddNode(struct CRTree* p, char* w, int lineNo)
+{
+	int cond;
+
+	if (p == NULL) /* Base case */
+	{
+		p = (struct CRTree*)malloc(sizeof(struct CRTree));
+		if (p)
+		{
+			p->word = (char*)malloc(sizeof(char) * (strlen(w) + 1));
+			if (p->word)
+			{
+				strcpy(p->word, w);
+			}
+			p->list = CRListAddLn(NULL, lineNo);
+			p->left = p->right = NULL;
+		}
+	}
+	else if ((cond = strcmp(w, p->word)) == 0) /* only 3 condn >, ==, < */
+		p->list = CRListAddLn(p->list, lineNo);
+	else if (cond < 0)
+		p->left = CRTreeAddNode(p->left, w, lineNo);
+	else
+		p->right = CRTreeAddNode(p->right, w, lineNo);
+	return p;
+}
+
+/* treeprint: in-order print of tree */
+void CRTreePrint(struct CRTree* p)
+{
+	struct CRList* q = NULL;
+	if (p != NULL)
+	{
+		CRTreePrint(p->left);
+		printf("%s ", p->word);
+		for (q = p->list; q != NULL; q = q->next)
+			printf("%d%c", q->lineNo, q->next == NULL ? '\n': ',');
+		CRTreePrint(p->right);
+	}
+	return;
+}
+
+/* getword: get next word or character from input */
+int CRGetWord(char* word, int lim)
+{
+	int c;
+	char* w = word;
+
+	while ((c = getch()) == ' ' || c == '\t')
+		;
+	if (c != EOF) /* write to buffer */
+		*w++ = c;
+	if (!isalpha(c)) /* keyword starts with alpha not digit, return digit or EOF */
+	{
+		*w = NUL;
+		return c;
+	}
+	for (; --lim > 0; w++) /* Only after word is confirmed from above */
+		if (!isalnum(*w = getch()))
+		{
+			ungetch(*w);
+			break;
+		}
+	*w = NUL;
+	return word[0];
+}
+
+/* Main program to read from input document to cross-reference */
+void CrossReferencerProgam(void)
+{
+	struct CRTree* root;
+	char word[MAXWORD];
+	int lineNo = 1;
+
+	root = NULL;
+	while (CRGetWord(word, MAXWORD) != EOF)
+	{
+		if (word[0] == '\n')
+			lineNo++;
+		else if (CRBinSearch(word, noiseWords, NNOISE) != -1)
+		{
+			continue;
+		}
+		else if (isalpha(word[0]))
+		{
+			root = CRTreeAddNode(root, word, lineNo);
+		}
+	}
+	CRTreePrint(root);
+	return;
+}

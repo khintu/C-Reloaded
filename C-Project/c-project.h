@@ -239,5 +239,10 @@ void WordFreqCount(void);
 void GroupOfNamesIdentInNCmp(int argc, char* argv[]);
 void PrintGroupsOfVarsNSizd(int ncount);
 struct lnode* LstAddWrdToWordGrp(char* word, int ncount, struct lnode* group);
+int CRBinSearch(char* word, char* noise[], int n);
+struct CRTree* CRTreeAddNode(struct CRTree* p, char* w, int lineNo);
+void CRTreePrint(struct CRTree* p);
+void CrossReferencerProgam(void);
+int CRGetWord(char* word, int lim);
 
 #endif /* CPROJECT_H */
