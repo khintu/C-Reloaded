@@ -166,7 +166,7 @@ int kcpGetWordBetter(char* word, int lim)
 				break;
 			}
 		}
-		if (strconst == TRUE && *w == '"')
+		else if (strconst == TRUE && *w == '"')
 		{
 			strconst = FALSE;
 			w++;
@@ -351,5 +351,111 @@ void WordFreqCount(void)
 			root = BinTreeAddNode(root, word);
 		}
 	BinTreePrint(root);
+	return;
+}
+
+/* Program to read C prog. and print alphabetically groups of similar variables
+ in the first 6 or userdefined N number of characters. */
+void GroupOfNamesIdentInNCmp(int argc, char* argv[])
+{
+	int c, ncount;
+
+	while (--argc > 0 && (*++argv)[0] == '-')
+	{
+		switch (c = *++argv[0])
+		{
+		case 'f':
+			ncount = 1;
+			break;
+		default:
+			printf("PrintVars: Illegal option %c\n", c);
+			break;
+		}		
+	}
+	if (argc != 1)
+	{
+		printf("Usage: PrintVars -f <NumOfCmp>\n");
+	}
+	else
+	{
+		ncount = atoi(argv[0]);
+		PrintGroupsOfVarsNSizd(ncount);
+	}
+	return;
+}
+
+/* List of groups of word with a common 1st N characters */
+struct lnode {
+	struct tnode* root;
+	struct lnode* next;
+};
+
+struct lnode* LstAddWrdToWordGrp(char *word, int ncount, struct lnode *group)
+{
+	struct lnode* p;
+	//struct tnode* root;
+	int found = FALSE;
+
+	/* Create new group if word not found */
+	for (p = group; p != NULL ; p = p->next)
+	{
+		if (strncmp(word, p->root->word, ncount) == 0)
+		{
+			p->root = BinTreeAddNode(p->root, word);
+			found = TRUE;
+			return group;
+		}
+	}
+	if (!found)
+	{
+		if (!group)
+		{
+			group = (struct lnode*)malloc(sizeof(struct lnode));
+			if (group)
+			{
+				group->root = NULL;
+				group->next = NULL;
+			}
+			p = group;
+		}
+		else
+		{
+			for (p = group; p->next != NULL; p = p->next)
+				;
+			p->next = (struct lnode*)malloc(sizeof(struct lnode));
+			if (p->next)
+			{
+				p->next->root = NULL;
+				p->next->next = NULL;
+			}
+			p = p->next;
+		}
+		p->root = BinTreeAddNode(p->root, word);
+	}
+	return group;
+}
+
+void PrintGroupsOfVarsNSizd(int ncount)
+{
+	struct lnode* groups;
+	
+	char word[MAXWORD];
+	
+	groups = NULL;
+	while (kcpGetWordBetter(word, MAXWORD) != EOF)
+	{
+		if (!((word[0] == '/' && word[1] == '*') || \
+					 word[0] == '\"' || \
+					 kcpBinSearch(word, keytab, NKEYS) != -1) \
+				&& isalpha(word[0]))
+		{
+			groups = LstAddWrdToWordGrp(word, ncount, groups);
+		}
+	}
+	for (struct lnode* p = groups; p != NULL; p = p->next)
+	{
+		printf("%c>>Next Group\n", p == groups ? NUL : '\n');
+		BinTreePrint(p->root);
+	}
 	return;
 }

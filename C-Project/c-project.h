@@ -236,5 +236,8 @@ struct key* kcpBinSearch2(char* word, struct key* tab, int n);
 struct tnode* BinTreeAddNode(struct tnode* p, char* w);
 void BinTreePrint(struct tnode* p);
 void WordFreqCount(void);
+void GroupOfNamesIdentInNCmp(int argc, char* argv[]);
+void PrintGroupsOfVarsNSizd(int ncount);
+struct lnode* LstAddWrdToWordGrp(char* word, int ncount, struct lnode* group);
 
 #endif /* CPROJECT_H */
