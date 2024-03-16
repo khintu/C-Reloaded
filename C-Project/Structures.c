@@ -342,7 +342,7 @@ void BinTreePrint(struct tnode* p)
 void WordFreqCount(void)
 {
 	struct tnode* root;
-	char word[MAXWORD];
+	char word[MAXWORD] = { NUL };
 
 	root = NULL;
 	while (kcpGetWord(word, MAXWORD) != EOF)
@@ -370,7 +370,7 @@ void BinTreePrint2(struct tnode* p)
 void WordFreqCount2(void)
 {
 	struct tnode* root;
-	char word[MAXWORD];
+	char word[MAXWORD] = { NUL };
 
 	root = NULL;
 	while (kcpGetWord(word, MAXWORD) != EOF)
@@ -467,7 +467,7 @@ void PrintGroupsOfVarsNSizd(int ncount)
 {
 	struct lnode* groups;
 	
-	char word[MAXWORD];
+	char word[MAXWORD] = { NUL };
 	
 	groups = NULL;
 	while (kcpGetWordBetter(word, MAXWORD) != EOF)
@@ -492,13 +492,13 @@ void PrintGroupsOfVarsNSizd(int ncount)
 	 of line numbers on which it occurs, remove noise words */
 char* noiseWords[] =
 {
-	"and",
-	"if",
-	"is",
-	"of",
-	"or",
-	"the",
-	"to"
+	STRKEY(and),
+	STRKEY(if),
+	STRKEY(is),
+	STRKEY(of),
+	STRKEY(or),
+	STRKEY(the),
+	STRKEY(to)
 };
 
 #define NNOISE	(sizeof(noiseWords) / sizeof(noiseWords[0]))
@@ -634,7 +634,7 @@ int CRGetWord(char* word, int lim)
 void CrossReferencerProgam(void)
 {
 	struct CRTree* root;
-	char word[MAXWORD];
+	char word[MAXWORD] = { NUL };
 	int lineNo = 1;
 
 	root = NULL;
@@ -767,7 +767,7 @@ void FreqSortedInput(void)
 {
 	struct FSLNode* lst;
 	struct FSTNode* root;
-	char word[MAXWORD];
+	char word[MAXWORD] = { NUL };
 
 	lst = NULL; root = NULL;
 	while (kcpGetWord(word, MAXWORD) != EOF)
@@ -875,4 +875,107 @@ void HUnDef(char* name)
 	return;
 }
 
+/* getword: get next word or character from input */
+int HGetWord(char* word, int lim)
+{
+	int c;
+	char* w = word;
+
+	while (isspace(c = getch()))
+		;
+	if (c != EOF) /* write to buffer */
+		*w++ = c;
+	if (!(isalnum(c) || c == '#')) /* keyword starts with alpha not digit, return digit or EOF */
+	{
+		*w = NUL;
+		return c;
+	}
+	for (; --lim > 0; w++) /* Only after word is confirmed from above */
+		if (!isalnum(*w = getch()))
+		{
+			ungetch(*w);
+			break;
+		}
+	*w = NUL;
+	return word[0];
+}
+
 /* Main Program for #define processor */
+void HMacroProcessor(void)
+{
+	char word[MAXWORD] = { NUL };
+	char name[MAXWORD] = { NUL };
+	char defn[MAXWORD] = { NUL };
+
+	int def = FALSE, capKey = FALSE, capValue = FALSE, addMacro = FALSE;
+	int undef = FALSE, delMacro = FALSE;
+	struct HList* np = NULL;
+
+	while (HGetWord(word, MAXWORD) != EOF)
+	{
+		if (word[0] == '#' && strcmp(&word[1], STRKEY(define)) == 0)
+		{
+			def = TRUE;
+			capKey = TRUE;
+			continue;
+		}
+		else if (word[0] == '#' && strcmp(&word[1], STRKEY(undef)) == 0)
+		{
+			undef = TRUE;
+			capKey = TRUE;
+			continue;
+		}
+		else if (!def && !undef) /* substitute for occurence in others */
+		{
+			if ((np = HLookUp(word)) != NULL)
+			{
+				printf("%s-%s\n", np->name, np->defn);
+			}
+		}
+
+		/* Define processor */
+		if (def)
+		{
+			if (capKey == TRUE)
+			{
+				capValue = TRUE;
+				capKey = FALSE;
+				strcpy(name, word);
+			}
+			else if (capValue == TRUE)
+			{
+				capValue = FALSE;
+				addMacro = TRUE;
+				strcpy(defn, word);
+			}
+			if (addMacro == TRUE)
+			{
+				addMacro = FALSE;
+				HInstall(name, defn);
+				def = FALSE;
+			}
+		}
+		/* Undef processor */
+		else if (undef)
+		{
+			if (capKey == TRUE)
+			{
+				delMacro = TRUE;
+				capKey = FALSE;
+				strcpy(name, word);
+			}
+			if (delMacro == TRUE)
+			{
+				delMacro = FALSE;
+				HUnDef(name);
+				undef = FALSE;
+			}
+		}
+		else
+		{
+			// Other words 
+		}
+	}
+
+	return;
+}

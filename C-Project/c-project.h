@@ -255,5 +255,7 @@ unsigned HHashFunc(char* s);
 struct HList* HLookUp(char* s);
 struct HList* HInstall(char* name, char* defn);
 void HUnDef(char* name);
+void HMacroProcessor(void);
+int HGetWord(char* word, int lim);
 
 #endif /* CPROJECT_H */

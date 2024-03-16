@@ -164,6 +164,7 @@ void UnitTestMain(int argc, char* argv[])
 	CrossReferencerProgam();
 	WordFreqCount2();
 	FreqSortedInput();
+	HMacroProcessor();
 	return;
 }
 
@@ -189,7 +190,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	FreqSortedInput();
+	HMacroProcessor();
 
 	// ---Runtime Analysis ---
 	t2 = clock();
