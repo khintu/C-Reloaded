@@ -251,5 +251,9 @@ struct FSLNode* FSAddWordToLst(struct FSLNode* lst, char* word);
 struct FSTNode* FSAddWordToTree(struct FSTNode* root, struct FSLNode* lst);
 void FSTreePrint(struct FSTNode* p);
 void FreqSortedInput(void);
+unsigned HHashFunc(char* s);
+struct HList* HLookUp(char* s);
+struct HList* HInstall(char* name, char* defn);
+void HUnDef(char* name);
 
 #endif /* CPROJECT_H */

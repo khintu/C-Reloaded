@@ -782,3 +782,97 @@ void FreqSortedInput(void)
 	FSTreePrint(root);
 	return;
 }
+
+/* Hashing algorithm for storing keywords and their replacement strings */
+
+/* List/Chain of name bucket */
+struct HList
+{
+	struct HList* next;
+	char *name;
+	char *defn;
+};
+
+#define HASHSIZE	101
+
+/* Pointer to chains array */
+static struct HList* hashTab[HASHSIZE];
+
+/* hash: form hash value for string */
+unsigned HHashFunc(char* s)
+{
+	unsigned hashval;
+
+	for (hashval = 0; *s != NUL; s++)
+		hashval = *s + 31 * hashval;
+	return hashval % HASHSIZE;
+}
+
+/* lookup: look for s in hashTab */
+struct HList* HLookUp(char* s)
+{
+	struct HList* np;
+	for (np = hashTab[HHashFunc(s)]; np != NULL; np = np->next)
+		if (strcmp(s, np->name) == 0)
+			return np;
+	return NULL;
+}
+
+/* Install: put (name, defn) key into hashTab */
+struct HList* HInstall(char* name, char* defn)
+{
+	struct HList* np;
+	unsigned hashval;
+
+	if ((np = HLookUp(name)) == NULL) /* not found, add to table */
+	{
+		np = (struct HList*)malloc(sizeof(struct HList));
+		if (np == NULL || (np->name = StrDup(name)) == NULL)
+			return NULL;
+		hashval = HHashFunc(name);
+		np->next = hashTab[hashval]; /* prepend to chain */
+		hashTab[hashval] = np;
+	}
+	else /* Already in table, update defn */
+	{
+		free(np->defn);
+	}
+	if ((np->defn = StrDup(defn)) == NULL) /* Add or update defn */
+		return NULL;
+	return np;
+}
+
+/* undef: remove a key/value from hashTab */
+void HUnDef(char* name)
+{
+	struct HList* np, *last;
+	unsigned hashval;
+	int cond;
+
+	hashval = HHashFunc(name);
+	for (last = np = hashTab[hashval];\
+			 np != NULL && (cond = strcmp(np->name, name)) != 0;\
+			 last = np, np = np->next)
+		;
+	if (last != NULL && cond == 0)
+	{
+		np = last->next;
+		if (np)
+		{
+			free(np->name);
+			free(np->defn);
+			last->next = np->next;
+			free(np);
+		}
+		else
+		{
+			free(last->name);
+			free(last->defn);
+			free(last);
+			hashTab[hashval] = NULL;
+		}
+	}
+	return;
+}
+
+/* Main Program for #define processor */
