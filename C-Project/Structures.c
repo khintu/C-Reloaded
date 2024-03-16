@@ -925,13 +925,6 @@ void HMacroProcessor(void)
 			capKey = TRUE;
 			continue;
 		}
-		else if (!def && !undef) /* substitute for occurence in others */
-		{
-			if ((np = HLookUp(word)) != NULL)
-			{
-				printf("%s-%s\n", np->name, np->defn);
-			}
-		}
 
 		/* Define processor */
 		if (def)
@@ -971,9 +964,12 @@ void HMacroProcessor(void)
 				undef = FALSE;
 			}
 		}
-		else
+		else // if (!def && !undef) /* substitute for occurence in others */
 		{
-			// Other words 
+			if ((np = HLookUp(word)) != NULL)
+			{
+				printf("%s-%s\n", np->name, np->defn);
+			}
 		}
 	}
 
