@@ -244,5 +244,7 @@ struct CRTree* CRTreeAddNode(struct CRTree* p, char* w, int lineNo);
 void CRTreePrint(struct CRTree* p);
 void CrossReferencerProgam(void);
 int CRGetWord(char* word, int lim);
+void WordFreqCount2(void);
+void BinTreePrint2(struct tnode* p);
 
 #endif /* CPROJECT_H */

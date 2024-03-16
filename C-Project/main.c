@@ -162,6 +162,7 @@ void UnitTestMain(int argc, char* argv[])
 	WordFreqCount();
 	GroupOfNamesIdentInNCmp(argc, argv);
 	CrossReferencerProgam();
+	WordFreqCount2();
 	return;
 }
 
@@ -187,7 +188,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	CrossReferencerProgam();
+	WordFreqCount2();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

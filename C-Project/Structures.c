@@ -354,6 +354,34 @@ void WordFreqCount(void)
 	return;
 }
 
+/* treeprint2: in-order print of tree but in lexicographically Reverse */
+void BinTreePrint2(struct tnode* p)
+{
+	if (p != NULL)
+	{
+		BinTreePrint2(p->right);
+		printf("%4d %s\n", p->count, p->word);
+		BinTreePrint2(p->left);
+	}
+	return;
+}
+
+/* word frequency count2: Decreasing order */
+void WordFreqCount2(void)
+{
+	struct tnode* root;
+	char word[MAXWORD];
+
+	root = NULL;
+	while (kcpGetWord(word, MAXWORD) != EOF)
+		if (isalpha(word[0]))
+		{
+			root = BinTreeAddNode(root, word);
+		}
+	BinTreePrint2(root);
+	return;
+}
+
 /* Program to read C prog. and print alphabetically groups of similar variables
  in the first 6 or userdefined N number of characters. */
 void GroupOfNamesIdentInNCmp(int argc, char* argv[])
