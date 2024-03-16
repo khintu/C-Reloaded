@@ -246,5 +246,10 @@ void CrossReferencerProgam(void);
 int CRGetWord(char* word, int lim);
 void WordFreqCount2(void);
 void BinTreePrint2(struct tnode* p);
+char* StrDup(char* s);
+struct FSLNode* FSAddWordToLst(struct FSLNode* lst, char* word);
+struct FSTNode* FSAddWordToTree(struct FSTNode* root, struct FSLNode* lst);
+void FSTreePrint(struct FSTNode* p);
+void FreqSortedInput(void);
 
 #endif /* CPROJECT_H */

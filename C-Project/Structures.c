@@ -654,3 +654,131 @@ void CrossReferencerProgam(void)
 	CRTreePrint(root);
 	return;
 }
+
+/* Program to print the distinct words in input sorted into dec'g order of freq. */
+
+struct FSWord {
+	char* word;
+	int freq;
+};
+
+/* Initially read all words into a list */
+struct FSLNode {
+	struct FSWord* data;
+	struct FSLNode* next;
+};
+
+/* Then move the words from list to tree for sorting */
+struct FSTNode {
+	struct FSWord* data;
+	struct FSTNode *left, *right;
+};
+
+/* Make a duplicate of s */
+char* StrDup(char* s)
+{
+	char* p;
+	p = (char*)malloc(strlen(s) + 1);
+	if (p)
+		strcpy(p, s);
+	return p;
+}
+
+/* Add distinct words to list and keep updating frequency of occurence */
+struct FSLNode* FSAddWordToLst(struct FSLNode* lst, char* word)
+{
+	struct FSLNode* p, *last;
+
+	/* List is empty, first word to be added */
+	if (lst == NULL)
+	{
+		lst = (struct FSLNode*)malloc(sizeof(struct FSLNode));
+		if (lst)
+		{
+			lst->data = (struct FSWord*)malloc(sizeof(struct FSWord));
+			if (lst->data)
+			{
+				lst->data->word = StrDup(word);
+				lst->data->freq = 1;
+			}
+			lst->next = NULL;
+		}
+	}
+	else
+	{
+		for (last = p = lst; p != NULL && strcmp(word, p->data->word) != 0; p = p->next)
+			last = p;
+		if (p == NULL) /* word not found, add to end of list */
+		{
+			last->next = (struct FSLNode*)malloc(sizeof(struct FSLNode));
+			if (last->next)
+			{
+				last = last->next;
+				last->data = (struct FSWord*)malloc(sizeof(struct FSWord));
+				if (last->data)
+				{
+					last->data->word = StrDup(word);
+					last->data->freq = 1;
+				}
+				last->next = NULL;
+			}
+		}
+		else /* word found, update its frequency */
+		{
+			p->data->freq++;
+		}
+	}
+	return lst;
+}
+
+/* Add to tree from list, for same freq move to right subtree */
+struct FSTNode* FSAddWordToTree(struct FSTNode* p, struct FSLNode* lst)
+{
+	if (p == NULL) /* Base case */
+	{
+		p = (struct FSTNode*)malloc(sizeof(struct FSTNode));
+		if (p)
+		{
+			p->data = lst->data;
+			p->left = p->right = NULL;
+		}
+	}
+	else if (lst->data->freq < p->data->freq)
+		p->left = FSAddWordToTree(p->left, lst);
+	else
+		p->right = FSAddWordToTree(p->right, lst);
+	return p;
+}
+
+/* treeprint: in-order print of tree but in frequency reversed order */
+void FSTreePrint(struct FSTNode* p)
+{
+	if (p != NULL)
+	{
+		FSTreePrint(p->right);
+		printf("%4d %s\n", p->data->freq, p->data->word);
+		FSTreePrint(p->left);
+	}
+	return;
+}
+
+/* Frequency Sorted order: Main program */
+void FreqSortedInput(void)
+{
+	struct FSLNode* lst;
+	struct FSTNode* root;
+	char word[MAXWORD];
+
+	lst = NULL; root = NULL;
+	while (kcpGetWord(word, MAXWORD) != EOF)
+		if (isalpha(word[0]))
+		{
+			lst = FSAddWordToLst(lst, word);
+		}
+	for (; lst != NULL; lst = lst->next)
+	{
+		root = FSAddWordToTree(root, lst);
+	}
+	FSTreePrint(root);
+	return;
+}
