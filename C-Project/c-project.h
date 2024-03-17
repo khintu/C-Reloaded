@@ -258,4 +258,7 @@ void HUnDef(char* name);
 void HMacroProcessor(void);
 int HGetWord(char* word, int lim);
 
+// Chapter 7
+void printLowerToUpper(int argc, char* argv[]);
+
 #endif /* CPROJECT_H */

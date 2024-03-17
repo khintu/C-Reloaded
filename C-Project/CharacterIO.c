@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 #include <c-project.h>
 
 char glbLine[MAXLINE];
@@ -419,5 +421,20 @@ void longest(void)
 		}
 	if (max > 0)
 		printf("%s", longest);
+	return;
+}
+
+void printLowerToUpper(int argc, char* argv[])
+{
+	int c;
+
+	if (strstr(argv[0], "Upper") != NULL)
+		while ((c = getchar()) != EOF)
+			putchar(toupper(c));
+	else if (strstr(argv[0], "Lower") != NULL)
+		while ((c = getchar()) != EOF)
+			putchar(tolower(c));
+	else
+		printf("Unrecognized program name\n");
 	return;
 }

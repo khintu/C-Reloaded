@@ -96,7 +96,6 @@ void UnitTestMain(int argc, char* argv[])
 	pluralStringCondn();
 	
 	//--- Chapter 3 ---
-	
 	testBinSearch();
 	countDigitWhiteSpOther2();
 	testEscapeRev();
@@ -165,6 +164,10 @@ void UnitTestMain(int argc, char* argv[])
 	WordFreqCount2();
 	FreqSortedInput();
 	HMacroProcessor();
+
+	// --- Chapter 7 ---
+	printLowerToUpper(argc, argv);
+
 	return;
 }
 
@@ -190,7 +193,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	HMacroProcessor();
+	printLowerToUpper(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();
