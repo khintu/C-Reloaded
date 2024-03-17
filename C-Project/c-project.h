@@ -261,5 +261,6 @@ int HGetWord(char* word, int lim);
 // Chapter 7
 void printLowerToUpper(int argc, char* argv[]);
 void printInputToOutput(void);
+void minprintf(char* fmt, ...);
 
 #endif /* CPROJECT_H */
