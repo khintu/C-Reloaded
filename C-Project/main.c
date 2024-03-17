@@ -167,6 +167,7 @@ void UnitTestMain(int argc, char* argv[])
 
 	// --- Chapter 7 ---
 	printLowerToUpper(argc, argv);
+	printInputToOutput();
 
 	return;
 }
@@ -193,7 +194,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	printLowerToUpper(argc, argv);
+	printInputToOutput();
 
 	// ---Runtime Analysis ---
 	t2 = clock();

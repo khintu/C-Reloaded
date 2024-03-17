@@ -438,3 +438,24 @@ void printLowerToUpper(int argc, char* argv[])
 		printf("Unrecognized program name\n");
 	return;
 }
+
+void printInputToOutput(void)
+{
+	int c, ln;
+
+	ln = 0;
+	while ((c = getchar()) != EOF)
+	{
+		if (isgraph(c) || isspace(c))
+			putchar(c);
+		else
+			printf("%x", c);
+		
+		if (++ln == 10) /* line length is 10 */
+		{
+			putchar('\n');
+			ln = 0;
+		}
+	}
+	return;
+}
