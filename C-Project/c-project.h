@@ -262,5 +262,10 @@ int HGetWord(char* word, int lim);
 void printLowerToUpper(int argc, char* argv[]);
 void printInputToOutput(void);
 void minprintf(char* fmt, ...);
+int IOGetWord(char* word, int lim);
+void RudimentaryCalculator(void);
+void ReadDateFromInput(void);
+void minscanf(char* fmt, ...);
+void testMinScanf(void);
 
 #endif /* CPROJECT_H */

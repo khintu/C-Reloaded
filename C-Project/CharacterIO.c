@@ -498,3 +498,108 @@ void minprintf(char* fmt, ...)
 	va_end(ap);
 	return;
 }
+
+/* IOGetWord: get next word or character from input */
+int IOGetWord(char* word, int lim)
+{
+	int c;
+	char* w = word;
+
+	while (isspace(c = getch()))
+		;
+	if (c != EOF) /* write to buffer */
+		*w++ = c;
+	if (!(isalnum(c) || c == '.')) /* keyword starts with alpha not digit, return digit or EOF */
+	{
+		*w = NUL;
+		return c;
+	}
+	for (; --lim > 0; w++) /* Only after word is confirmed from above */
+		if (!(isalnum(*w = getch()) || *w == '.'))
+		{
+			ungetch(*w);
+			break;
+		}
+	*w = NUL;
+	return word[0];
+}
+
+void RudimentaryCalculator(void)
+{
+	double sum, v;
+	int c;
+
+	sum = 0;
+	while (((c = scanf("%lf", &v)) == 1) || c != EOF)
+		printf("\t%.2f\n", sum += v);
+	return;
+}
+
+void ReadDateFromInput(void)
+{
+	int day, year/*, month*/;
+	char monthNm[20] = { NUL };
+
+	scanf("%d %s %d", &day, monthNm, &year);
+	//scanf("%d/%d/%d", &day, &month, &year);
+	printf("%d/%s/%d\n", day, monthNm, year);
+	return;
+}
+
+void testMinScanf(void)
+{
+	int day;
+	double dval;
+	char month[MAXLINE] = { NUL };
+	//minscanf("%d", &day);
+	minscanf("%f/%s/%d", &dval, month, &day);
+	printf("%f %d %s\n", dval, day, month);
+	return;
+}
+
+void minscanf(char* fmt, ...)
+{
+	va_list ap;
+	double dval;
+	int ival;
+	char *p, *sval;
+	char word[MAXLINE] = { NUL };
+
+	va_start(ap, fmt);
+	for (p = fmt; *p; ++p)
+	{
+		if (*p != '%')
+		{
+			if (isspace(*p) || (IOGetWord(word, MAXLINE) != EOF && word[0] == *p))
+				continue;
+			else
+				break;
+		}
+		switch (*++p)
+		{
+		case 'd':
+			if (IOGetWord(word, MAXLINE) == EOF)
+				break;
+			ival = atoi2(word);
+			*(va_arg(ap, int*)) = ival;
+			break;
+		case 'f':
+			if (IOGetWord(word, MAXLINE) == EOF)
+				break;
+			dval = Atof(word);
+			*(va_arg(ap, double*)) = dval;
+			break;
+		case 's':
+			if (IOGetWord(word, MAXLINE) == EOF)
+				break;
+			for (ival = 0, sval = va_arg(ap, char*); *sval = word[ival]; ++sval, ++ival)
+				;
+			break;
+		default:
+			printf("Unrecognized fmt specifier %c\n", *p);
+			break;
+		}
+	}
+	va_end(ap);
+	return;
+}

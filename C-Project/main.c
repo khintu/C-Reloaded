@@ -168,7 +168,10 @@ void UnitTestMain(int argc, char* argv[])
 	// --- Chapter 7 ---
 	printLowerToUpper(argc, argv);
 	printInputToOutput();
-	minprintf("%d\n", 0x20);
+	minprintf("%d %f\n", 0x20, 4.5f);
+	RudimentaryCalculator();
+	ReadDateFromInput();
+	testMinScanf();
 	return;
 }
 
@@ -194,7 +197,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	minprintf("%d %f\n", 0x20, 4.5f);
+	testMinScanf();
 
 	// ---Runtime Analysis ---
 	t2 = clock();
