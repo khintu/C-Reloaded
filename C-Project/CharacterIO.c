@@ -562,11 +562,12 @@ void minscanf(char* fmt, ...)
 	va_list ap;
 	double dval;
 	int ival;
+	int eof = FALSE;
 	char *p, *sval;
 	char word[MAXLINE] = { NUL };
 
 	va_start(ap, fmt);
-	for (p = fmt; *p; ++p)
+	for (p = fmt; *p && !eof; ++p)
 	{
 		if (*p != '%')
 		{
@@ -578,20 +579,26 @@ void minscanf(char* fmt, ...)
 		switch (*++p)
 		{
 		case 'd':
-			if (IOGetWord(word, MAXLINE) == EOF)
+			if (IOGetWord(word, MAXLINE) == EOF) {
+				eof = TRUE;
 				break;
+			}
 			ival = atoi2(word);
 			*(va_arg(ap, int*)) = ival;
 			break;
 		case 'f':
-			if (IOGetWord(word, MAXLINE) == EOF)
+			if (IOGetWord(word, MAXLINE) == EOF) {
+				eof = TRUE;
 				break;
+			}
 			dval = Atof(word);
 			*(va_arg(ap, double*)) = dval;
 			break;
 		case 's':
-			if (IOGetWord(word, MAXLINE) == EOF)
+			if (IOGetWord(word, MAXLINE) == EOF) {
+				eof = TRUE;
 				break;
+			}
 			for (ival = 0, sval = va_arg(ap, char*); *sval = word[ival]; ++sval, ++ival)
 				;
 			break;
