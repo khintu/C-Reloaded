@@ -267,5 +267,7 @@ void RudimentaryCalculator(void);
 void ReadDateFromInput(void);
 void minscanf(char* fmt, ...);
 void testMinScanf(void);
+void FileCopy(FILE* ifp, FILE* ofp);
+void ConcatenateFiles(int argc, char* argv[]);
 
 #endif /* CPROJECT_H */

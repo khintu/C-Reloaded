@@ -135,6 +135,7 @@
     <ClCompile Include="CharacterIO.c" />
     <ClCompile Include="ControlFlow.c" />
     <ClCompile Include="Fahrenheit-Celsius.c" />
+    <ClCompile Include="FileIO.c" />
     <ClCompile Include="Functions.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Mathematics.c" />

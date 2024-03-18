@@ -172,6 +172,7 @@ void UnitTestMain(int argc, char* argv[])
 	RudimentaryCalculator();
 	ReadDateFromInput();
 	testMinScanf();
+	ConcatenateFiles(argc, argv);
 	return;
 }
 
@@ -197,7 +198,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	testMinScanf();
+	ConcatenateFiles(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();
