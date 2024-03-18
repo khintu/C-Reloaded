@@ -269,5 +269,6 @@ void minscanf(char* fmt, ...);
 void testMinScanf(void);
 void FileCopy(FILE* ifp, FILE* ofp);
 void ConcatenateFiles(int argc, char* argv[]);
+void ConcatenateFiles2(int argc, char* argv[]);
 
 #endif /* CPROJECT_H */

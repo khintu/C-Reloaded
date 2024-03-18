@@ -173,6 +173,7 @@ void UnitTestMain(int argc, char* argv[])
 	ReadDateFromInput();
 	testMinScanf();
 	ConcatenateFiles(argc, argv);
+	ConcatenateFiles2(argc, argv);
 	return;
 }
 
@@ -198,7 +199,7 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
-	ConcatenateFiles(argc, argv);
+	ConcatenateFiles2(argc, argv);
 
 	// ---Runtime Analysis ---
 	t2 = clock();
