@@ -181,6 +181,7 @@ void UnitTestMain(int argc, char* argv[])
 	CusEchoUnbuffered();
 	CusCopyInp2Outp();
 	CusCopyFile(argc, argv);
+	CusConcatenateFiles(argc, argv);
 	CusUnixSyscallLib(argc, argv);
 #endif
 

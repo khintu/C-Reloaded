@@ -87,6 +87,20 @@ void CusEchoBuffered(void)
 	return ;
 }
 
+/* Concatenate files to stdout */
+void CusConcatenateFiles(int argc, char *argv[])
+{
+	int fd, n;
+	char buf[CBUFSIZE];
+	while (--argc > 0) {
+		if ((fd = open(*++argv, O_RDONLY, 0)) < 0)
+			error("Could not open file");
+		while ((n = read(fd, buf, sizeof buf)) > 0)
+			if (write(1, buf, n) != n)
+				error("Could not write to stdout");
+	}
+	return ;
+}
 void CusUnixSyscallLib(int argc, char* argv[])
 {
 	return ;

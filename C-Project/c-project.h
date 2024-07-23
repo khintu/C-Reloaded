@@ -277,7 +277,7 @@ void CusEchoBuffered(void);
 void CusEchoUnbuffered(void);
 void CusCopyInp2Outp(void);
 void CusCopyFile(int argc, char* argv[]);
+void CusConcatenateFiles(int argc, char *argv[]);
 void CusUnixSyscallLib(int argc, char* argv[]);
-
 #endif /* __LINUX__ */
 #endif /* CPROJECT_H */
