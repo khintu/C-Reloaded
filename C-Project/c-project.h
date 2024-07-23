@@ -271,4 +271,13 @@ void FileCopy(FILE* ifp, FILE* ofp);
 void ConcatenateFiles(int argc, char* argv[]);
 void ConcatenateFiles2(int argc, char* argv[]);
 
+#ifdef __LINUX__
+// Chapter 8
+void CusEchoBuffered(void);
+void CusEchoUnbuffered(void);
+void CusCopyInp2Outp(void);
+void CusCopyFile(int argc, char* argv[]);
+void CusUnixSyscallLib(int argc, char* argv[]);
+
+#endif /* __LINUX__ */
 #endif /* CPROJECT_H */

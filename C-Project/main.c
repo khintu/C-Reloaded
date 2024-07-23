@@ -174,6 +174,16 @@ void UnitTestMain(int argc, char* argv[])
 	testMinScanf();
 	ConcatenateFiles(argc, argv);
 	ConcatenateFiles2(argc, argv);
+
+#ifdef __LINUX__
+	// --- Chapter 8 ---
+	CusEchoBuffered();
+	CusEchoUnbuffered();
+	CusCopyInp2Outp();
+	CusCopyFile(argc, argv);
+	CusUnixSyscallLib(argc, argv);
+#endif
+
 	return;
 }
 
@@ -199,7 +209,11 @@ int main(int argc, char *argv[])
 	//UnitTestMain(argc, argv); /* ---Put Your Code below--- */
 	//RecursiveDescentParser();
 	//RDPUnDcl();
+#ifdef __LINUX__
+	CusUnixSyscallLib(argc, argv);
+#else
 	ConcatenateFiles2(argc, argv);
+#endif
 
 	// ---Runtime Analysis ---
 	t2 = clock();
