@@ -280,4 +280,10 @@ void CusCopyFile(int argc, char* argv[]);
 void CusConcatenateFiles(int argc, char *argv[]);
 void CusUnixSyscallLib(int argc, char* argv[]);
 #endif /* __LINUX__ */
+
+// Randomized Algorithms
+void RandomizedAlgos(int argc, char* argv[]);
+void printIntArray(int* array, int size);
+void RandmzdQuickSort(int Arr[], int i, int j);
+
 #endif /* CPROJECT_H */

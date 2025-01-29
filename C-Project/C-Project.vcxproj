@@ -143,6 +143,7 @@
     <ClCompile Include="Mathematics.c" />
     <ClCompile Include="Parser.c" />
     <ClCompile Include="Pointers.c" />
+    <ClCompile Include="RandmzdAlgo.c" />
     <ClCompile Include="String.c" />
     <ClCompile Include="Structures.c" />
     <ClCompile Include="TypesExprns.c" />

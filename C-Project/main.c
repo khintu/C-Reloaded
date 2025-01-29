@@ -185,6 +185,8 @@ void UnitTestMain(int argc, char* argv[])
 	CusUnixSyscallLib(argc, argv);
 #endif
 
+	// --- Randomized Algorithms ---
+	RandomizedAlgos(argc, argv);
 	return;
 }
 
@@ -213,7 +215,7 @@ int main(int argc, char *argv[])
 #ifdef __LINUX__
 	CusUnixSyscallLib(argc, argv);
 #else
-	ConcatenateFiles2(argc, argv);
+	RandomizedAlgos(argc, argv);
 #endif
 
 	// ---Runtime Analysis ---
