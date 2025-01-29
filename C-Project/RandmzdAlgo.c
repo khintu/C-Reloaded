@@ -1,10 +1,12 @@
 #include <stdio.h>
+#include <time.h>
 #include <c-project.h>
 
 void RandomizedAlgos(int argc, char* argv[])
 {
+	time_t now;
 	int Arr[10] = { 44, 22, 99, 111, 9, 23, 45, 67, 89, 100 };
-	Srand(1952);
+	Srand((unsigned)time(&now));
 	RandmzdQuickSort(Arr, 0, 9);
 	printIntArray(Arr, 10);
 	return;
