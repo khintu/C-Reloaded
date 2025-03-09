@@ -54,6 +54,9 @@
     <ClCompile Include="RandmzdAlgo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DPAlgo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="c-project.h">

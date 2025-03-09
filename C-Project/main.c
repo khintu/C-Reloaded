@@ -187,6 +187,10 @@ void UnitTestMain(int argc, char* argv[])
 
 	// --- Randomized Algorithms ---
 	RandomizedAlgos(argc, argv);
+
+	// --- Dynamic Programming Algorithms ---
+	DynamicProgramming(argc, argv);
+
 	return;
 }
 
@@ -215,7 +219,7 @@ int main(int argc, char *argv[])
 #ifdef __LINUX__
 	CusUnixSyscallLib(argc, argv);
 #else
-	RandomizedAlgos(argc, argv);
+	DynamicProgramming(argc, argv);
 #endif
 
 	// ---Runtime Analysis ---

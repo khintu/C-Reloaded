@@ -286,4 +286,11 @@ void RandomizedAlgos(int argc, char* argv[]);
 void printIntArray(int* array, int size);
 void RandmzdQuickSort(int Arr[], int i, int j);
 
+// Dynamic Prgramming Algorithms
+void reverseStringDP(char str[]);
+unsigned long long FibonacciDP(unsigned n);
+double FibonacciDPf(unsigned n);
+double FibonacciDPphi(unsigned n);
+void DynamicProgramming(int argc, char* argv[]);
+
 #endif /* CPROJECT_H */

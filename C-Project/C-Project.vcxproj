@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterIO.c" />
     <ClCompile Include="ControlFlow.c" />
+    <ClCompile Include="DPAlgo.c" />
     <ClCompile Include="Fahrenheit-Celsius.c" />
     <ClCompile Include="FileIO.c" />
     <ClCompile Include="Functions.c" />
