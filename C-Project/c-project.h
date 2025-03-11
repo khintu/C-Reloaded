@@ -287,6 +287,9 @@ void printIntArray(int* array, int size);
 void RandmzdQuickSort(int Arr[], int i, int j);
 
 // Dynamic Prgramming Algorithms
+#define MAXDP_DEPTH	52
+#define MAXDP_DEPTH_LOOP	50
+
 void reverseStringDP(char str[], int len);
 unsigned long long FibonacciDP(unsigned n);
 double FibonacciDPf(unsigned n);

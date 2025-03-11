@@ -24,7 +24,7 @@ void reverseStringDP(char str[], int len)
 
 unsigned long long FibonacciDP(unsigned n)
 {
-	static unsigned long long Memo[100] = { 0, 1 };
+	static unsigned long long Memo[MAXDP_DEPTH] = { 0, 1 };
 
 	if (n > 2)
 		if (Memo[n-1] == 0)
@@ -34,7 +34,7 @@ unsigned long long FibonacciDP(unsigned n)
 
 double FibonacciDPf(unsigned n)
 {
-	static double Memo[100] = { 0.0, 1.0 };
+	static double Memo[MAXDP_DEPTH] = { 0.0, 1.0 };
 
 	if (n > 2)
 		if (Memo[n - 1] == 0)
@@ -50,7 +50,7 @@ double FibonacciDPphi(unsigned n)
 /* Top-Down Memoization using recursion */
 unsigned long long climbingStaircaseStepsTDn(unsigned n)
 {
-	static unsigned long long Memo[100] = { 1, 1 };
+	static unsigned long long Memo[MAXDP_DEPTH] = { 1, 1 };
 	if (n > 1)
 		if (Memo[n] == 0)
 			Memo[n] = climbingStaircaseStepsTDn(n - 1) + climbingStaircaseStepsTDn(n - 2);
@@ -60,13 +60,14 @@ unsigned long long climbingStaircaseStepsTDn(unsigned n)
 /* Bottom-up Tabulation using iteration */
 unsigned long long climbingStaircaseStepsBUp(unsigned n)
 {
-	unsigned long long Table[100] = { 1, 1 };
+	unsigned long long Table[MAXDP_DEPTH] = { 1, 1 };
 	unsigned i;
 	for (i = 2 ; i <= n ; ++i)
 			Table[i] = Table[i - 1] + Table[i - 2];
 	return Table[n];
 }
 
+/* This is simple recursion not DP, T(n) = O(2^n) */
 unsigned long long towersOfHanoiTDn(unsigned n)
 {
 	if (n == 1)
@@ -77,7 +78,7 @@ unsigned long long towersOfHanoiTDn(unsigned n)
 
 unsigned long long towersOfHanoiBUp(unsigned n)
 {
-	unsigned long long Table[100] = { 0, 1 };
+	unsigned long long Table[MAXDP_DEPTH] = { 0, 1 };
 	unsigned i;
 	for (i = 2; i <= n; ++i)
 		Table[i] = 2 * Table[i - 1] + 1;
@@ -87,7 +88,7 @@ unsigned long long towersOfHanoiBUp(unsigned n)
 /* Climbing Stairs all unordered ways, Top-Down */
 unsigned long long climbingStaircaseSteps2TDn(unsigned n)
 {
-	static unsigned long long Memo[100] = { 1, 1 };
+	static unsigned long long Memo[MAXDP_DEPTH] = { 1, 1 };
 	if (n > 1)
 		if (Memo[n] == 0)
 			Memo[n] = 1 + climbingStaircaseSteps2TDn(n - 2);
@@ -97,7 +98,7 @@ unsigned long long climbingStaircaseSteps2TDn(unsigned n)
 /* Climbing Stairs all unordered ways, Bottom-Up */
 unsigned long long climbingStaircaseSteps2BUp(unsigned n)
 {
-	unsigned long long Table[100] = { 1, 1 };
+	unsigned long long Table[MAXDP_DEPTH] = { 1, 1 };
 	unsigned i;
 	for (i = 2; i <= n; ++i)
 		Table[i] = 1 + Table[i - 2];
@@ -107,44 +108,44 @@ unsigned long long climbingStaircaseSteps2BUp(unsigned n)
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-#if 0
+#if 1
 	char str[] = "abcefg";
 	//char str[] = "ab";
 	reverseStringDP(str, sizeof(str));
 	printf("%s\n", str);
 	printf("Fibonacci Series/Golden Ratio (phi)= \n");
-	for (i = 1; i <= 50; ++i)
-		printf((i%50)?"%llu, ":"%llu\n", FibonacciDP(i));
-		//printf((i % 50) ? "[%u]%f, " : "[%u]%f\n", i, FibonacciDPf(i));
-		//printf((i % 50) ? "%f, " : "%f\n", FibonacciDPf(i + 1) / FibonacciDPf(i));
-	for (i = 1; i <= 50; ++i)
-		//printf((i % 50) ? "[%u]%g, " : "[%u]%g\n", i, FibonacciDPphi(i-1));
-		printf((i % 50) ? "%llu, " : "%llu\n", (unsigned long long)ceil(FibonacciDPphi(i - 1)));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i% MAXDP_DEPTH_LOOP)?"%llu, ":"%llu\n", FibonacciDP(i));
+		//printf((i % MAXDP_DEPTH_LOOP)) ? "[%u]%f, " : "[%u]%f\n", i, FibonacciDPf(i));
+		//printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", FibonacciDPf(i + 1) / FibonacciDPf(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		//printf((i % MAXDP_DEPTH_LOOP) ? "[%u]%g, " : "[%u]%g\n", i, FibonacciDPphi(i-1));
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", (unsigned long long)ceil(FibonacciDPphi(i - 1)));
 	//printf("size of long = %zu\n", sizeof(unsigned long long));
 	printf("Climbing Staircase Steps all distinct ways= \n");
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", climbingStaircaseStepsTDn(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", climbingStaircaseStepsBUp(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%f, " : "%f\n", \
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", climbingStaircaseStepsTDn(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", climbingStaircaseStepsBUp(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 						((float)(climbingStaircaseStepsTDn(i + 1))) / ((float)climbingStaircaseStepsTDn(i)));
 	printf("Towers of Hanoi Steps= \n");
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", towersOfHanoiTDn(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", towersOfHanoiBUp(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%f, " : "%f\n", \
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", towersOfHanoiTDn(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", towersOfHanoiBUp(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 			((float)(towersOfHanoiTDn(i + 1))) / ((float)towersOfHanoiTDn(i)));
-#endif
 	printf("Climbing Stairs all unordered ways= \n");
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", climbingStaircaseSteps2TDn(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%llu, " : "%llu\n", climbingStaircaseSteps2BUp(i));
-	for (i = 1; i <= 50; ++i)
-		printf((i % 50) ? "%f, " : "%f\n", \
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", climbingStaircaseSteps2TDn(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%llu, " : "%llu\n", climbingStaircaseSteps2BUp(i));
+	for (i = 1; i <= MAXDP_DEPTH_LOOP; ++i)
+		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
+#endif
 	return;
 }
