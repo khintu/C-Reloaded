@@ -287,10 +287,16 @@ void printIntArray(int* array, int size);
 void RandmzdQuickSort(int Arr[], int i, int j);
 
 // Dynamic Prgramming Algorithms
-void reverseStringDP(char str[]);
+void reverseStringDP(char str[], int len);
 unsigned long long FibonacciDP(unsigned n);
 double FibonacciDPf(unsigned n);
 double FibonacciDPphi(unsigned n);
+unsigned long long climbingStaircaseStepsTDn(unsigned n);
+unsigned long long climbingStaircaseStepsBUp(unsigned n);
+unsigned long long towersOfHanoiTDn(unsigned n);
+unsigned long long towersOfHanoiBUp(unsigned n);
+unsigned long long climbingStaircaseSteps2TDn(unsigned n);
+unsigned long long climbingStaircaseSteps2BUp(unsigned n);
 void DynamicProgramming(int argc, char* argv[]);
 
 #endif /* CPROJECT_H */
