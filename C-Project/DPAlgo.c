@@ -135,15 +135,16 @@ unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n)
 		stepsTbl[n] = 1 + min_dp(min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
 																		minSteps2TargetTDn(arr, N, n + 1, end, n + 1)), \
 														 minSteps2TargetTDn(arr, N, tstart, tend,\
-														((t = jmp_dp(arr, n)) >= 0) ? (tstart = 0, tend = (t > 0)?n-1:N - 1, t) : t));
+						((t = jmp_dp(arr, n)) >= 0) ? (tstart = 0, (tend = (t > 0)?n-1:N - 1), t) : (t)  ));
 	return stepsTbl[n];
 }
 
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 60, -23, -24, 300, 60, 300, 22, 3, 300 };
+	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 300 };
 #if 0
+	int arr[] = { 60, -23, -24, 300, 60, 300, 22, 3, 300 }; /* No Cycle */
 	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 }; /* Cycle */
 	int arr[] = { 60, -23, -24, 30, 60, 22, 23, 24, 3, 300 }; /* No Cycle */
 	int arr[] = { -23, -24, 60, 30, 70, 22, 23, -24, 3, 300 };	
