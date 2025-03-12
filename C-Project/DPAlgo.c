@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <limits.h>
 #include <c-project.h>
 
 static void reverseDP(char str[], int i, int j)
@@ -105,10 +106,50 @@ unsigned long long climbingStaircaseSteps2BUp(unsigned n)
 	return Table[n];
 }
 
+static inline unsigned min_dp(unsigned x, unsigned y)
+{
+	if (x < y)
+		return x;
+	else
+		return y;
+}
+
+static int jmp_dp(int arr[], int N, int startIdx)
+{
+	int i;
+	for (i = startIdx; startIdx < N && i >= 0; --i)
+		if (i != startIdx && arr[i] == arr[startIdx])
+			return i;
+	return -1;
+}
+
+/* Minimum Steps to reach a target idx, Top-Down */
+unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n)
+{
+	int t;
+	static unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
+	
+	if (start > end || n < start || n > end)
+		return INT_MAX;
+	else if (n > 0) {
+#if 0
+		stepsTbl[n] = 1 + min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
+															minSteps2TargetTDn(arr, N, n + 1, end, n + 1));
+#else
+		stepsTbl[n] = 1 + min_dp(min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
+																		minSteps2TargetTDn(arr, N, n + 1, end, n + 1)), \
+														minSteps2TargetTDn(arr, N, start, end, \
+																		((t = jmp_dp(arr, N, n))>=0)?end=N-1,start=0,t:t));
+#endif	
+	}
+	return stepsTbl[n];
+}
+
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-#if 1
+	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 };
+#if 0
 	char str[] = "abcefg";
 	//char str[] = "ab";
 	reverseStringDP(str, sizeof(str));
@@ -147,5 +188,6 @@ void DynamicProgramming(int argc, char* argv[])
 		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
 #endif
+	printf("Steps for idx[9] = %d\n", minSteps2TargetTDn(arr, 10, 0, 9, 9));
 	return;
 }
