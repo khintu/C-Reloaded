@@ -142,10 +142,11 @@ unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n)
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 300 };
-#if 0
-	int arr[] = { 60, -23, -24, 300, 60, 300, 22, 3, 300 }; /* No Cycle */
 	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 }; /* Cycle */
+	
+#if 0
+	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 45, 300 };
+	int arr[] = { 60, -23, -24, 300, 60, 300, 22, 3, 45, 300 }; /* No Cycle */
 	int arr[] = { 60, -23, -24, 30, 60, 22, 23, 24, 3, 300 }; /* No Cycle */
 	int arr[] = { -23, -24, 60, 30, 70, 22, 23, -24, 3, 300 };	
 	char str[] = "abcefg";
@@ -186,6 +187,7 @@ void DynamicProgramming(int argc, char* argv[])
 		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
 #endif
-	printf("Steps for idx[9] = %d\n", minSteps2TargetTDn(arr, 10, 0, 9, 9));
+	for (i = 0; i < 10; ++i)
+		printf("Steps for idx[%d] = %d\n", i, minSteps2TargetTDn(arr, 10, 0, i, i));
 	return;
 }
