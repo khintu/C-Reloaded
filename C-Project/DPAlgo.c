@@ -114,10 +114,10 @@ static inline unsigned min_dp(unsigned x, unsigned y)
 		return y;
 }
 
-static int jmp_dp(int arr[], int N, int startIdx)
+static int jmp_dp(int arr[], int startIdx)
 {
 	int i;
-	for (i = startIdx; startIdx < N && i >= 0; --i)
+	for (i = startIdx; i >= 0 ; --i)
 		if (i != startIdx && arr[i] == arr[startIdx])
 			return i;
 	return -1;
@@ -126,30 +126,25 @@ static int jmp_dp(int arr[], int N, int startIdx)
 /* Minimum Steps to reach a target idx, Top-Down */
 unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n)
 {
-	int t;
+	int t, tstart = start, tend = end;
 	static unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
 	
 	if (start > end || n < start || n > end)
 		return INT_MAX;
-	else if (n > 0) {
-#if 0
-		stepsTbl[n] = 1 + min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
-															minSteps2TargetTDn(arr, N, n + 1, end, n + 1));
-#else
+	else if (n > 0)
 		stepsTbl[n] = 1 + min_dp(min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
 																		minSteps2TargetTDn(arr, N, n + 1, end, n + 1)), \
-														minSteps2TargetTDn(arr, N, start, end, \
-																		((t = jmp_dp(arr, N, n))>=0)?end=N-1,start=0,t:t));
-#endif	
-	}
+														 minSteps2TargetTDn(arr, N, tstart, tend,\
+																		((t = jmp_dp(arr, n)) >= 0) ? tstart = 0, tend = N - 1, t : t));
 	return stepsTbl[n];
 }
 
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 };
+	int arr[] = { 60, -23, -24, 30, 60, 22, 23, 24, 3, 300 };
 #if 0
+	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 };
 	char str[] = "abcefg";
 	//char str[] = "ab";
 	reverseStringDP(str, sizeof(str));
