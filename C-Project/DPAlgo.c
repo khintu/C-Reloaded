@@ -141,10 +141,10 @@ unsigned minSteps2TargetTDn(int arr[], int start, int end, int n)
 	return stepsMemo[n];
 }
 
-static int jmp2_dp(int arr[], const int N, int startIdx)
+static int jmp2_dp(int arr[], int startIdx, int endIdx)
 {
 	int i;
-	for (i = startIdx; i < N; ++i)
+	for (i = startIdx; i <= endIdx; ++i)
 		if (i != startIdx && arr[i] == arr[startIdx])
 			return i;
 	return -1;
@@ -172,14 +172,15 @@ unsigned minSteps2TargetBUp(int arr[], int n)
 	unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
 	int i, left, right, jmp;
 
-	for (i = 1; i <= n; ++i) {
+	for (i = 0; i <= n; ++i) {
 		left = i - 1;
 		right = i + 1;
-		if ((jmp = jmp2_dp(arr, n, i)) >= 0) {
-			stepsTbl[jmp] = 1 + min_dp(stepsTbl[i], \
-													min_dp(getSteps(stepsTbl, n, jmp - 1), getSteps(stepsTbl, n, jmp + 1)));
+		if ((jmp = jmp2_dp(arr, i, n)) >= 0) {
+			stepsTbl[jmp] = 1 + min_dp(min_dp(getSteps(stepsTbl, jmp, jmp - 1), getSteps(stepsTbl, jmp, jmp + 1)),
+																stepsTbl[i]);
 		}
-		stepsTbl[i] = 1 + min_dp(min_dp(getSteps(stepsTbl, n, left), getSteps(stepsTbl, n, right)), \
+		if (i == 0) continue;
+		stepsTbl[i] = 1 + min_dp(min_dp(getSteps(stepsTbl, i, left), getSteps(stepsTbl, i, right)), \
 														getSteps(stepsTbl, n, jmp));
 	}
 	return stepsTbl[n];
@@ -188,7 +189,7 @@ unsigned minSteps2TargetBUp(int arr[], int n)
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 61, -23, -24, 301, 60, 22, 23, 24, 3, 300 }; /* Cycle */
+	int arr[] = { 60, -23, -24, 301, 60, 22, 23, 24, 3, 300 }; /* Cycle */
 	
 #if 0
 	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 45, 300 };
