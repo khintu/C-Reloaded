@@ -171,17 +171,21 @@ unsigned minSteps2TargetBUp(int arr[], int n)
 {
 	unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
 	int i, left, right, jmp;
+	//int done = 0;
+
+	stepsTbl[0] = 0;
+	for (i = 1; i <= n+1; ++i) stepsTbl[i] = UINT_MAX;
 
 	for (i = 0; i <= n; ++i) {
 		left = i - 1;
 		right = i + 1;
+		if (i > 0) 
+			stepsTbl[i] = min_dp(1 + min_dp(getSteps(stepsTbl, i, left), getSteps(stepsTbl, i+1, right)), \
+													stepsTbl[i]);
 		if ((jmp = jmp2_dp(arr, i, n)) >= 0) {
-			stepsTbl[jmp] = 1 + min_dp(min_dp(getSteps(stepsTbl, jmp, jmp - 1), getSteps(stepsTbl, jmp, jmp + 1)),
+			stepsTbl[jmp] = 1 + min_dp(min_dp(getSteps(stepsTbl, jmp, jmp - 1), getSteps(stepsTbl, jmp+1, jmp + 1)),
 																stepsTbl[i]);
 		}
-		if (i == 0) continue;
-		stepsTbl[i] = 1 + min_dp(min_dp(getSteps(stepsTbl, i, left), getSteps(stepsTbl, i, right)), \
-														getSteps(stepsTbl, n, jmp));
 	}
 	return stepsTbl[n];
 }
@@ -189,8 +193,9 @@ unsigned minSteps2TargetBUp(int arr[], int n)
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 60, -23, -24, 301, 60, 22, 23, 24, 3, 300 }; /* Cycle */
-	
+	//int arr[] = { 60, -23, -24, 301, -23, 22, 23, 24, 3, 300 };
+	//int arr[] = { 60, -23, -24, 301, 60, 22, 23, 24, 3, 300 };
+	int arr[] = { 60, -23, -24, 300, 22, 21, 60, 23, 24, 3, 2, 300 };
 #if 0
 	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 45, 300 };
 	int arr[] = { 60, -23, -24, 300, 60, 300, 22, 3, 45, 300 }; /* No Cycle */
@@ -235,10 +240,11 @@ void DynamicProgramming(int argc, char* argv[])
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
 #endif
 	printf("Minimum steps to reach a target from base index= \n");
-	for (i = 0; i < 10; ++i)
+	for (i = 0; i < 11; ++i)
 		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetTDn(arr, 0, i, i));
 	putchar('\n');
-	for (i = 0; i < 10; ++i)
+	for (i = 0; i < 11; ++i)
 		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetBUp(arr, i));
+	//printf("Steps for idx[%d] = %u\n", i, minSteps2TargetBUp(arr, 9));
 	return;
 }
