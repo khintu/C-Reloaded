@@ -124,25 +124,71 @@ static int jmp_dp(int arr[], int startIdx)
 }
 
 /* Minimum Steps to reach a target idx, Top-Down */
-unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n)
+unsigned minSteps2TargetTDn(int arr[], int start, int end, int n)
 {
 	int t, tstart = start, tend = end;
-	static unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
+	static unsigned stepsMemo[MAXDP_DEPTH] = { 0 };
 	
 	if (start > end || n < start || n > end)
 		return INT_MAX;
+	/* U cannot use memoization in min/max DP becos each overlapping subproblem needs
+		 to be updated on alternate(better) paths/solutions */
 	else if (n > 0)
-		stepsTbl[n] = 1 + min_dp(min_dp(minSteps2TargetTDn(arr, N, start, n - 1, n - 1), \
-																		minSteps2TargetTDn(arr, N, n + 1, end, n + 1)), \
-														 minSteps2TargetTDn(arr, N, tstart, tend,\
-						((t = jmp_dp(arr, n)) >= 0) ? (tstart = 0, (tend = (t > 0)?n-1:N - 1), t) : (t)  ));
+		stepsMemo[n] = 1 + min_dp(min_dp(minSteps2TargetTDn(arr, start, n - 1, n - 1), \
+																		minSteps2TargetTDn(arr, n + 1, end, n + 1)), \
+														 minSteps2TargetTDn(arr, tstart, tend,\
+														((t = jmp_dp(arr, n)) >= 0) ? (tstart = 0, tend = n-1, t) : (t)));
+	return stepsMemo[n];
+}
+
+static int jmp2_dp(int arr[], const int N, int startIdx)
+{
+	int i;
+	for (i = startIdx; i < N; ++i)
+		if (i != startIdx && arr[i] == arr[startIdx])
+			return i;
+	return -1;
+}
+
+static inline unsigned getSteps(unsigned stepsTbl[], const int N, int i)
+{
+	if (i < 0 || i > N)
+		return UINT_MAX;
+	else
+		return stepsTbl[i];
+}
+
+static inline unsigned max_dp(unsigned x, unsigned y)
+{
+	if (x > y)
+		return x;
+	else
+		return y;
+}
+
+/* Minimum Steps to reach a target idx, Bottom-Up */
+unsigned minSteps2TargetBUp(int arr[], int n)
+{
+	unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
+	int i, left, right, jmp;
+
+	for (i = 1; i <= n; ++i) {
+		left = i - 1;
+		right = i + 1;
+		if ((jmp = jmp2_dp(arr, n, i)) >= 0) {
+			stepsTbl[jmp] = 1 + min_dp(stepsTbl[i], \
+													min_dp(getSteps(stepsTbl, n, jmp - 1), getSteps(stepsTbl, n, jmp + 1)));
+		}
+		stepsTbl[i] = 1 + min_dp(min_dp(getSteps(stepsTbl, n, left), getSteps(stepsTbl, n, right)), \
+														getSteps(stepsTbl, n, jmp));
+	}
 	return stepsTbl[n];
 }
 
 void DynamicProgramming(int argc, char* argv[])
 {
 	unsigned i;
-	int arr[] = { 60, -23, -24, 300, 60, 22, 23, 24, 3, 300 }; /* Cycle */
+	int arr[] = { 61, -23, -24, 301, 60, 22, 23, 24, 3, 300 }; /* Cycle */
 	
 #if 0
 	int arr[] = { 60, -23, -24, 300, 60, 22, 300, 3, 45, 300 };
@@ -187,7 +233,11 @@ void DynamicProgramming(int argc, char* argv[])
 		printf((i % MAXDP_DEPTH_LOOP) ? "%f, " : "%f\n", \
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
 #endif
+	printf("Minimum steps to reach a target from base index= \n");
 	for (i = 0; i < 10; ++i)
-		printf("Steps for idx[%d] = %d\n", i, minSteps2TargetTDn(arr, 10, 0, i, i));
+		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetTDn(arr, 0, i, i));
+	putchar('\n');
+	for (i = 0; i < 10; ++i)
+		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetBUp(arr, i));
 	return;
 }

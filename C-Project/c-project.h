@@ -300,7 +300,8 @@ unsigned long long towersOfHanoiTDn(unsigned n);
 unsigned long long towersOfHanoiBUp(unsigned n);
 unsigned long long climbingStaircaseSteps2TDn(unsigned n);
 unsigned long long climbingStaircaseSteps2BUp(unsigned n);
-unsigned minSteps2TargetTDn(int arr[], const int N, int start, int end, int n);
+unsigned minSteps2TargetTDn(int arr[], int start, int end, int n);
+unsigned minSteps2TargetBUp(int arr[], int n);
 void DynamicProgramming(int argc, char* argv[]);
 
 #endif /* CPROJECT_H */
