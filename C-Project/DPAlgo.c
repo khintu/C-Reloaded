@@ -169,22 +169,27 @@ static inline unsigned max_dp(unsigned x, unsigned y)
 /* Minimum Steps to reach a target idx, Bottom-Up */
 unsigned minSteps2TargetBUp(int arr[], int n)
 {
-	unsigned stepsTbl[MAXDP_DEPTH] = { 0 };
-	int i, left, right, jmp;
-	//int done = 0;
+	unsigned stepsTbl[MAXDP_DEPTH] = { 0 }, tmp;
+	int i, left, right, jmp, done = 0;
 
 	stepsTbl[0] = 0;
 	for (i = 1; i <= n+1; ++i) stepsTbl[i] = UINT_MAX;
-
-	for (i = 0; i <= n; ++i) {
-		left = i - 1;
-		right = i + 1;
-		if (i > 0) 
-			stepsTbl[i] = min_dp(1 + min_dp(getSteps(stepsTbl, i, left), getSteps(stepsTbl, i+1, right)), \
-													stepsTbl[i]);
-		if ((jmp = jmp2_dp(arr, i, n)) >= 0) {
-			stepsTbl[jmp] = 1 + min_dp(min_dp(getSteps(stepsTbl, jmp, jmp - 1), getSteps(stepsTbl, jmp+1, jmp + 1)),
-																stepsTbl[i]);
+	while (!done) {
+		done = 1;
+		for (i = 0; i <= n; ++i) {
+			left = i - 1;
+			right = i + 1;
+			if (i > 0) {
+				tmp = min_dp(1 + min_dp(getSteps(stepsTbl, i, left), getSteps(stepsTbl, i + 1, right)), \
+											stepsTbl[i]);
+				if (tmp != stepsTbl[i])
+					done = 0;
+				stepsTbl[i] = tmp;
+			}
+			if ((jmp = jmp2_dp(arr, i, n)) >= 0) {
+				stepsTbl[jmp] = 1 + min_dp(min_dp(getSteps(stepsTbl, jmp, jmp - 1), getSteps(stepsTbl, jmp + 1, jmp + 1)),
+																	 stepsTbl[i]);
+			}
 		}
 	}
 	return stepsTbl[n];
@@ -240,10 +245,10 @@ void DynamicProgramming(int argc, char* argv[])
 			((float)(climbingStaircaseSteps2BUp(i + 1))) / ((float)climbingStaircaseSteps2BUp(i)));
 #endif
 	printf("Minimum steps to reach a target from base index= \n");
-	for (i = 0; i < 11; ++i)
+	for (i = 0; i < 12; ++i)
 		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetTDn(arr, 0, i, i));
 	putchar('\n');
-	for (i = 0; i < 11; ++i)
+	for (i = 0; i < 12; ++i)
 		printf("Steps for idx[%d] = %u\n", i, minSteps2TargetBUp(arr, i));
 	//printf("Steps for idx[%d] = %u\n", i, minSteps2TargetBUp(arr, 9));
 	return;
